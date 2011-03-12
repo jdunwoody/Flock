@@ -1,8 +1,10 @@
-package com.james;
+package com.james.activity;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+
+import com.james.opengl.CubeRenderer;
 
 public class GLSurfaceViewActivity extends Activity {
     @Override

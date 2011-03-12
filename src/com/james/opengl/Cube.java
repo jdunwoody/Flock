@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.james;
+package com.james.opengl;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

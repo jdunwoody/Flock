@@ -1,4 +1,4 @@
-package com.james;
+package com.james.activity;
 
 import android.app.Activity;
 import android.content.Intent;

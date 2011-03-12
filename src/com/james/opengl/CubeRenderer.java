@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.james;
+package com.james.opengl;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -25,7 +25,7 @@ import android.opengl.GLSurfaceView;
  * Render a pair of tumbling cubes.
  */
 
-class CubeRenderer implements GLSurfaceView.Renderer {
+public class CubeRenderer implements GLSurfaceView.Renderer {
     public CubeRenderer(boolean useTranslucentBackground) {
         mTranslucentBackground = useTranslucentBackground;
         mCube = new Cube();
