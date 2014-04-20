@@ -1,37 +1,53 @@
 
-function buildTriangle(graphics, w, h, x, y) {
+function buildTriangle( w, h, x, y) {
   "use strict";
   //var triangle = new DisplayObjectContainer();
 
+  var triangle = new PIXI.Graphics();
   var backgroundColor = 0xFFAA33;
   var borderColor = 0xBB77AA;
 
-  graphics.beginFill(backgroundColor);
-  graphics.x = x;
-  graphics.y = y;
-  graphics.lineStyle(1, borderColor, 1);
-  graphics.moveTo(x, y);
-  graphics.pivot.x = x;
-  graphics.pivot.y = y;
+  triangle.beginFill(backgroundColor);
+  triangle.x = x;
+  triangle.y = y;
+  triangle.lineStyle(1, borderColor, 1);
+  triangle.moveTo(x, y);
+  triangle.pivot.x = x;
+  triangle.pivot.y = y;
 
-  graphics.lineTo(x + 10, y + 10);
-  graphics.lineTo(x - 10, y + 10);
-  graphics.lineTo(x, y);
+  triangle.lineTo(x + 10, y + 10);
+  triangle.lineTo(x - 10, y + 10);
+  triangle.lineTo(x, y);
 
-  graphics.endFill();
+  triangle.endFill();
 
-  graphics.setInteractive(true);
-  graphics.mousemove = function(mouseData){
+  triangle.hitArea = new PIXI.Rectangle(-150, -150, 300, 300);
+
+  triangle.setInteractive(true);
+
+  triangle.targetPosition = [];
+  triangle.targetPosition.x = x;
+  triangle.targetPosition.y = y;
+
+  triangle.mousemove = function(mouseData){
     // this line will get the mouse coords relative to the sprites..
-    var localCoordsPosition = mouseData.getLocalPosition(graphics);
+    //var localCoordsPosition = mouseData.getLocalPosition(triangle);
 
     // this line will get the mouse coords relative to the sprites parent..
-    var parentCoordsPosition = mouseData.getLocalPosition(graphics.parent);
+    var parentCoordsPosition = mouseData.getLocalPosition(triangle.parent);
 
-    this.position.x = parentCoordsPosition.x;
-    this.position.y = parentCoordsPosition.y;
+    this.targetPosition.x = parentCoordsPosition.x;
+    this.targetPosition.y = parentCoordsPosition.y;
+
+    //this.position.x = parentCoordsPosition.x;
+    //this.position.y = parentCoordsPosition.y;
   }
 
-  return graphics;
+  triangle.move = function() {
+    this.position.x = this.targetPosition.x
+    this.position.y = this.targetPosition.y
+  };
+
+  return triangle;
 };
 

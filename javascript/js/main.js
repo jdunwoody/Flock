@@ -6,25 +6,32 @@ $(document).ready( function() {
   var antiAlias = true
   var renderer = PIXI.autoDetectRenderer(width, height, null, false, antiAlias);
 
-  var graphics = new PIXI.Graphics();
-  stage.addChild(graphics);
-
   document.body.appendChild(renderer.view);
 
   requestAnimFrame(animate);
 
+  var triangle = buildTriangle(100, 100, 100, 100);
+
+  stage.addChild(triangle);
+
+  //var bunny = buildBunny(width, height);
+  //stage.addChild(bunny);
   //drawTerrain(graphics, width, height);
 
-  var triangle = buildTriangle(graphics, 100, 100, 100, 100);
-
-  var bunny = buildBunny(width, height);
-  stage.addChild(bunny);
+  //var lastTime = Date.now();
+  //var timeSinceLastFrame = 0;
 
   function animate() {
     requestAnimFrame(animate);
 
-    moveBunny(bunny);
-    triangle.rotation += 0.01;
+    //timeSinceLastFrame = now - lastTime;
+    //lastTime = now;
+
+    //moveBunny(bunny);
+    //triangle.rotation += 0.01;
+
+    updateVehicle(triangle);
+    triangle.move();//(timeSinceLastFrame);
 
     renderer.render(stage);
   }
