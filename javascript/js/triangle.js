@@ -20,6 +20,18 @@ function buildTriangle(graphics, w, h, x, y) {
 
   graphics.endFill();
 
+  graphics.setInteractive(true);
+  graphics.mousemove = function(mouseData){
+    // this line will get the mouse coords relative to the sprites..
+    var localCoordsPosition = mouseData.getLocalPosition(graphics);
+
+    // this line will get the mouse coords relative to the sprites parent..
+    var parentCoordsPosition = mouseData.getLocalPosition(graphics.parent);
+
+    this.position.x = parentCoordsPosition.x;
+    this.position.y = parentCoordsPosition.y;
+  }
+
   return graphics;
 };
 
