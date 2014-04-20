@@ -17,13 +17,13 @@ $(document).ready( function() {
 
   var triangle = buildTriangle(graphics, 100, 100, 100, 100);
 
-  //var bunny = buildBunny(width, height);
-  //stage.addChild(bunny);
+  var bunny = buildBunny(width, height);
+  stage.addChild(bunny);
 
   function animate() {
     requestAnimFrame(animate);
 
-    //moveBunny(bunny);
+    moveBunny(bunny);
     triangle.rotation += 0.01;
 
     renderer.render(stage);

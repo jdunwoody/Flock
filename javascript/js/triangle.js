@@ -23,6 +23,3 @@ function buildTriangle(graphics, w, h, x, y) {
   return graphics;
 };
 
-function moveTriangle(graphics) {
-  //triangle.rotation += 0.01;
-};
