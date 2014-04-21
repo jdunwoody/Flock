@@ -10,69 +10,86 @@ function Steering() {
   };
 };
 
-function TriangleShape(x, y) {
-  var triangle = new PIXI.Graphics();
-  var backgroundColor = 0xFFAA33;
-  var borderColor = 0xBB77AA;
+var x = 350;
+var y = 150;
+var moveableObject = new PIXI.Graphics();
 
-  triangle.beginFill(backgroundColor);
-  triangle.x = x;
-  triangle.y = y;
-  triangle.lineStyle(1, borderColor, 1);
-  triangle.moveTo(x, y);
-  triangle.pivot.x = x;
-  triangle.pivot.y = y;
+moveableObject.position = vec2.create(0, 0);
+moveableObject.mass = 100;
+moveableObject.heading = new Heading();
+moveableObject.steering = new Steering();
 
-  triangle.lineTo(x + 10, y + 10);
-  triangle.lineTo(x - 10, y + 10);
-  triangle.lineTo(x, y);
+var backgroundColor = 0xFFAA33;
+var borderColor = 0xBB77AA;
 
-  triangle.endFill();
+moveableObject.beginFill(backgroundColor);
+moveableObject.x = x;
+moveableObject.y = y;
+moveableObject.lineStyle(1, borderColor, 1);
+moveableObject.moveTo(x, y);
+moveableObject.pivot.x = x;
+moveableObject.pivot.y = y;
 
-  triangle.hitArea = new PIXI.Rectangle(-150, -150, 300, 300);
+moveableObject.lineTo(x - 10, y - 10);
+moveableObject.lineTo(x + 10, y - 10);
+moveableObject.lineTo(x, y);
 
-  triangle.setInteractive(true);
+moveableObject.endFill();
 
-  triangle.targetPosition = [];
-  triangle.targetPosition.x = x;
-  triangle.targetPosition.y = y;
+moveableObject.hitArea = new PIXI.Rectangle(-150, -150, 300, 300);
 
-  triangle.mousemove = function(mouseData){
-    // this line will get the mouse coords relative to the sprites..
-    //var localCoordsPosition = mouseData.getLocalPosition(triangle);
+moveableObject.setInteractive(true);
 
-    // this line will get the mouse coords relative to the sprites parent..
-    var parentCoordsPosition = mouseData.getLocalPosition(triangle.parent);
+moveableObject.targetPosition = [];
+moveableObject.targetPosition.x = x;
+moveableObject.targetPosition.y = y;
 
-    this.targetPosition.x = parentCoordsPosition.x;
-    this.targetPosition.y = parentCoordsPosition.y;
+moveableObject.mousemove = function(mouseData){
+  // this line will get the mouse coords relative to the sprites..
+  //var localCoordsPosition = mouseData.getLocalPosition(moveableObject);
 
-    //this.position.x = parentCoordsPosition.x;
-    //this.position.y = parentCoordsPosition.y;
-  }
+  // this line will get the mouse coords relative to the sprites parent..
+  var parentCoordsPosition = mouseData.getLocalPosition(moveableObject.parent);
 
-  return triangle;
+  moveableObject.targetPosition.x = parentCoordsPosition.x;
+  moveableObject.targetPosition.y = parentCoordsPosition.y;
+
+  //this.position.x = parentCoordsPosition.x;
+  //this.position.y = parentCoordsPosition.y;
 };
 
-function MoveableObject() {
-  this.position = vec2.create(0, 0);
-  this.mass = 100;
-  //this.velocity = new Velocity();
-  this.heading = new Heading();
-  this.steering = new Steering();
-  this.shape = new TriangleShape(50, 50);
+moveableObject.acceleration = function() {
+  moveableObject.steering.value / moveableObject.mass;
+};
 
-  this.acceleration = function() {
-    this.steering.value / this.mass;
-  };
+moveableObject.updatePosition = function() {
+  currentX = this.position.x;
+  currentY = this.position.y;
 
-  this.updatePosition = function() {
-    this.shape.position.x = this.shape.targetPosition.x;
-    this.shape.position.y = this.shape.targetPosition.y;
+  targetX = this.targetPosition.x;
+  targetY = this.targetPosition.y;
 
-    //this.position.x = this.targetPosition.x;
-    //this.position.y = this.targetPosition.y;
-  };
+  horiz = targetX - currentX;
+  vert = targetY - currentY;
+
+  if (horiz >= 0) {
+    if (vert >= 0) {
+      this.rotation = Math.atan( - horiz / vert );
+    } else{
+      this.rotation = Math.PI + Math.atan( -horiz / vert );
+    }
+  } else {
+    if (vert >= 0) {
+      this.rotation = Math.atan( -horiz / vert );
+    } else{
+      this.rotation = Math.PI / 2 + Math.atan( vert / horiz );
+    }
+  }
+
+  //this.rotation = 0;//Math.PI / 2;
+
+  //this.position.x = this.targetPosition.x;
+  //this.position.y = this.targetPosition.y;
 };
 
 function updateVehicle(movableObject, timeElapsed) {
