@@ -6,35 +6,34 @@ $(document).ready( function() {
   var antiAlias = true
   var renderer = PIXI.autoDetectRenderer(width, height, null, false, antiAlias);
 
-  document.body.appendChild(renderer.view);
+document.body.appendChild(renderer.view);
 
+requestAnimFrame(animate);
+
+//var moveableObject = buildTriangle(100, 100, 100, 100);
+var moveableObject = new MoveableObject(100, 100);
+stage.addChild(moveableObject.shape);
+
+//var bunny = buildBunny(width, height);
+//stage.addChild(bunny);
+//drawTerrain(graphics, width, height);
+
+//var lastTime = Date.now();
+//var timeSinceLastFrame = 0;
+
+function animate() {
   requestAnimFrame(animate);
 
-  var triangle = buildTriangle(100, 100, 100, 100);
+  //timeSinceLastFrame = now - lastTime;
+  //lastTime = now;
 
-  stage.addChild(triangle);
+  //moveBunny(bunny);
+  //moveableObject.rotation += 0.01;
+  //updateVehicle(moveableObject);
+  moveableObject.updatePosition();//(timeSinceLastFrame);
 
-  //var bunny = buildBunny(width, height);
-  //stage.addChild(bunny);
-  //drawTerrain(graphics, width, height);
+  renderer.render(stage);
+}
 
-  //var lastTime = Date.now();
-  //var timeSinceLastFrame = 0;
-
-  function animate() {
-    requestAnimFrame(animate);
-
-    //timeSinceLastFrame = now - lastTime;
-    //lastTime = now;
-
-    //moveBunny(bunny);
-    //triangle.rotation += 0.01;
-
-    updateVehicle(triangle);
-    triangle.move();//(timeSinceLastFrame);
-
-    renderer.render(stage);
-  }
-
-  requestAnimFrame(animate);
+requestAnimFrame(animate);
 });
