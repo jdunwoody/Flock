@@ -10,146 +10,168 @@ function Steering() {
   };
 };
 
-var x = 350;
-var y = 150;
-var moveableObject = new PIXI.Graphics();
+function buildMovableObject() {
+  var moveableObject = new PIXI.Graphics();
+  var x = 350;
+  var y = 150;
 
-moveableObject.position = vec2.create(0, 0);
-moveableObject.mass = 100;
-moveableObject.heading = new Heading();
-moveableObject.steering = new Steering();
+  moveableObject.setupPhysics = function() {
+    this.position.x = 100;// = vec2.create(100,100);
+    this.position.y = 100;
+    this.mass = 100;
+    this.heading = new Heading();
+    this.steering = new Steering();
+  };
 
-var backgroundColor = 0xFFAA33;
-var borderColor = 0xBB77AA;
+  //moveableObject.setupPhysics();
 
-moveableObject.beginFill(backgroundColor);
-moveableObject.x = x;
-moveableObject.y = y;
-moveableObject.lineStyle(1, borderColor, 1);
-moveableObject.moveTo(x, y);
-moveableObject.pivot.x = x;
-moveableObject.pivot.y = y;
+  moveableObject.setupAppearance = function() {
+    var backgroundColor = 0xFFAA33;
+    var borderColor = 0xBB77AA;
 
-moveableObject.lineTo(x - 10, y - 10);
-moveableObject.lineTo(x + 10, y - 10);
-moveableObject.lineTo(x, y);
+    this.beginFill(backgroundColor);
+    //this.x = x;
+    //this.y = y;
+    this.lineStyle(1, borderColor, 1);
+    this.moveTo(x, y);
+    this.pivot.x = x;
+    this.pivot.y = y;
 
-moveableObject.endFill();
+    this.lineTo(x - 10, y - 10);
+    this.lineTo(x + 10, y - 10);
+    this.lineTo(x, y);
 
-moveableObject.hitArea = new PIXI.Rectangle(-150, -150, 300, 300);
+    this.endFill();
+  };
+  //moveableObject.setupAppearance();
 
-moveableObject.setInteractive(true);
+  moveableObject.hitArea = new PIXI.Rectangle(-150, -150, 300, 300);
 
-moveableObject.targetPosition = [];
-moveableObject.targetPosition.x = x;
-moveableObject.targetPosition.y = y;
+  moveableObject.setupPhysics();
+  moveableObject.setupAppearance();
 
-moveableObject.mousemove = function(mouseData){
-  // this line will get the mouse coords relative to the sprites..
-  //var localCoordsPosition = mouseData.getLocalPosition(moveableObject);
+  moveableObject.setInteractive(true);
 
-  // this line will get the mouse coords relative to the sprites parent..
-  var parentCoordsPosition = mouseData.getLocalPosition(moveableObject.parent);
+  moveableObject.targetPosition = [];
+  moveableObject.targetPosition.x = x;
+  moveableObject.targetPosition.y = y;
 
-  moveableObject.targetPosition.x = parentCoordsPosition.x;
-  moveableObject.targetPosition.y = parentCoordsPosition.y;
+  moveableObject.mousemove = function(mouseData) {
+    debugger;
+    // this line will get the mouse coords relative to the sprites..
+    //var localCoordsPosition = mouseData.getLocalPosition(moveableObject);
+    // this line will get the mouse coords relative to the sprites parent..
+    var parentCoordsPosition = mouseData.getLocalPosition(this.parent);
 
-  //this.position.x = parentCoordsPosition.x;
-  //this.position.y = parentCoordsPosition.y;
-};
+    this.targetPosition.x = parentCoordsPosition.x;
+    this.targetPosition.y = parentCoordsPosition.y;
 
-moveableObject.acceleration = function() {
-  moveableObject.steering.value / moveableObject.mass;
-};
+    //this.position.x = parentCoordsPosition.x;
+    //this.position.y = parentCoordsPosition.y;
+  };
 
-moveableObject.updatePosition = function() {
-  currentX = this.position.x;
-  currentY = this.position.y;
+  moveableObject.acceleration = function() {
+    debugger;
+    this.steering.value / this.mass;
+  };
 
-  targetX = this.targetPosition.x;
-  targetY = this.targetPosition.y;
-
-  horiz = targetX - currentX;
-  vert = targetY - currentY;
-
-  if (horiz >= 0) {
-    if (vert >= 0) {
-      this.rotation = Math.atan( - horiz / vert );
-    } else{
-      this.rotation = Math.PI + Math.atan( -horiz / vert );
+  moveableObject.rotate = function(horiz, vert) {
+    debugger;
+    if (horiz >= 0) {
+      if (vert >= 0) {
+        this.rotation = Math.atan( - horiz / vert );
+      } else{
+        this.rotation = Math.PI + Math.atan( -horiz / vert );
+      }
+    } else {
+      if (vert >= 0) {
+        this.rotation = Math.atan( -horiz / vert );
+      } else{
+        this.rotation = Math.PI / 2 + Math.atan( vert / horiz );
+      }
     }
-  } else {
-    if (vert >= 0) {
-      this.rotation = Math.atan( -horiz / vert );
-    } else{
-      this.rotation = Math.PI / 2 + Math.atan( vert / horiz );
-    }
-  }
+  };
 
-  //this.rotation = 0;//Math.PI / 2;
+  moveableObject.updatePosition = function(timeElapsed) {
+    debugger;
+    var currentX = this.position.x;
+    var currentY = this.position.y;
 
-  //this.position.x = this.targetPosition.x;
-  //this.position.y = this.targetPosition.y;
+    var targetX = this.targetPosition.x;
+    var targetY = this.targetPosition.y;
+
+    var horiz = targetX - currentX;
+    var vert = targetY - currentY;
+
+    //vec2.set(this.steering.value, horiz, vert);
+    //this.rotate(horiz, vert);
+
+    //this.velocity += this.acceleration() * timeElapsed;
+    //position += this.velocity() * timeElapsed;
+    this.position.x = this.targetPosition.x;
+    this.position.y = this.targetPosition.y;
+  };
+
+  return moveableObject;
 };
 
-function updateVehicle(movableObject, timeElapsed) {
-  //vehicle.position =
-};
 
-function updateVehicle2(movableObject, timeElapsed) {
 
-  //update the time elapsed
-  //m_dTimeElapsed = time_elapsed;
+//function updateVehicle2(moveableObject, timeElapsed) {
 
-  //keep a record of its old position so we can update its cell later in this method
-  //var oldPos = vec2.fromValues(vehicle.x, vehicle.y);
-  //Vector2D OldPos = Pos();
+////update the time elapsed
+////m_dTimeElapsed = time_elapsed;
 
-  //Vector2D SteeringForce;
+////keep a record of its old position so we can update its cell later in this method
+////var oldPos = vec2.fromValues(vehicle.x, vehicle.y);
+////Vector2D OldPos = Pos();
 
-  ////calculate the combined force from each steering behavior in the
-  ////vehicle's list
-  //SteeringForce = m_pSteering->Calculate();
-  var steeringForce = steering.calculate();
+////Vector2D SteeringForce;
 
-  ////Acceleration = Force/Mass
-  //Vector2D acceleration = SteeringForce / m_dMass;
-  var acceleration = steeringForce / vehicle.mass;
+//////calculate the combined force from each steering behavior in the
+//////vehicle's list
+////SteeringForce = m_pSteering->Calculate();
+////var steeringForce = steering.calculate();
 
-  ////update velocity
-  //m_vVelocity += acceleration * time_elapsed;
-  vehicle.velocity += acceleration * timeElapsed;
+//////Acceleration = Force/Mass
+////Vector2D acceleration = SteeringForce / m_dMass;
+////var acceleration = steeringForce / vehicle.mass;
 
-  ////make sure vehicle does not exceed maximum velocity
-  //m_vVelocity.Truncate(m_dMaxSpeed);
-  vehicle.velocity.truncate(maxSpeed);
+//////update velocity
+////m_vVelocity += acceleration * time_elapsed;
+//vehicle.velocity += acceleration * timeElapsed;
 
-  ////update the position
-  //m_vPos += m_vVelocity * time_elapsed;
-  position += vehicle.velocity * timeElapsed;
+//////make sure vehicle does not exceed maximum velocity
+////m_vVelocity.Truncate(m_dMaxSpeed);
+//vehicle.velocity.truncate(maxSpeed);
 
-  ////update the heading if the vehicle has a non zero velocity
-  if (vehicle.velocity.lengthSquared() > 0.00000001)
-  {
-    vehicle.heading = vec.normalize(vec2.create(), vehicle.velocity());
-    vehicle.side = vehicle.heading.perpendicular();
-  }
+//////update the position
+////m_vPos += m_vVelocity * time_elapsed;
+//position += vehicle.velocity * timeElapsed;
 
-  ////EnforceNonPenetrationConstraint(this, World()->Agents());
+//////update the heading if the vehicle has a non zero velocity
+//if (vehicle.velocity.lengthSquared() > 0.00000001)
+//{
+//vehicle.heading = vec.normalize(vec2.create(), vehicle.velocity());
+//vehicle.side = vehicle.heading.perpendicular();
+//}
 
-  ////treat the screen as a toroid
-  //WrapAround(m_vPos, m_pWorld->cxClient(), m_pWorld->cyClient());
+//////EnforceNonPenetrationConstraint(this, World()->Agents());
 
-  ////update the vehicle's current cell if space partitioning is turned on
-  //if (Steering()->isSpacePartitioningOn())
-  //{
-  //World()->CellSpace()->UpdateEntity(this, OldPos);
-  vehicle.position = position;
-  //}
+//////treat the screen as a toroid
+////WrapAround(m_vPos, m_pWorld->cxClient(), m_pWorld->cyClient());
 
-  //if (isSmoothingOn())
-  //{
-  //m_vSmoothedHeading = m_pHeadingSmoother->Update(Heading());
-  vehicle.heading.smooth();
-  //}
-};
+//////update the vehicle's current cell if space partitioning is turned on
+////if (Steering()->isSpacePartitioningOn())
+////{
+////World()->CellSpace()->UpdateEntity(this, OldPos);
+//vehicle.position = position;
+////}
+
+////if (isSmoothingOn())
+////{
+////m_vSmoothedHeading = m_pHeadingSmoother->Update(Heading());
+//vehicle.heading.smooth();
+////}
+//};
+//};
