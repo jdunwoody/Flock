@@ -10,23 +10,27 @@ $(document).ready( function() {
 
   requestAnimFrame(animate);
 
+  //var bunny = buildBunny(width, height);
   var moveableObject = buildMovableObject();
 
   var stage = new PIXI.Stage(0xEEFFFF);
   stage.addChild(moveableObject);
+  //stage.addChild(bunny);
   //stage.addChild(buildBunny(100,100));//moveableObject);
 
-  //var lastTime = Date.now();
-  //var timeSinceLastFrame = 0;
-
+  var lastTime = Date.now();
+  var timeSinceLastFrame = 0;
 
   function animate() {
-    //requestAnimFrame(animate);
-    //var now = Date.now();
-    //timeSinceLastFrame = now - lastTime;
-    //lastTime = now;
+    requestAnimFrame(animate);
+    var now = Date.now();
+    timeSinceLastFrame = now - lastTime;
+    lastTime = now;
 
-    moveableObject.updatePosition(0);//timeSinceLastFrame);
+    //moveBunny(bunny);//timeSinceLastFrame);
+    moveableObject.updatePosition(timeSinceLastFrame);
+
+    renderer.render(stage);
   };
 
   //requestAnimFrame(animate);
