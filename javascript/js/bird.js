@@ -1,3 +1,5 @@
+"use strict"
+
 function Heading() {
   this.value = vec2.create();
 };
@@ -16,7 +18,8 @@ function buildMovableObject(notifyTargetPositionChanged) {
   //moveableObject.notifyTargetPositionChanged = notifyTargetPositionChanged;
 
   moveableObject.setupPhysics = function() {
-    this.position = vec2.create(100,100);
+    this.position.x = 100;
+    this.position.y = 100;
     this.mass = 100;
     this.heading = new Heading();
     this.steering = new Steering();
@@ -27,10 +30,8 @@ function buildMovableObject(notifyTargetPositionChanged) {
     var borderColor = 0xBB77AA;
 
     this.beginFill(backgroundColor);
-    var x = 350;
-    var y = 150;
-    //this.x = x;
-    //this.y = y;
+    var x = 100;
+    var y = 100;
     this.lineStyle(1, borderColor, 1);
     this.moveTo(x, y);
     this.pivot.x = x;
@@ -60,19 +61,19 @@ function buildMovableObject(notifyTargetPositionChanged) {
 };
 
 function Bird() {
-
   this.moveableObject = buildMovableObject(this.targetPositionChanged);
 
-  this.moveableObject.notifyTargetPositionChanged = function(targetPosition) {
-    this.position.x = targetPosition[0];
-    this.position.y = targetPosition[1];
+  this.targetPositionChanged = function(targetPosition) {
+    this.position = vec2.fromValues(targetPosition[0], targetPosition[1]);
   };
+
+  this.moveableObject.notifyTargetPositionChanged = this.targetPositionChanged;
 
   this.moveableObject.setupPhysics();
   this.moveableObject.setupAppearance();
 
-  this.position = vec2.create(0, 0);
-  this.targetPosition = vec2.create(0, 0);
+  this.position = vec2.fromValues(100,100);
+  this.targetPosition = vec2.fromValues(0, 0);
 
   this.acceleration = function() {
     this.steering.value / this.mass;
@@ -92,16 +93,15 @@ function Bird() {
         this.rotation = Math.PI / 2 + Math.atan( vert / horiz );
       }
     }
-
     this.moveableObject.rotation = this.rotation;
   };
 
-  this.moveableObject.updatePosition = function(timeElapsed) {
-    var targetX = this.targetPosition.x;
-    var targetY = this.targetPosition.y;
+  this.updatePosition = function(timeElapsed) {
+    var targetX = this.targetPosition[0];
+    var targetY = this.targetPosition[1];
 
-    var horiz = targetX - this.position.x;
-    var vert = targetY - this.position.y;
+    //var horiz = targetX - this.position.x;
+    //var vert = targetY - this.position.y;
 
     //vec2.set(this.steering.value, horiz, vert);
 
@@ -109,7 +109,13 @@ function Bird() {
     //position += this.velocity() * timeElapsed;
     //this.position.x = this.targetPosition.x;
     //this.position.y = this.targetPosition.y;
-    this.rotate(horiz, vert);
-    this.position = vec2.update(this.targetPosition)
+//this.moveableObject.position.x = 100;
+//this.moveableObject.position.y = 100;
+
+    //this.rotate(horiz, vert);
+    //this.position = vec2.update(this.targetPosition)
+    this.moveableObject.position.x = this.position[0];
+    this.moveableObject.position.y = this.position[1];
+
   };
 };

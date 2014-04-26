@@ -1,3 +1,5 @@
+"use strict"
+
 $(document).ready( function() {
   "use strict";
 
@@ -23,12 +25,12 @@ $(document).ready( function() {
 
   function animate() {
     requestAnimFrame(animate);
-    //var now = Date.now();
-    //timeSinceLastFrame = now - lastTime;
-    //lastTime = now;
 
-    ////moveBunny(bunny);//timeSinceLastFrame);
-    //bird.updatePosition(timeSinceLastFrame);
+    var now = Date.now();
+    timeSinceLastFrame = now - lastTime;
+    lastTime = now;
+
+    bird.updatePosition(timeSinceLastFrame);
 
     renderer.render(stage);
   };

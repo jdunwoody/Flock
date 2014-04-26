@@ -105,8 +105,10 @@ function buildMovableObject() {
     //vec2.set(this.steering.value, horiz, vert);
     //this.rotate(horiz, vert);
 
-    //this.velocity += this.acceleration() * timeElapsed;
-    //position += this.velocity() * timeElapsed;
+    this.velocity += this.acceleration() * timeElapsed;
+    this.position += this.velocity() * timeElapsed;
+
+
 
     this.moveableObject.position.x = this.postiion.x;
     this.moveableObject.position.y = this.position.y;
