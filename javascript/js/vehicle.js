@@ -93,7 +93,6 @@ function buildMovableObject() {
   };
 
   moveableObject.updatePosition = function(timeElapsed) {
-    debugger;
     var currentX = this.position.x;
     var currentY = this.position.y;
 
@@ -108,8 +107,9 @@ function buildMovableObject() {
 
     //this.velocity += this.acceleration() * timeElapsed;
     //position += this.velocity() * timeElapsed;
-    this.position.x = this.targetPosition.x;
-    this.position.y = this.targetPosition.y;
+
+    this.moveableObject.position.x = this.postiion.x;
+    this.moveableObject.position.y = this.position.y;
   };
 
   return moveableObject;

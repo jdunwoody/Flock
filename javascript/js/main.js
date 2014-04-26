@@ -1,9 +1,9 @@
 $(document).ready( function() {
-  //"use strict";
+  "use strict";
 
   var width = 700;
   var height = 300;
-  //var antiAlias = true;
+  var antiAlias = true;
   var renderer = PIXI.autoDetectRenderer(width, height);//, null, false, antiAlias);
 
   document.body.appendChild(renderer.view);
@@ -11,10 +11,10 @@ $(document).ready( function() {
   requestAnimFrame(animate);
 
   //var bunny = buildBunny(width, height);
-  var moveableObject = buildMovableObject();
+  var bird = new Bird();
 
   var stage = new PIXI.Stage(0xEEFFFF);
-  stage.addChild(moveableObject);
+  stage.addChild(bird.moveableObject);
   //stage.addChild(bunny);
   //stage.addChild(buildBunny(100,100));//moveableObject);
 
@@ -23,17 +23,17 @@ $(document).ready( function() {
 
   function animate() {
     requestAnimFrame(animate);
-    var now = Date.now();
-    timeSinceLastFrame = now - lastTime;
-    lastTime = now;
+    //var now = Date.now();
+    //timeSinceLastFrame = now - lastTime;
+    //lastTime = now;
 
-    //moveBunny(bunny);//timeSinceLastFrame);
-    moveableObject.updatePosition(timeSinceLastFrame);
+    ////moveBunny(bunny);//timeSinceLastFrame);
+    //bird.updatePosition(timeSinceLastFrame);
 
     renderer.render(stage);
   };
 
-  //requestAnimFrame(animate);
+  requestAnimFrame(animate);
 });
 
 
