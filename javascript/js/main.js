@@ -11,14 +11,10 @@ $(document).ready( function() {
   document.body.appendChild(renderer.view);
 
   requestAnimFrame(animate);
-
-  //var bunny = buildBunny(width, height);
-  var bird = new Bird();
+  var triangle = new Triangle();
 
   var stage = new PIXI.Stage(0xEEFFFF);
-  stage.addChild(bird.moveableObject);
-  //stage.addChild(bunny);
-  //stage.addChild(buildBunny(100,100));//moveableObject);
+  stage.addChild(triangle.graphicalObject);
 
   var lastTime = Date.now();
   var timeSinceLastFrame = 0;
@@ -30,7 +26,7 @@ $(document).ready( function() {
     timeSinceLastFrame = now - lastTime;
     lastTime = now;
 
-    bird.updatePosition(timeSinceLastFrame);
+    triangle.update(timeSinceLastFrame);
 
     renderer.render(stage);
   };
