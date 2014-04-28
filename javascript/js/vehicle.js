@@ -35,8 +35,8 @@ truncate = function(vector, scalarLimit) {
 function Vehicle() {
   this.steering = new Steering();
   this.position = vec2.create();
-  this.mass = 1;
-  this.maxSpeed = 1;
+  this.mass = 100;
+  this.maxSpeed = 5;
   this.velocity = vec2.create();
   this.target = vec2.create();
 
