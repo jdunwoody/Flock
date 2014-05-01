@@ -1,10 +1,10 @@
-function GraphicalObject(triangle) {
+function GraphicalObject(triangle, color) {
   var graphics = new PIXI.Graphics();
   graphics.triangle = triangle;
   //graphics.notifyTargetPositionChanged = notifyTargetPositionChanged;
 
   graphics.draw = function(x, y) {
-    var backgroundColor = 0xFFAA33;
+    var backgroundColor = color
     var borderColor = 0xBB77AA;
 
     this.beginFill(backgroundColor);

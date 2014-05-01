@@ -1,4 +1,4 @@
-function Triangle(initialPosition, mass) {
+function Triangle(initialPosition, mass, color) {
   this.vehicle = new Vehicle(initialPosition, mass);
 
   //this.targetPositionChanged = function(target) {
@@ -8,7 +8,7 @@ function Triangle(initialPosition, mass) {
     //this.vehicle.target[1] = target[1];
   //};
 
-  this.graphicalObject = new GraphicalObject(this);
+  this.graphicalObject = new GraphicalObject(this, color);
   //this.graphicalObject.drawHeading();
 
   clipToBounds = function(vector, minX, maxX, minY, maxY) {
