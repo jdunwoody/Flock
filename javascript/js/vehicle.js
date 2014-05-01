@@ -32,10 +32,10 @@ truncate = function(vector, scalarLimit) {
 };
 
 
-function Vehicle() {
+function Vehicle(initialPosition, mass) {
   this.steering = new Steering();
-  this.position = vec2.create();
-  this.mass = 100;
+  this.position = initialPosition;//#vec2.create();
+  this.mass = mass;
   this.maxSpeed = 5;
   this.velocity = vec2.create();
   this.target = vec2.create();
@@ -53,7 +53,7 @@ function Vehicle() {
     vec2.add(this.velocity, this.velocity, velocityChange);
 
     truncate(this.velocity, this.maxSpeed);
-//debugger;
+    //debugger;
     //this.velocity[0] = 1;
     //this.velocity[1] = 1;
 

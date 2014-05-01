@@ -1,5 +1,5 @@
-function Triangle() {
-  this.vehicle = new Vehicle();
+function Triangle(initialPosition, mass) {
+  this.vehicle = new Vehicle(initialPosition, mass);
 
   //this.targetPositionChanged = function(target) {
     //debugger;
@@ -40,10 +40,10 @@ function Triangle() {
     var minX = 5;
     var maxX = 696;
     var minY = 5;
-    var maxY = 295;
+    var maxY = 795;
     var clipped = clipToBounds(this.vehicle.position, minX, maxX, minY, maxY);
 
-    console.log("Drawing at ("+clipped[0]+", "+clipped[1] +") for (" + this.vehicle.position[0] + ", "+ this.vehicle.position[1] +")");
+    //console.log("Drawing at ("+clipped[0]+", "+clipped[1] +") for (" + this.vehicle.position[0] + ", "+ this.vehicle.position[1] +")");
 
     this.graphicalObject.position.x = clipped[0];
     this.graphicalObject.position.y = clipped[1];

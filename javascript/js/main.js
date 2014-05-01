@@ -4,17 +4,21 @@ $(document).ready( function() {
   "use strict";
 
   var width = 700;
-  var height = 300;
+  var height = 800;
   var antiAlias = true;
   var renderer = PIXI.autoDetectRenderer(width, height);//, null, false, antiAlias);
 
   document.body.appendChild(renderer.view);
 
   requestAnimFrame(animate);
-  var triangle = new Triangle();
+  var triangle1 = new Triangle(vec2.fromValues(0,0), 100);
+  var triangle2 = new Triangle(vec2.fromValues(200,200), 50);
+  var triangle3 = new Triangle(vec2.fromValues(400,100), 200);
 
-  var stage = new PIXI.Stage(0xEEFFFF);
-  stage.addChild(triangle.graphicalObject);
+  var stage = new PIXI.Stage(0x3355AA);
+  stage.addChild(triangle1.graphicalObject);
+  stage.addChild(triangle2.graphicalObject);
+  stage.addChild(triangle3.graphicalObject);
 
   var lastTime = Date.now();
   var timeSinceLastFrame = 0;
@@ -26,7 +30,9 @@ $(document).ready( function() {
     timeSinceLastFrame = now - lastTime;
     lastTime = now;
 
-    triangle.update(timeSinceLastFrame);
+    triangle1.update(timeSinceLastFrame);
+    triangle2.update(timeSinceLastFrame);
+    triangle3.update(timeSinceLastFrame);
 
     renderer.render(stage);
   };
