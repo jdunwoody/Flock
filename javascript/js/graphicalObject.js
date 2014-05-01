@@ -42,7 +42,7 @@ function GraphicalObject(triangle, color) {
 
     var x = parentCoordsPosition.x;
     var y = parentCoordsPosition.y;
-    console.log("Mouse moved to "+x+","+y);
+    //console.log("Mouse moved to "+x+","+y);
 
     this.triangle.vehicle.target[0] = x;
     this.triangle.vehicle.target[1] = y;
