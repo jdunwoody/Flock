@@ -1,7 +1,6 @@
 function GraphicalObject(triangle, color) {
   var graphics = new PIXI.Graphics();
   graphics.triangle = triangle;
-  //graphics.notifyTargetPositionChanged = notifyTargetPositionChanged;
 
   graphics.draw = function(x, y) {
     var backgroundColor = color

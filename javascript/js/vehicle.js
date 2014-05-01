@@ -11,7 +11,7 @@ function Steering() {
   }
 
   this.calculate = function(vehicle) {
-    var targetPosition = vehicle.target; //vec2.fromValues(100,100); // this.targetPosition;
+    var targetPosition = vehicle.target;
     var maxSpeed = vehicle.maxSpeed;
     var currentVelocity = vehicle.velocity;
     var currentPosition = vehicle.position;
@@ -31,12 +31,12 @@ truncate = function(vector, scalarLimit) {
   return vector;
 };
 
-
 function Vehicle(initialPosition, mass, maxSpeed) {
   this.steering = new Steering();
-  this.position = initialPosition;//#vec2.create();
+  this.position = initialPosition;
   this.mass = mass;
   this.maxSpeed = maxSpeed;
+
   this.velocity = vec2.create();
   this.target = vec2.create();
 
@@ -53,13 +53,9 @@ function Vehicle(initialPosition, mass, maxSpeed) {
     vec2.add(this.velocity, this.velocity, velocityChange);
 
     truncate(this.velocity, this.maxSpeed);
-    //debugger;
-    //this.velocity[0] = 1;
-    //this.velocity[1] = 1;
 
     var accByTime = vec2.create();
     vec2.scale(accByTime, this.velocity, timeElapsed);
     vec2.add(this.position, this.position, accByTime);
-
   }
 }
