@@ -24,15 +24,8 @@ new Triangle(vec2.fromValues(200,200), 50, 4, 0x88AA22, screenDimensions),
 new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
   ];
 
-  var farTexture = PIXI.Texture.fromImage("img/bg-far.png");
-  var far = new PIXI.Sprite(farTexture);
-  far.position.x = 0;
-  far.position.y = 0;
-
-  var midTexture = PIXI.Texture.fromImage("img/bg-mid.png");
-  var mid = new PIXI.Sprite(midTexture);
-  mid.position.x = 0;
-  mid.position.y = 128;
+  var far = new Far();
+  var mid = new Mid();
 
   var stage = new PIXI.Stage(0x3355AA);
   stage.addChild(far);
@@ -58,8 +51,8 @@ new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
       triangles[i].update(timeSinceLastFrame);
     }
 
-    far.position.x -= 0.128;
-    mid.position.x -= 0.64;
+    far.update();
+    mid.update();
 
     renderer.render(stage);
   };
