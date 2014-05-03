@@ -24,12 +24,10 @@ new Triangle(vec2.fromValues(200,200), 50, 4, 0x88AA22, screenDimensions),
 new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
   ];
 
-  var far = new Far();
-  var mid = new Mid();
-
   var stage = new PIXI.Stage(0x3355AA);
-  stage.addChild(far);
-  stage.addChild(mid);
+
+  var scroller = new Scroller(stage);
+
   for (var i in targets) {
     stage.addChild(targets[i].moveableObject);
   }
@@ -51,8 +49,7 @@ new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
       triangles[i].update(timeSinceLastFrame);
     }
 
-    far.update();
-    mid.update();
+    scroller.update();
 
     renderer.render(stage);
   };
