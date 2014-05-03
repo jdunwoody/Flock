@@ -15,7 +15,7 @@ function Triangle(initialPosition, mass, maxSpeed, color, screenDimensions) {
     this.graphicalObject.position.y = this.vehicle.position[1];
 
     this.vehicle.update(timeSinceLastFrame);
-    
+
     this.graphicalObject.rotation = vec2.dot(vec2.fromValues(0,1), this.vehicle.velocity)
   }
 };

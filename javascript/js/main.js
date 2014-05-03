@@ -3,6 +3,8 @@
 $(document).ready( function() {
   "use strict";
 
+  //var width = document.getElementById("game-canvas").width;
+
   var width = $(window).width();
   var height = $(window).height();
   var screenDimensions = vec2.fromValues($(window).width(), $(window).height());
@@ -14,14 +16,27 @@ $(document).ready( function() {
   requestAnimFrame(animate);
   var targets = [ new Target(100, 100), new Target(200,200) ];
 
-  var triangles = [ new Triangle(vec2.fromValues(400,100), 200, 9, 0x88FFAA, screenDimensions),
+  var triangles = [
+  new Triangle(vec2.fromValues(400,100), 200, 9, 0x88FFAA, screenDimensions),
 new Triangle(vec2.fromValues(500,200), 140, 3, 0x883311, screenDimensions),
 new Triangle(vec2.fromValues(300,200), 80, 3, 0xAA33BB, screenDimensions),
 new Triangle(vec2.fromValues(200,200), 50, 4, 0x88AA22, screenDimensions),
-new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions) ];
+new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
+  ];
 
+  var farTexture = PIXI.Texture.fromImage("img/bg-far.png");
+  var far = new PIXI.Sprite(farTexture);
+  far.position.x = 0;
+  far.position.y = 0;
+
+  var midTexture = PIXI.Texture.fromImage("img/bg-mid.png");
+  var mid = new PIXI.Sprite(midTexture);
+  mid.position.x = 0;
+  mid.position.y = 128;
 
   var stage = new PIXI.Stage(0x3355AA);
+  stage.addChild(far);
+  stage.addChild(mid);
   for (var i in targets) {
     stage.addChild(targets[i].moveableObject);
   }
@@ -42,6 +57,9 @@ new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions) ];
     for (var i in triangles) {
       triangles[i].update(timeSinceLastFrame);
     }
+
+    far.position.x -= 0.128;
+    mid.position.x -= 0.64;
 
     renderer.render(stage);
   };
