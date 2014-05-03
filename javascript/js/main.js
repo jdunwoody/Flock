@@ -1,61 +1,53 @@
-"use strict"
-
-$(document).ready( function() {
-  "use strict";
-
-  //var width = document.getElementById("game-canvas").width;
-
-  var width = $(window).width();
-  var height = $(window).height();
-  var antiAlias = true;
-  var renderer = PIXI.autoDetectRenderer(width, height, null, false, antiAlias);
-  //this.renderer = new PIXI.autoDetectRenderer(
-  //512,
-  //384,
-  //document.getElementById("game-canvas")
-  //);
-
-  document.body.appendChild(renderer.view);
-
+function Main() {
   var screenDimensions = vec2.fromValues($(window).width(), $(window).height());
+  this.stage = new PIXI.Stage(0x3355AA);
+  var antiAlias = true;
+  this.renderer = new PIXI.autoDetectRenderer(
+      screenDimensions[0],
+      screenDimensions[1],
+      document.getElementById("game-canvas"),
+      false,
+      antiAlias
+      );
 
-  requestAnimFrame(animate);
-  var stage = new PIXI.Stage(0x3355AA);
-  var scroller = new Scroller(stage);
-  var targets = [ new Target(100, 100), new Target(200,200) ];
-  var triangles = [
+  //document.body.appendChild(renderer.view);
+
+  this.scroller = new Scroller(this.stage);
+
+  this.targets = [ new Target(100, 100), new Target(200,200) ];
+  for (var i in this.targets) {
+    this.stage.addChild(this.targets[i].moveableObject);
+  }
+
+  this.triangles = [
     new Triangle(vec2.fromValues(400,100), 200, 9, 0x88FFAA, screenDimensions),
         new Triangle(vec2.fromValues(500,200), 140, 3, 0x883311, screenDimensions),
         new Triangle(vec2.fromValues(300,200), 80, 3, 0xAA33BB, screenDimensions),
         new Triangle(vec2.fromValues(200,200), 50, 4, 0x88AA22, screenDimensions),
         new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
           ];
-
-  for (var i in targets) {
-    stage.addChild(targets[i].moveableObject);
-  }
-  for (var i in triangles) {
-    stage.addChild(triangles[i].graphicalObject);
+  for (var i in this.triangles) {
+    this.stage.addChild(this.triangles[i].graphicalObject);
   }
 
-  var lastTime = Date.now();
-  var timeSinceLastFrame = 0;
+  this.lastTime = Date.now();
+  this.timeSinceLastFrame = 0;
 
-  function animate() {
-    scroller.moveViewportXBy(5);
+  requestAnimFrame(this.update.bind(this));
+}
 
-    var now = Date.now();
-    timeSinceLastFrame = now - lastTime;
-    lastTime = now;
+Main.SCROLL_SPEED = 5;
 
-    for (var i in triangles) {
-      triangles[i].update(timeSinceLastFrame);
-    }
+Main.prototype.update = function() {
+  var now = Date.now();
+  this.timeSinceLastFrame = now - this.lastTime;
+  this.lastTime = now;
 
-    renderer.render(stage);
+  for (var i in this.triangles) {
+    this.triangles[i].update(this.timeSinceLastFrame);
+  }
 
-    requestAnimFrame(animate);
-  };
-
-  requestAnimFrame(animate);
-});
+  this.scroller.moveViewportXBy(Main.SCROLL_SPEED);
+  this.renderer.render(this.stage);
+  requestAnimFrame(this.update.bind(this));
+};
