@@ -10,9 +10,9 @@ function Main() {
       antiAlias
       );
 
-  //document.body.appendChild(renderer.view);
+  this.loadSpriteSheet();
 
-  this.scroller = new Scroller(this.stage);
+  //document.body.appendChild(renderer.view);
 
   this.targets = [ new Target(100, 100), new Target(200,200) ];
   for (var i in this.targets) {
@@ -32,8 +32,6 @@ function Main() {
 
   this.lastTime = Date.now();
   this.timeSinceLastFrame = 0;
-
-  requestAnimFrame(this.update.bind(this));
 }
 
 Main.SCROLL_SPEED = 5;
@@ -49,5 +47,17 @@ Main.prototype.update = function() {
 
   this.scroller.moveViewportXBy(Main.SCROLL_SPEED);
   this.renderer.render(this.stage);
+  requestAnimFrame(this.update.bind(this));
+};
+
+Main.prototype.loadSpriteSheet = function() {
+  var assetsToLoad = ["img/wall.json", "img/bg-mid.png", "img/bg-far.png"];
+  loader = new PIXI.AssetLoader(assetsToLoad);
+  loader.onComplete = this.spriteSheetLoaded.bind(this);
+  loader.load();
+};
+
+Main.prototype.spriteSheetLoaded = function() {
+  this.scroller = new Scroller(this.stage);
   requestAnimFrame(this.update.bind(this));
 };
