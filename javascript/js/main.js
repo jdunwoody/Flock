@@ -14,7 +14,7 @@ function Main() {
 
   //document.body.appendChild(renderer.view);
 
-  this.targets = [ new Target(100, 100), new Target(200,200) ];
+  this.targets = [ new Target(200, 400), new Target(100,600) ];
   for (var i in this.targets) {
     this.stage.addChild(this.targets[i].moveableObject);
   }
