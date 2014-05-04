@@ -1,6 +1,6 @@
 "use strict"
 
-$(document).ready( function() {
-  "use strict";
-  new Main();
-});
+//$(document).ready( function() {
+  //var main = new Main();
+  ////main.borrowWallSprites(9);
+//});

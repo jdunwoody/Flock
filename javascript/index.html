@@ -8,6 +8,9 @@
     <script src="lib/gl-matrix-min.js"> </script>
     <script src="lib/pixi.dev.js"> </script>
 
+    <script src="js/WallSlice.js"> </script>
+    <script src="js/Walls.js"> </script>
+    <script src="js/WallSpritesPool.js"> </script>
     <script src="js/scroller.js"> </script>
     <script src="js/mid.js"> </script>
     <script src="js/far.js"> </script>
@@ -17,10 +20,17 @@
     <script src="js/target.js"> </script>
     <script src="js/diagnostics.js"> </script>
     <script src="js/main.js"> </script>
-    <script src="js/blah.js"> </script>
+    <script src="js/SliceType.js"> </script>
+    <!--<script src="js/blah.js"> </script>-->
+    <script>
+      function init() {
+        console.log("init called");
+        main = new Main();
+      }
+    </script>
   </head>
 
-  <body>
+  <body onload="init();">
     <div align="center">
       <canvas id="game-canvas" width="512" height="384"></canvas>
     </div>
