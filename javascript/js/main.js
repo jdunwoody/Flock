@@ -7,8 +7,10 @@ function Main() {
       screenDimensions[1],
       document.getElementById("game-canvas"),
       false,
-      antiAlias
-      );
+      antiAlias);
+
+  this.scrollSpeed = Main.MIN_SCROLL_SPEED;
+
   this.loadSpriteSheet();
   //document.body.appendChild(renderer.view);
 
@@ -32,7 +34,9 @@ function Main() {
   this.timeSinceLastFrame = 0;
 }
 
-Main.SCROLL_SPEED = 5;
+Main.MIN_SCROLL_SPEED = 5;
+Main.MAX_SCROLL_SPEED = 15;
+Main.SCROLL_ACCELERATION = 0.005;
 
 Main.prototype.update = function() {
   var now = Date.now();
@@ -42,8 +46,12 @@ Main.prototype.update = function() {
   for (var i in this.triangles) {
     this.triangles[i].update(this.timeSinceLastFrame);
   }
+  this.scroller.moveViewportXBy(this.scrollSpeed);
+  this.scrollSpeed += Main.SCROLL_ACCELERATION;
+  if (this.scrollSpeed > Main.MAX_SCROLL_SPEED) {
+    this.scrollSpeed = Main.MAX_SCROLL_SPEED;
+  }
 
-  this.scroller.moveViewportXBy(Main.SCROLL_SPEED);
   this.renderer.render(this.stage);
   requestAnimFrame(this.update.bind(this));
 };
@@ -100,7 +108,7 @@ Main.prototype.clearTestWallSpan = function() {
     this.pool.returnStep,       // 4th slice
     this.pool.returnWindow,     // 5th slice
     this.pool.returnBackEdge    // 6th slice
-  ];
+      ];
 
   for (var i = 0; i < lookupTable.length; i++) {
     var func = lookupTable[i];

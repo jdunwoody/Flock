@@ -14,7 +14,7 @@ Mid.constructor = Mid;
 Mid.prototype = Object.create(PIXI.TilingSprite.prototype);
 
 //Mid.DELTA_X = 0.128;
-Mid.DELTA_X = 0.200;
+Mid.DELTA_X = 0.32;
 
 Mid.prototype.setViewportX = function(newViewportX) {
   var distanceTravelled = newViewportX - this.viewportX;
