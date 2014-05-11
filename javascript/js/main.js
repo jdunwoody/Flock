@@ -1,5 +1,8 @@
 function Main() {
-  var screenDimensions = vec2.fromValues($(window).width(), $(window).height());
+  this.width = $(window).width();
+  this.height = $(window).height();
+
+  var screenDimensions = vec2.fromValues(this.width, this.height);
   this.stage = new PIXI.Stage(0x3355AA);
   var antiAlias = true;
   this.renderer = new PIXI.autoDetectRenderer(
@@ -19,16 +22,18 @@ function Main() {
     this.stage.addChild(this.targets[i].moveableObject);
   }
 
-  this.triangles = [
-    new Triangle(vec2.fromValues(400,100), 200, 9, 0x88FFAA, screenDimensions),
-        new Triangle(vec2.fromValues(500,200), 140, 3, 0x883311, screenDimensions),
-        new Triangle(vec2.fromValues(300,200), 80, 3, 0xAA33BB, screenDimensions),
-        new Triangle(vec2.fromValues(200,200), 50, 4, 0x88AA22, screenDimensions),
-        new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
-          ];
-  for (var i in this.triangles) {
-    this.stage.addChild(this.triangles[i].graphicalObject);
-  }
+  this.seagul = new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions);
+  //this.triangles = [
+    //new Triangle(vec2.fromValues(400,100), 200, 9, 0x88FFAA, screenDimensions),
+        //new Triangle(vec2.fromValues(500,200), 140, 3, 0x883311, screenDimensions),
+        //new Triangle(vec2.fromValues(300,200), 80, 3, 0xAA33BB, screenDimensions),
+        //new Triangle(vec2.fromValues(200,200), 50, 4, 0x88AA22, screenDimensions),
+        //new Triangle(vec2.fromValues(0,0), 100, 5, 0xAA3344, screenDimensions)
+          //];
+  //for (var i in this.triangles) {
+    //this.stage.addChild(this.triangles[i].graphicalObject);
+  //}
+  this.stage.addChild(this.seagul.graphicalObject);
 
   this.lastTime = Date.now();
   this.timeSinceLastFrame = 0;
@@ -43,10 +48,13 @@ Main.prototype.update = function() {
   this.timeSinceLastFrame = now - this.lastTime;
   this.lastTime = now;
 
-  for (var i in this.triangles) {
-    this.triangles[i].update(this.timeSinceLastFrame);
-  }
-  this.scroller.moveViewportXBy(this.scrollSpeed);
+  //for (var i in this.triangles) {
+    //this.triangles[i].update(this.timeSinceLastFrame);
+  //}
+  this.seagul.update(this.timeSinceLastFrame)
+
+  //this.scroller.moveViewportXBy(this.scrollSpeed);
+  this.scroller.moveViewportBy(this.seagul.vehicle.steeringForce);
   this.scrollSpeed += Main.SCROLL_ACCELERATION;
   if (this.scrollSpeed > Main.MAX_SCROLL_SPEED) {
     this.scrollSpeed = Main.MAX_SCROLL_SPEED;
@@ -57,14 +65,15 @@ Main.prototype.update = function() {
 };
 
 Main.prototype.loadSpriteSheet = function() {
-  var assetsToLoad = ["img/wall.json", "img/bg-mid.png", "img/bg-far.png"];
+  var assetsToLoad = ["img/wall.json", "img/bg-mid.png", "img/bg-far.png", "img/blue-water-texture.jpg", "img/green-water.png"];
+
   loader = new PIXI.AssetLoader(assetsToLoad);
   loader.onComplete = this.spriteSheetLoaded.bind(this);
   loader.load();
 };
 
 Main.prototype.spriteSheetLoaded = function() {
-  this.scroller = new Scroller(this.stage);
+  this.scroller = new Scroller(this.stage, this.width, this.height);
   requestAnimFrame(this.update.bind(this));
 };
 

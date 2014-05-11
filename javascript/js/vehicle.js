@@ -1,24 +1,3 @@
-function Steering() {
-  this.seek = function(maxSpeed, targetPosition, currentPosition, currentVelocity) {
-    var newVelocity = vec2.create();
-    var result = vec2.create();
-
-    vec2.normalize(newVelocity, vec2.sub(newVelocity, targetPosition, currentPosition));
-    vec2.scale(newVelocity, newVelocity, maxSpeed);
-    vec2.sub(result, newVelocity, currentVelocity);
-
-    return result;
-  }
-
-  this.calculate = function(vehicle) {
-    var targetPosition = vehicle.target;
-    var maxSpeed = vehicle.maxSpeed;
-    var currentVelocity = vehicle.velocity;
-    var currentPosition = vehicle.position;
-
-    return this.seek(maxSpeed, targetPosition, currentPosition, currentVelocity);
-  };
-};
 
 truncate = function(vector, scalarLimit) {
   var length = vec2.length(vector);
@@ -32,7 +11,7 @@ truncate = function(vector, scalarLimit) {
 };
 
 function Vehicle(initialPosition, mass, maxSpeed) {
-  this.steering = new Steering();
+  this.steering = new SteeringForce();
   this.position = initialPosition;
   this.mass = mass;
   this.maxSpeed = maxSpeed;
@@ -40,13 +19,15 @@ function Vehicle(initialPosition, mass, maxSpeed) {
   this.velocity = vec2.create();
   this.target = vec2.create();
 
-  this.update = function(timeElapsed) {
-    timeElapsed = 1;
-
-    var steeringForce = this.steering.calculate(this);
+  this.caculateAcceleration = function(timeElapsed) {
+    this.steeringForce = this.steering.seek(
+        this.maxSpeed,
+        this.target,
+        this.position,
+        this.velocity);
 
     var acceleration = vec2.create();
-    vec2.scale(acceleration, steeringForce, 1/this.mass);
+    vec2.scale(acceleration, this.steeringForce, 1/this.mass);
 
     var velocityChange = vec2.create();
     vec2.scale(velocityChange, acceleration, timeElapsed);
@@ -56,6 +37,13 @@ function Vehicle(initialPosition, mass, maxSpeed) {
 
     var accByTime = vec2.create();
     vec2.scale(accByTime, this.velocity, timeElapsed);
-    vec2.add(this.position, this.position, accByTime);
+
+    return accByTime;
+  };
+
+  this.update = function(timeElapsed) {
+    timeElapsed = 1;
+
+    vec2.add(this.position, this.position, this.caculateAcceleration(timeElapsed));
   }
 }
