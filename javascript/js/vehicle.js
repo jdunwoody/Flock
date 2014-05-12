@@ -5,7 +5,7 @@ truncate = function(vector, scalarLimit) {
   if (length > scalarLimit) {
     vec2.normalize(vector, vector);
     vec2.scale(vector, vector, scalarLimit);
-  }
+  };
 
   return vector;
 };
@@ -19,7 +19,7 @@ function Vehicle(initialPosition, mass, maxSpeed) {
   this.velocity = vec2.create();
   this.target = vec2.create();
 
-  this.caculateAcceleration = function(timeElapsed) {
+  this.calculateAcceleration = function(timeElapsed) {
     this.steeringForce = this.steering.seek(
         this.maxSpeed,
         this.target,
@@ -44,6 +44,6 @@ function Vehicle(initialPosition, mass, maxSpeed) {
   this.update = function(timeElapsed) {
     timeElapsed = 1;
 
-    vec2.add(this.position, this.position, this.caculateAcceleration(timeElapsed));
-  }
-}
+    vec2.add(this.position, this.position, this.calculateAcceleration(timeElapsed));
+  };
+};
