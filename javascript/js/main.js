@@ -1,3 +1,4 @@
+
 function Main() {
   this.width = $(window).width();
   this.height = $(window).height();
@@ -16,51 +17,53 @@ function Main() {
 
   this.loadSpriteSheet(this.spriteSheetLoaded);
 
-  this.addTargets(this.stage);
-  this.seagul = this.addAvatars(this.stage, this.screenDimensions);
+  //this.addTargets(this.stage);
+  //this.seagul = this.addAvatars(this.stage, this.screenDimensions);
 
   this.lastTime = Date.now();
   this.timeSinceLastFrame = 0;
 }
 
-Main.prototype.addTargets = function(stage) {
-  var targets = [ new Target(200, 400), new Target(100,600) ];
+//Main.prototype.addTargets = function(stage) {
+//var targets = [ new Target(200, 400), new Target(100,600) ];
 
-  for (var i in this.targets) {
-    stage.addChild(this.targets[i].moveableObject);
-  }
-};
+//for (var i in targets) {
+//stage.addChild(targets[i].moveableObject);
+//}
+//};
 
 Main.MIN_SCROLL_SPEED = 5;
 Main.MAX_SCROLL_SPEED = 15;
 Main.SCROLL_ACCELERATION = 0.005;
 
-Main.prototype.addAvatars = function(stage, screenDimensions) {
-  var seagul = new Triangle(
-      vec2.fromValues(0,0),
-      100,
-      5,
-      0xAA3344,
-      screenDimensions);
+//Main.prototype.addAvatars = function(stage, screenDimensions) {
+//var seagul = new Triangle(
+//vec2.fromValues(0,0),
+//100,
+//5,
+//0xAA3344,
+//screenDimensions);
 
-  stage.addChild(seagul.graphicalObject);
+//stage.addChild(seagul.graphicalObject);
 
-  return seagul;
-};
+//return seagul;
+//};
 
 Main.prototype.update = function() {
   var now = Date.now();
   this.timeSinceLastFrame = now - this.lastTime;
   this.lastTime = now;
 
-  var acceleration = this.seagul.vehicle.calculateAcceleration(this.timeSinceLastFrame);
+  //var acceleration = this.seagul.vehicle.calculateAcceleration(this.timeSinceLastFrame);
   //this.seagul.update(this.timeSinceLastFrame)
 
-  //this.scroller.moveViewportXBy(this.scrollSpeed);
+  this.scroller.moveViewportXBy(this.scrollSpeed);
+  this.scroller.updateAvatar(this.timeSinceLastFrame);
+
   //this.scroller.moveViewportBy(this.seagul.vehicle.steeringForce);
-  var acceleration = vec2.fromValues(1, 1);
+  //var acceleration = vec2.fromValues(1, 1);
   //vec2.fromValues(acceleration[0] - this.width / 2, acceleration[1] + this.height / 2);
-  this.scroller.moveViewportBy(acceleration);
+  //this.scroller.moveViewportBy(acceleration);
 
   this.scrollSpeed += Main.SCROLL_ACCELERATION;
   if (this.scrollSpeed > Main.MAX_SCROLL_SPEED) {
@@ -76,7 +79,8 @@ Main.prototype.loadSpriteSheet = function(spriteSheetLoaded) {
       "img/bg-mid.png",
       "img/bg-far.png",
       "img/blue-water-texture.jpg",
-      "img/green-water.png"];
+      "img/green-water.png",
+      "img/black_bird.gif"];
 
   loader = new PIXI.AssetLoader(assetsToLoad);
   loader.onComplete = spriteSheetLoaded.bind(this);

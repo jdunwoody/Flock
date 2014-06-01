@@ -1,3 +1,4 @@
+
 function GraphicalObject(triangle, color) {
   var graphics = new PIXI.Graphics();
   graphics.triangle = triangle;

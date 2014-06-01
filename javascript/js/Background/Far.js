@@ -1,3 +1,4 @@
+
 function Far(width, height) {
   var texture = PIXI.Texture.fromImage("img/blue-water-texture.jpg");//bg-far.png");
   PIXI.TilingSprite.call(this, texture, width, height);//512, 256);

@@ -1,3 +1,4 @@
+
 function Scroller(stage, width, height) {
   this.far = new Far(width, height);
   stage.addChild(this.far);
@@ -5,28 +6,49 @@ function Scroller(stage, width, height) {
   this.mid = new Mid(width, height);
   stage.addChild(this.mid);
 
-  this.front = new Walls();
-  stage.addChild(this.front);
+  //this.front = new Walls();
+  //stage.addChild(this.front);
 
-  this.mapBuilder = new MapBuilder(this.front);
+  this.avatars = [];
 
-  this.viewportX = 0;
+  avatar = new Avatar();
+  avatar.maxSpeed = 90;
+  avatar.position.x = 100;
+  avatar.position.y = 100;
+  avatar.mass = 5;
+  stage.addChild(avatar);
+  this.avatars.push(avatar);
+
+  avatar = new Avatar();
+  avatar.maxSpeed = 50;
+  avatar.position.x = 500;
+  avatar.position.y = 800;
+  avatar.mass = 2;
+  stage.addChild(avatar);
+  this.avatars.push(avatar)
+
+    //this.mapBuilder = new MapBuilder(this.front);
+
+    this.viewportX = 0;
   this.viewport = vec2.create();
 };
 
 Scroller.prototype.setViewportX = function(viewportX) {
   this.viewportX = viewportX;
-  //this.far.setViewportX(viewportX);
-  this.far.setViewport(viewportX);
+  this.far.setViewportX(viewportX);
   this.mid.setViewportX(viewportX);
-  this.front.setViewportX(viewportX);
+  //this.front.setViewportX(viewportX);
+  for(var i = 0; i < this.avatars.length; i++) {
+    debugger;
+    this.avatars[i].setViewportX;
+  }
 };
 
 Scroller.prototype.setViewport = function(viewport) {
   this.viewport = viewport;
   this.far.setViewport(viewport);
   this.mid.setViewportX(viewport[0]);
-  this.front.setViewportX(viewport[0]);
+  //this.front.setViewportX(viewport[0]);
 };
 
 Scroller.prototype.getViewportX = function() {
@@ -41,10 +63,17 @@ Scroller.prototype.moveViewportXBy = function(units) {
 Scroller.prototype.moveViewportBy = function(velocity) {
   var newViewport = vec2.fromValues(
       this.viewport[0] + velocity[0],
-      this.viewport[1] + velocity[1]);
+      this.viewport[1] + velocity[1]
+      );
 
   this.viewport[0] += velocity[0];
   this.viewport[1] += velocity[1];
 
   this.setViewport(this.viewport);
+};
+
+Scroller.prototype.updateAvatar = function(timeSinceLastFrame) {
+  for(var i = 0; i < this.avatars.length; i++) {
+    this.avatars[i].update(timeSinceLastFrame);
+  }
 };
