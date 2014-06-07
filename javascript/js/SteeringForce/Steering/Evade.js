@@ -1,9 +1,10 @@
-Evade = function(pursuer) {
+function Evade() {
+}
 
-  vectorToPursuer = pursuer.position - vehicle.position;
+Evade.prototype.calculate = function(pursuer) {
+  var vectorToPursuer = subtract(pursuer.position, vehicle.positionVector());
 
+  var lookAheadTime = vectorToPursuer.length / (vehicle.maxSpeed + pursuer.speed);
 
-  lookAheadTime = vectorToPursuer.length / (vehicle.maxSpeed + pursuer.speed);
-
-  return Flee(pursuer.position + pursuer.velocity * lookAheadTime);
+  return Flee(add(pursuer.position, scale(pursuer.velocity, lookAheadTime)));
 };

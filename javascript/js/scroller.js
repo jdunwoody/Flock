@@ -25,11 +25,14 @@ function Scroller(stage, width, height) {
   avatar.position.y = 800;
   avatar.mass = 2;
   stage.addChild(avatar);
-  this.avatars.push(avatar)
+  this.avatars.push(avatar);
 
-    //this.mapBuilder = new MapBuilder(this.front);
+  repulsor = new Repulsor(100,100);
+  stage.addChild(repulsor);
 
-    this.viewportX = 0;
+  //this.mapBuilder = new MapBuilder(this.front);
+
+  this.viewportX = 0;
   this.viewport = vec2.create();
 };
 
@@ -39,7 +42,6 @@ Scroller.prototype.setViewportX = function(viewportX) {
   this.mid.setViewportX(viewportX);
   //this.front.setViewportX(viewportX);
   for(var i = 0; i < this.avatars.length; i++) {
-    debugger;
     this.avatars[i].setViewportX;
   }
 };

@@ -4,7 +4,8 @@ function Main() {
   this.height = $(window).height();
 
   this.screenDimensions = vec2.fromValues(this.width, this.height);
-  this.stage = new PIXI.Stage(0x3355AA);
+  this.stage = new MyStage(0x3355AA);
+  //PIXI.Stage(0x3355AA);
   var antiAlias = true;
   this.renderer = new PIXI.autoDetectRenderer(
       this.screenDimensions[0],

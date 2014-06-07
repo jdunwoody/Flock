@@ -9,6 +9,7 @@ SteeringBehaviours.prototype.calculate = function(vehicle, targetPosition) {
 
   //steeringForce.add(this.seek.calculate(vehicle, targetPosition));
   steeringForce.add(this.arrive.calculate(vehicle, targetPosition));
+  steeringForce.add(this.evade.calculate(vehicle, targetPosition));
 
   return steeringForce.force;
 };

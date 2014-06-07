@@ -27,7 +27,6 @@ Avatar.prototype.mousemove = function(mouseData) {
   var x = parentCoordsPosition.x;
   var y = parentCoordsPosition.y;
 
-  debugger;
   this.targetPosition = vec2.fromValues(x, y);
   //this.position.x = x;
   //this.position.y = y;
