@@ -9,6 +9,6 @@ MyStage.prototype.constructor = PIXI.Stage;
 
 
 MyStage.prototype.mousedown = function(mouseData) {
-  debugger;
+  //debugger;
 };
 

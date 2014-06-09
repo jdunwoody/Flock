@@ -13,8 +13,8 @@ function Scroller(stage, width, height) {
 
   avatar = new Avatar();
   avatar.maxSpeed = 90;
-  avatar.position.x = 100;
-  avatar.position.y = 100;
+  avatar.position.x = 200;
+  avatar.position.y = 200;
   avatar.mass = 5;
   stage.addChild(avatar);
   this.avatars.push(avatar);
@@ -27,8 +27,8 @@ function Scroller(stage, width, height) {
   stage.addChild(avatar);
   this.avatars.push(avatar);
 
-  repulsor = new Repulsor(100,100);
-  stage.addChild(repulsor);
+  this.obstacle = new Repulsor(100,100);
+  stage.addChild(this.obstacle);
 
   //this.mapBuilder = new MapBuilder(this.front);
 
@@ -76,6 +76,6 @@ Scroller.prototype.moveViewportBy = function(velocity) {
 
 Scroller.prototype.updateAvatar = function(timeSinceLastFrame) {
   for(var i = 0; i < this.avatars.length; i++) {
-    this.avatars[i].update(timeSinceLastFrame);
+    this.avatars[i].update(timeSinceLastFrame, this.obstacle);
   }
 };

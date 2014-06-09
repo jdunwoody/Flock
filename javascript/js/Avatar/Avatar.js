@@ -37,9 +37,9 @@ Avatar.prototype.mousemove = function(mouseData) {
   //target = vec2.fromValues(parentCoordsPosition.x, parentCoordsPosition.y);
 };
 
-Avatar.prototype.update = function(timeElapsed) {
-  var steeringBehaviours = new SteeringBehaviours();
-  var steeringForce = steeringBehaviours.calculate(this, this.targetPosition);
+Avatar.prototype.update = function(timeElapsed, obstacle) {
+  var steeringBehaviours = new SteeringBehaviours(this);
+  var steeringForce = steeringBehaviours.calculate(this.targetPosition, obstacle);
 
   var acceleration = scale(steeringForce, 1/this.mass);
   var velocityChange = scale(acceleration, 1);//timeElapsed);

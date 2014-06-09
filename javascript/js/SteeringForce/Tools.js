@@ -40,6 +40,9 @@ add = function(a, b) {
   return newValue;
 };
 
+squaredDistance = function(a, b) {
+  return vec2.squaredDistance(a, b);
+};
 
 //function SteeringForce() {
 //this.seek = function(maxSpeed, targetPosition, currentPosition, currentVelocity) {
