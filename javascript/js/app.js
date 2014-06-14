@@ -9,7 +9,12 @@
       testBed.running = !testBed.running;
     };
 
-    this.nextPressed = function() {
+    this.moveTarget = function() {
+      debugger;
+      testBed.targetPosition = vec2.fromValues(
+        getRandomInt(10, 780),
+        getRandomInt(11, 780)
+        );
     };
 
   });
