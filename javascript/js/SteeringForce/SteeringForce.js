@@ -1,22 +1,28 @@
+"use strict";
 
-SteeringForce = function(vehicle) {
-  this.vehicle = vehicle;
-  this.force = vec2.create();
+var SteeringForce = function(maxSteeringForce) {
+  this.maxSteeringForce = maxSteeringForce;
+  this.forces = [];
 };
 
 SteeringForce.prototype.add = function(force) {
-  //this.force + force;
-  this.force = this.truncate(force, this.vehicle.maxSteeringForce);
-  //return force;
+  this.forces.push(force);
 };
 
-SteeringForce.prototype.truncate = function(vector, scalarLimit) {
-  var length = vec2.length(vector);
+SteeringForce.prototype.resolve = function() {
+  var resolvedForces = vec2.create();
 
-  if (length > scalarLimit) {
-    vec2.normalize(vector, vector);
-    vec2.scale(vector, vector, scalarLimit);
-  };
+  for(var i = 0, len = this.forces.length; i < len; i++) {
+    console.log("forces ("+ this.forces[i][0]+","+this.forces[i][1]+")");
 
-  return vector;
+    resolvedForces = truncate(
+        add(resolvedForces, this.forces[i]),
+        this.maxSteeringForce
+        );
+
+    console.log("after resolved ("+ resolvedForces[0]+","+resolvedForces[1]+")");
+  }
+
+
+  return resolvedForces;
 };

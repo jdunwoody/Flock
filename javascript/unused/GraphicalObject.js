@@ -1,3 +1,4 @@
+"use strict";
 
 function GraphicalObject(triangle, color) {
   var graphics = new PIXI.Graphics();

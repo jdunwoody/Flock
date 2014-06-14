@@ -1,3 +1,4 @@
+"use strict";
 
 function Scroller(stage, width, height) {
   this.far = new Far(width, height);
@@ -11,26 +12,31 @@ function Scroller(stage, width, height) {
 
   this.avatars = [];
 
-  avatar = new Avatar();
-  avatar.maxSpeed = 90;
+  var avatar = new Avatar();
+  //avatar.maxSpeed = 90;
   avatar.position.x = 200;
   avatar.position.y = 200;
-  avatar.mass = 5;
+  //avatar.mass = 5;
   stage.addChild(avatar);
+  stage.addChild(avatar.arriveForceLine);
   this.avatars.push(avatar);
 
-  avatar = new Avatar();
-  avatar.maxSpeed = 50;
-  avatar.position.x = 500;
-  avatar.position.y = 800;
-  avatar.mass = 2;
-  stage.addChild(avatar);
-  this.avatars.push(avatar);
+  //var avatar = new Avatar();
+  //avatar.maxSpeed = 50;
+  //avatar.position.x = 500;
+  //avatar.position.y = 800;
+  //avatar.mass = 2;
+  //stage.addChild(avatar);
+  ////stage.addChild(avatar.arriveForceLine);
+  //this.avatars.push(avatar);
 
   this.obstacle = new Repulsor(100,100);
   stage.addChild(this.obstacle);
 
-  //this.mapBuilder = new MapBuilder(this.front);
+  //this.evadeForce = new ForceLine();
+  //stage.addChild(this.evadeForce);
+
+  //this.mapBuilder = new MapBuilder(this.front);k
 
   this.viewportX = 0;
   this.viewport = vec2.create();
@@ -76,6 +82,8 @@ Scroller.prototype.moveViewportBy = function(velocity) {
 
 Scroller.prototype.updateAvatar = function(timeSinceLastFrame) {
   for(var i = 0; i < this.avatars.length; i++) {
-    this.avatars[i].update(timeSinceLastFrame, this.obstacle);
+    var avatar = this.avatars[i];
+
+    avatar.update(timeSinceLastFrame, this.obstacle);
   }
 };

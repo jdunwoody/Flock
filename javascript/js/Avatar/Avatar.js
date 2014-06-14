@@ -1,3 +1,4 @@
+"use strict";
 
 function Avatar() {
   var texture = PIXI.Texture.fromImage("img/black_bird.gif");
@@ -13,6 +14,8 @@ function Avatar() {
   this.maxSteeringForce = 10;
   this.deceleration = 50;
   this.targetPosition = this.positionVector();
+  this.steeringBehaviours = new SteeringBehaviours(this);
+  this.arriveForceLine = new ForceLine();
 };
 
 Avatar.constructor = Avatar;
@@ -38,19 +41,24 @@ Avatar.prototype.mousemove = function(mouseData) {
 };
 
 Avatar.prototype.update = function(timeElapsed, obstacle) {
-  var steeringBehaviours = new SteeringBehaviours(this);
-  var steeringForce = steeringBehaviours.calculate(this.targetPosition, obstacle);
+  var steeringForces = this.steeringBehaviours.calculate(this.targetPosition, obstacle);
 
-  var acceleration = scale(steeringForce, 1/this.mass);
-  var velocityChange = scale(acceleration, 1);//timeElapsed);
+  var resolvedForces = steeringForces.resolve();
+  this.velocity = resolvedForces;
+  //var acceleration = scale(resolvedForces, 1/this.mass);
+  //this.velocity = subtract(scale(acceleration, timeElapsed), this.velocity);
+ 
+  //this.velocity = scale(resolvedForces, 1);//timeElapsed);
   //vec2.scale(velocityChange, acceleration, timeElapsed);
-
+//a = dv/t
   //acc = acceleration(timeElapsed, this.velocity, target);
   //console.log("Acceleration "+acc[0]+","+acc[1]);
   //vec2.add(this.position, this.position, acc);
 
-  var newPosition = add(this.positionVector(), velocityChange);
+  var newPosition = add(this.positionVector(), this.velocity);
   this.updatePosition(newPosition);
+
+  this.arriveForceLine.display(this);
 };
 
 Avatar.prototype.positionVector = function() {

@@ -1,3 +1,5 @@
+"use strict";
+
 function Evade(vehicle) {
   this.vehicle = vehicle;
   this.flee = new Flee(this.vehicle);

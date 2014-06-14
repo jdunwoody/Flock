@@ -1,22 +1,36 @@
+"use strict";
 
-function SteeringBehaviours(vehicle) {
+function SteeringBehaviours(vehicle, arriveForceLine) {
   this.vehicle = vehicle;
-  this.seek = new Seek(this.vehicle);
+
+  //this.seek = new Seek(this.vehicle);
+
   this.arrive = new Arrive(this.vehicle);
-  this.evade = new Evade(this.vehicle);
+  this.arriveForceLine = arriveForceLine;
+
+  //this.evade = new Evade(this.vehicle);
 }
 
 SteeringBehaviours.prototype.calculate = function(targetPosition, obstacle) {
-  steeringForce = new SteeringForce(this.vehicle);
+  var steeringForce = new SteeringForce(this.vehicle.maxSteeringForce);
 
-  //steeringForce.add(this.seek.calculate(vehicle, targetPosition));
-  steeringForce.add(this.evade.calculate(obstacle));
-  steeringForce.add(this.arrive.calculate(targetPosition));
+  //seekForce = this.seek.calculate(vehicle, targetPosition);
+  //evadeForce = this.evade.calculate(obstacle);
+  var arriveForce = this.arrive.calculate(targetPosition);
+  console.log("Calculating arrive force ("+arriveForce[0]+","+arriveForce[1]+")");
 
-  return steeringForce.force;
+
+  //steeringForce.add(evadeForce);
+  steeringForce.add(arriveForce);
+
+  return steeringForce;
 };
 
 SteeringBehaviours.prototype.accumulateForce = function(runningTotal, forceToAdd) {
   // implement me
   return forceToAdd;
+};
+
+SteeringBehaviours.prototype.display = function() {
+  this.arriveForceLine.display(this.arrive);
 };

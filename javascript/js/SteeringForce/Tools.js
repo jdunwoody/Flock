@@ -44,6 +44,17 @@ squaredDistance = function(a, b) {
   return vec2.squaredDistance(a, b);
 };
 
+truncate = function(vector, scalarLimit) {
+  var length = vec2.length(vector);
+
+  if (length > scalarLimit) {
+    vector = scale(normalize(vector), scalarLimit);
+  };
+
+  return vector;
+};
+
+
 //function SteeringForce() {
 //this.seek = function(maxSpeed, targetPosition, currentPosition, currentVelocity) {
 //var newVelocity = vec2.create();

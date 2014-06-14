@@ -1,3 +1,4 @@
+"use strict";
 
 function Main() {
   this.width = $(window).width();
@@ -5,7 +6,7 @@ function Main() {
 
   this.screenDimensions = vec2.fromValues(this.width, this.height);
   this.stage = new MyStage(0x3355AA);
-  //PIXI.Stage(0x3355AA);
+
   var antiAlias = true;
   this.renderer = new PIXI.autoDetectRenderer(
       this.screenDimensions[0],
@@ -25,32 +26,13 @@ function Main() {
   this.timeSinceLastFrame = 0;
 }
 
-//Main.prototype.addTargets = function(stage) {
-//var targets = [ new Target(200, 400), new Target(100,600) ];
-
-//for (var i in targets) {
-//stage.addChild(targets[i].moveableObject);
-//}
-//};
 
 Main.MIN_SCROLL_SPEED = 5;
 Main.MAX_SCROLL_SPEED = 15;
 Main.SCROLL_ACCELERATION = 0.005;
 
-//Main.prototype.addAvatars = function(stage, screenDimensions) {
-//var seagul = new Triangle(
-//vec2.fromValues(0,0),
-//100,
-//5,
-//0xAA3344,
-//screenDimensions);
-
-//stage.addChild(seagul.graphicalObject);
-
-//return seagul;
-//};
-
 Main.prototype.update = function() {
+  debugger;
   var now = Date.now();
   this.timeSinceLastFrame = now - this.lastTime;
   this.lastTime = now;
@@ -83,7 +65,7 @@ Main.prototype.loadSpriteSheet = function(spriteSheetLoaded) {
       "img/green-water.png",
       "img/black_bird.gif"];
 
-  loader = new PIXI.AssetLoader(assetsToLoad);
+  var loader = new PIXI.AssetLoader(assetsToLoad);
   loader.onComplete = spriteSheetLoaded.bind(this);
   loader.load();
 };
@@ -147,3 +129,25 @@ Main.prototype.clearTestWallSpan = function() {
 
   this.wallSlices = [];
 };
+
+//Main.prototype.addTargets = function(stage) {
+//var targets = [ new Target(200, 400), new Target(100,600) ];
+
+//for (var i in targets) {
+//stage.addChild(targets[i].moveableObject);
+//}
+//};
+//
+//Main.prototype.addAvatars = function(stage, screenDimensions) {
+//var seagul = new Triangle(
+//vec2.fromValues(0,0),
+//100,
+//5,
+//0xAA3344,
+//screenDimensions);
+
+//stage.addChild(seagul.graphicalObject);
+
+//return seagul;
+//};
+

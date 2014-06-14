@@ -1,3 +1,4 @@
+"use strict";
 
 function Repulsor() {
   var texture = PIXI.Texture.fromImage("img/bunny.png");

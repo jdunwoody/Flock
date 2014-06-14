@@ -1,3 +1,5 @@
+"use strict";
+
 function Flee(vehicle){
   this.vehicle = vehicle;
 };

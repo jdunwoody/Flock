@@ -1,3 +1,5 @@
+"use strict";
+
 function Triangle(initialPosition, mass, maxSpeed, color, screenDimensions) {
   this.vehicle = new Vehicle(initialPosition, mass, maxSpeed);
   this.screenDimensions = screenDimensions;

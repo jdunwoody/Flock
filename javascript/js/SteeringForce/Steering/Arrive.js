@@ -1,7 +1,7 @@
 
 function Arrive(vehicle) {
   this.vehicle = vehicle;
-  this.decellerationTweeker = 0.3;
+  this.decellerationTweeker = 10.0;//0.3;
 }
 
 Arrive.prototype.calculate = function(targetPosition) {
@@ -10,8 +10,9 @@ Arrive.prototype.calculate = function(targetPosition) {
   var distance = length(vectorToTarget);
   var result;
 
-  if (distance > 0) {
+  if (distance > 1) {
     var speed = distance / (this.vehicle.deceleration * this.decellerationTweeker);
+    debugger;
     speed = Math.min(speed, this.vehicle.maxSpeed);
 
     var desiredVelocity = scale(vectorToTarget, speed/distance);
@@ -21,6 +22,6 @@ Arrive.prototype.calculate = function(targetPosition) {
     result = zero();
   }
 
-  //console.log(result);
+  console.log("Arrive force: " + result[0] +"," +result[1]+") Distance: "+distance);
   return result;
 };
