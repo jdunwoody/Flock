@@ -26,7 +26,6 @@ function Main() {
   this.timeSinceLastFrame = 0;
 }
 
-
 Main.MIN_SCROLL_SPEED = 5;
 Main.MAX_SCROLL_SPEED = 15;
 Main.SCROLL_ACCELERATION = 0.005;

@@ -1,76 +1,87 @@
 "use strict";
 
-var main = function() {
-  var stage = new PIXI.Stage(0x3355AA);
+//function TestBed() {
+var TestBed = function() {
+  this.running = true;
 
-  var antiAlias = true;
+  this.stage = new PIXI.Stage(0x3355AA);
 
-  var width = document.getElementById("game-canvas").width;
-  var height = document.getElementById("game-canvas").height;
+  this.antiAlias = true;
 
-  var renderer = new PIXI.autoDetectRenderer(
-      width,
-      height,
+  this.width = document.getElementById("game-canvas").width;
+  this.height = document.getElementById("game-canvas").height;
+
+  this.renderer = new PIXI.autoDetectRenderer(
+      this.width,
+      this.height,
       document.getElementById("game-canvas"),
       false,
-      antiAlias);
+      this.antiAlias);
 
   var texture = PIXI.Texture.fromImage("img/black_bird.gif");
 
-  var bird = new PIXI.Sprite(texture);
-  bird.position.x = 0;
-  bird.position.y = 0;
+  this.bird = new PIXI.Sprite(texture);
+  this.bird.position.x = 0;
+  this.bird.position.y = 0;
 
-  stage.addChild(bird);
+  this.stage.addChild(this.bird);
 
-  requestAnimFrame(update);
+  requestAnimFrame(this.update.bind(this));
 
-  var x = 10;
-  var y = 10;
+  //this.x = 10;
+  //this.y = 10;
 
-  var vehicle = {};
-  vehicle.position = vec2.fromValues(bird.position.x, bird.position.y);
-  vehicle.deceleration = 20;
-  vehicle.maxSpeed = 3;
-  vehicle.velocity = vec2.create();
+  this.vehicle = {};
+  this.vehicle.position = vec2.fromValues(this.bird.position.x, this.bird.position.y);
+  this.vehicle.deceleration = 20;
+  this.vehicle.maxSpeed = 3;
+  this.vehicle.velocity = vec2.create();
 
-  vehicle.positionVector = function() {
+  this.vehicle.positionVector = function() {
     return this.position;
   };
 
-  var arrive = new Arrive(vehicle);
+  this.arrive = new Arrive(this.vehicle);
 
-  var targetPosition = vec2.fromValues(400,400);
+  this.targetPosition = vec2.fromValues(400,400);
 
-  function update(timeSinceLastFrame) {
-    timeSinceLastFrame = Math.min(10, timeSinceLastFrame);
+};
 
-    var changeInVelocity = arrive.calculate(targetPosition);
+TestBed.prototype.update = function(timeSinceLastFrame) {
+  if (!this.running) {
+    console.log('not running');
+    this.renderer.render(this.stage);
+    requestAnimFrame(this.update.bind(this));
+    return;
+  }
+  console.log('running');
+  timeSinceLastFrame = Math.min(10, timeSinceLastFrame);
 
-    var x = bird.position.x;
-    var y = bird.position.y;
+  var changeInVelocity = this.arrive.calculate(this.targetPosition);
 
-    var newX = x;
-    var newY = y;
+  var x = this.bird.position.x;
+  var y = this.bird.position.y;
 
-    if (Math.abs(changeInVelocity[0]) > 0.001 && Math.abs(changeInVelocity[1]) > 0.001) {
-      vehicle.velocity[0] += changeInVelocity[0];
-      vehicle.velocity[1] += changeInVelocity[1];
+  var newX = x;
+  var newY = y;
 
-      var x = bird.position.x;
-      var y = bird.position.y;
+  if (Math.abs(changeInVelocity[0]) > 0.001 && Math.abs(changeInVelocity[1]) > 0.001) {
+    this.vehicle.velocity[0] += changeInVelocity[0];
+    this.vehicle.velocity[1] += changeInVelocity[1];
 
-      newX = vehicle.velocity[0] * timeSinceLastFrame + x;
-      newY = vehicle.velocity[1] * timeSinceLastFrame + y;
-    }
+    var x = this.bird.position.x;
+    var y = this.bird.position.y;
 
-    vehicle.position[0] = newX;
-    vehicle.position[1] = newY;
+    newX = this.vehicle.velocity[0] * timeSinceLastFrame + x;
+    newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
+  }
 
-    bird.position.x = newX;
-    bird.position.y = newY;
+  this.vehicle.position[0] = newX;
+  this.vehicle.position[1] = newY;
 
-    renderer.render(stage);
-    requestAnimFrame(update);
-  };
+  this.bird.position.x = newX;
+  this.bird.position.y = newY;
+
+  this.renderer.render(this.stage);
+  requestAnimFrame(this.update.bind(this));
 };

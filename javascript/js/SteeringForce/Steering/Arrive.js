@@ -12,7 +12,7 @@ Arrive.prototype.calculate = function(targetPosition) {
 
   if (distance > 1) {
     var speed = distance / (this.vehicle.deceleration * this.decellerationTweeker);
-    debugger;
+
     speed = Math.min(speed, this.vehicle.maxSpeed);
 
     var desiredVelocity = scale(vectorToTarget, speed/distance);

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="flock">
 <head>
 <title>Test Bed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
 <link rel='stylesheet' type='text/css' href='styles/main.css' />
 <script src="lib/jquery-1.10.2.min.js"></script>
 <script src="lib/gl-matrix-min.js"> </script>
 <script src="lib/pixi.dev.js"> </script>
+<script src="bower_components/angular/angular.min.js"> </script>
 
 <script src="js/SteeringForce/TestBed.js"> </script>
 <script src="js/SteeringForce/Steering/Arrive.js"> </script>
@@ -14,12 +17,11 @@
 
 <script>
 function init() {
-  main();
 }
 </script>
 </head>
 
-<body onload="init();">
+<body onload="init();" ng-controller='flockController as flock'>
 <div class='container-fluid'>
   <div class="row-fluid">
     <div class="span10">
@@ -28,11 +30,16 @@ function init() {
 
     <div class="span2">
       <div class="btn-group">
-        <button class="btn">Pause/Play</button>
-        <button class="btn">Next</button>
+        <button class="btn" ng-click='flock.pausePlayPressed()'>Pause/Play</button>
+        <button class="btn" ng-click='flock.nextPressed()'>Next</button>
       </div>
     </div>
   </div>
 </div>
+
+<script src="js/app.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+
