@@ -1,0 +1,19 @@
+{
+  "name": "flock",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jdunwoody/Flock",
+  "authors": [
+    "jamesdunwoody@gmail.com"
+  ],
+  "description": "Flock game",
+  "main": "js/Main.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
