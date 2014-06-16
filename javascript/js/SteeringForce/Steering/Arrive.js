@@ -22,6 +22,6 @@ Arrive.prototype.calculate = function(targetPosition) {
     result = zero();
   }
 
-  console.log("Arrive force: " + result[0] +"," +result[1]+") Distance: "+distance);
+  //console.log("Arrive force: " + result[0] +"," +result[1]+") Distance: "+distance);
   return result;
 };

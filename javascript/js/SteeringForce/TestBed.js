@@ -19,12 +19,20 @@ var TestBed = function() {
       this.antiAlias);
 
   var texture = PIXI.Texture.fromImage("img/black_bird.gif");
+  var bunnyTexture = PIXI.Texture.fromImage("img/bunny.png");
 
   this.bird = new PIXI.Sprite(texture);
   this.bird.position.x = 0;
   this.bird.position.y = 0;
 
+  //this.targetPosition = vec2.fromValues(400,400);
+
+  this.target = new PIXI.Sprite(bunnyTexture);
+  this.target.position.x = 400;
+  this.target.position.y = 400;
+
   this.stage.addChild(this.bird);
+  this.stage.addChild(this.target);
 
   requestAnimFrame(this.update.bind(this));
 
@@ -42,22 +50,20 @@ var TestBed = function() {
   };
 
   this.arrive = new Arrive(this.vehicle);
-
-  this.targetPosition = vec2.fromValues(400,400);
-
 };
 
 TestBed.prototype.update = function(timeSinceLastFrame) {
   if (!this.running) {
-    console.log('not running');
+    //console.log('not running');
     this.renderer.render(this.stage);
     requestAnimFrame(this.update.bind(this));
     return;
   }
-  console.log('running');
+  //console.log('running');
   timeSinceLastFrame = Math.min(10, timeSinceLastFrame);
 
-  var changeInVelocity = this.arrive.calculate(this.targetPosition);
+  //debugger;
+  var changeInVelocity = this.arrive.calculate(toVector(this.target.position));
 
   var x = this.bird.position.x;
   var y = this.bird.position.y;
