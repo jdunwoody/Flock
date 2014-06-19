@@ -23,16 +23,17 @@ var TestBed = function() {
   var greenBirdTexture = PIXI.Texture.fromImage("img/newton.gif");
 
   this.bird = new PIXI.Sprite(texture);
+  this.bird.anchor = new PIXI.Point(0.5, 0.5);
   this.bird.position.x = 0;
   this.bird.position.y = 0;
 
-  //this.targetPosition = vec2.fromValues(400,400);
-
   this.target = new PIXI.Sprite(bunnyTexture);
+  this.target.anchor = new PIXI.Point(0.5, 0.5);
   this.target.position.x = 100;
   this.target.position.y = 100;
 
   this.threat = new PIXI.Sprite(greenBirdTexture);
+  this.threat.anchor = new PIXI.Point(0.5, 0.5);
   this.threat.position.x = 400;
   this.threat.position.y = 400;
 
