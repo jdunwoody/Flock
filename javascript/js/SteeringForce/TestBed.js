@@ -104,14 +104,13 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   var newX = x;
   var newY = y;
 
-  if (Math.abs(changeInVelocity[0]) > 0.001 || Math.abs(changeInVelocity[1]) > 0.001) {
+  if (Math.abs(changeInVelocity[0]) > 0.001) {
     this.vehicle.velocity[0] += changeInVelocity[0];
-    this.vehicle.velocity[1] += changeInVelocity[1];
-
-    //var x = this.bird.position.x;
-    //var y = this.bird.position.y;
-
     newX = this.vehicle.velocity[0] * timeSinceLastFrame + x;
+  }
+
+  if (Math.abs(changeInVelocity[1]) > 0.001) {
+    this.vehicle.velocity[1] += changeInVelocity[1];
     newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
   }
 
