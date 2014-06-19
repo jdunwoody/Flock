@@ -24,16 +24,19 @@ var TestBed = function() {
 
   this.bird = new PIXI.Sprite(texture);
   this.bird.anchor = new PIXI.Point(0.5, 0.5);
+  this.bird.rotate = new PIXI.Point(0.5, 0.5);
   this.bird.position.x = 0;
   this.bird.position.y = 0;
 
   this.target = new PIXI.Sprite(bunnyTexture);
   this.target.anchor = new PIXI.Point(0.5, 0.5);
+  this.target.rotate = new PIXI.Point(0.5, 0.5);
   this.target.position.x = 100;
   this.target.position.y = 100;
 
   this.threat = new PIXI.Sprite(greenBirdTexture);
   this.threat.anchor = new PIXI.Point(0.5, 0.5);
+  this.threat.rotate = new PIXI.Point(0.5, 0.5);
   this.threat.position.x = 400;
   this.threat.position.y = 400;
 
@@ -80,6 +83,26 @@ var TestBed = function() {
   this.evade = new Evade(this.vehicle);
 };
 
+TestBed.prototype.rotate = function(vector) {
+  var horiz = this.vehicle.velocity[0];
+  var vert = this.vehicle.velocity[1];
+
+  if (horiz >= 0) {
+    if (vert >= 0) {
+      this.bird.rotation = Math.atan(horiz, vert);
+    } else {
+      this.bird.rotation = Math.atan(horiz, vert);
+    }
+  } else {
+    if (vert >= 0) {
+      this.bird.rotation = 2 * Math.PI + Math.atan(horiz, vert);
+    } else {
+      this.bird.rotation = Math.PI + Math.atan(horiz, vert);
+    }
+  }
+
+};
+
 TestBed.prototype.update = function(timeSinceLastFrame) {
   if (!this.running) {
     this.renderer.render(this.stage);
@@ -92,11 +115,11 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   var evadeVector = this.evade.calculate(toVector(this.threat.position));
   var arriveVector = this.arrive.calculate(toVector(this.target.position));
 
-  console.log("Evade ("+ evadeVector[0] +", "+evadeVector[1]+")");
-  console.log("Arrive ("+ arriveVector[0] +", "+arriveVector[1]+")");
+  //console.log("Evade ("+ evadeVector[0] +", "+evadeVector[1]+")");
+  //console.log("Arrive ("+ arriveVector[0] +", "+arriveVector[1]+")");
 
   var changeInVelocity = add(evadeVector, arriveVector);
-  console.log("Net vector ("+ changeInVelocity[0] +", "+changeInVelocity[1]+")");
+  //console.log("Net vector ("+ changeInVelocity[0] +", "+changeInVelocity[1]+")");
 
   var x = this.bird.position.x;
   var y = this.bird.position.y;
@@ -122,6 +145,8 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
 
   this.bird.position.x = newX;
   this.bird.position.y = newY;
+
+  this.rotate();
 
   this.renderer.render(this.stage);
   requestAnimFrame(this.update.bind(this));
