@@ -21,7 +21,6 @@
     this.evadeSteering = function() {
       testBed.force = testBed.evade;
     };
-
   });
 
 })();

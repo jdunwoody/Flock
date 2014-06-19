@@ -27,6 +27,7 @@ var TestBed = function() {
   this.bird.rotate = new PIXI.Point(0.5, 0.5);
   this.bird.position.x = 0;
   this.bird.position.y = 0;
+  this.bird.interactive = true;
 
   this.target = new PIXI.Sprite(bunnyTexture);
   this.target.anchor = new PIXI.Point(0.5, 0.5);
@@ -64,6 +65,30 @@ var TestBed = function() {
   this.stage.addChild(this.threat);
   this.stage.addChild(this.target);
 
+  this.bird.target = this.target;
+
+  this.bird.mousemove = function(mouseData) {
+    // this line will get the mouse coords relative to the sprites..
+    //var localCoordsPosition = mouseData.getLocalPosition(graphics);
+    // this line will get the mouse coords relative to the sprites parent..
+    var parentCoordsPosition = mouseData.getLocalPosition(this.parent);
+
+    var x = parentCoordsPosition.x;
+    var y = parentCoordsPosition.y;
+
+    debugger;
+    this.target.position.x = x;
+    this.target.position.y = y;
+    //this.position.x = x;
+    //this.position.y = y;
+
+    //console.log("Mouse moved to "+this.targetPosition[0]+","+this.targetPosition[1]);
+
+    //timeElapsed = 1;
+    //target = vec2.fromValues(parentCoordsPosition.x, parentCoordsPosition.y);
+  };
+
+
   requestAnimFrame(this.update.bind(this));
 
   //this.x = 10;
@@ -100,7 +125,6 @@ TestBed.prototype.rotate = function(vector) {
       this.bird.rotation = Math.PI + Math.atan(horiz, vert);
     }
   }
-
 };
 
 TestBed.prototype.update = function(timeSinceLastFrame) {
