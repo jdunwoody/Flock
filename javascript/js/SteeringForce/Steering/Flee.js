@@ -5,7 +5,7 @@ function Flee(vehicle){
 };
 
 Flee.prototype.calculate = function(targetVector) {
-  desiredVelocity = scale(normalize(subtract(this.vehicle.positionVector(), targetVector)), this.vehicle.maxSpeed);
+  var desiredVelocity = scale(normalize(subtract(this.vehicle.position, targetVector)), this.vehicle.maxSpeed);
 
   return subtract(desiredVelocity, this.vehicle.velocity);
 };

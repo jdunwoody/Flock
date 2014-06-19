@@ -7,15 +7,18 @@ function Evade(vehicle) {
 }
 
 Evade.prototype.calculate = function(obstacle) {
-  var vectorToPursuer = subtract(obstacle.positionVector(), this.vehicle.positionVector());
+  var vectorToPursuer = subtract(obstacle, this.vehicle.position);
 
-  var lookAheadTime = vectorToPursuer.length / (this.vehicle.maxSpeed + obstacle.speed);
+  var obstacleSpeed = 0;
 
-  var amountToCalculate = add(obstacle.positionVector(), scale(obstacle.velocity, lookAheadTime));
-  //console.log(amountToCalculate);
+  var lookAheadTime = length(vectorToPursuer) / (this.vehicle.maxSpeed + obstacleSpeed);
+
+  var obstacleVelocity = zero();
+
+  var amountToCalculate = add(obstacle, scale(obstacleVelocity, lookAheadTime));
 
   //result = this.flee.calculate(amountToCalculate);
-  result = this.fleeInRange.calculate(amountToCalculate);
+  var result = this.fleeInRange.calculate(amountToCalculate);
   //console.log(result);
   return result;
 };

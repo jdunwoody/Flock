@@ -15,11 +15,11 @@
     };
 
     this.arriveSteering = function() {
-      testBed.steering = testBed
+      testBed.force = testBed.arrive;
     };
 
     this.evadeSteering = function() {
-
+      testBed.force = testBed.evade;
     };
 
   });

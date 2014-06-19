@@ -5,7 +5,7 @@ function Arrive(vehicle) {
 }
 
 Arrive.prototype.calculate = function(targetPosition) {
-  var vectorToTarget = subtract(targetPosition, this.vehicle.positionVector());
+  var vectorToTarget = subtract(targetPosition, this.vehicle.position);
 
   var distance = length(vectorToTarget);
   var result;
