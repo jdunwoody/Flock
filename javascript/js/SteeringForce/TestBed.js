@@ -82,18 +82,21 @@ var TestBed = function() {
 
 TestBed.prototype.update = function(timeSinceLastFrame) {
   if (!this.running) {
-    //console.log('not running');
     this.renderer.render(this.stage);
     requestAnimFrame(this.update.bind(this));
     return;
   }
-  //console.log('running');
+
   timeSinceLastFrame = Math.min(10, timeSinceLastFrame);
 
-  var changeInVelocity = add(
-      this.evade.calculate(toVector(this.threat.position)),
-      this.arrive.calculate(toVector(this.target.position))
-      );
+  var evadeVector = this.evade.calculate(toVector(this.threat.position));
+  var arriveVector = this.arrive.calculate(toVector(this.target.position));
+
+  console.log("Evade ("+ evadeVector[0] +", "+evadeVector[1]+")");
+  console.log("Arrive ("+ arriveVector[0] +", "+arriveVector[1]+")");
+
+  var changeInVelocity = add(evadeVector, arriveVector);
+  console.log("Net vector ("+ changeInVelocity[0] +", "+changeInVelocity[1]+")");
 
   var x = this.bird.position.x;
   var y = this.bird.position.y;
@@ -111,6 +114,7 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
     newX = this.vehicle.velocity[0] * timeSinceLastFrame + x;
     newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
   }
+
   newX = Math.min(780, Math.max(10, newX));
   newY = Math.min(780, Math.max(10, newY));
 

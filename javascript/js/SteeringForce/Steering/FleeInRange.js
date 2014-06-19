@@ -15,7 +15,6 @@ FleeInRange.prototype.calculate = function(targetVector) {
   if (distanceFromTarget > cautionDistance) {
     return zero();
   } else if (distanceFromTarget > panicDistance) {
-    debugger;
     return scale(this.flee.calculate(targetVector), 0.2);
   } else {
     return this.flee.calculate(targetVector);
