@@ -38,8 +38,8 @@ var TestBed = function() {
   this.threat = new PIXI.Sprite(greenBirdTexture);
   this.threat.anchor = new PIXI.Point(0.5, 0.5);
   this.threat.rotate = new PIXI.Point(0.5, 0.5);
-  this.threat.position.x = 400;
-  this.threat.position.y = 400;
+  this.threat.position.x = 800;
+  this.threat.position.y = 800;
 
   this.cautionCircle = new PIXI.Graphics();
   this.cautionCircle.borderColor = 0xAA00CC;
@@ -76,11 +76,8 @@ var TestBed = function() {
     var x = parentCoordsPosition.x;
     var y = parentCoordsPosition.y;
 
-    debugger;
     this.target.position.x = x;
     this.target.position.y = y;
-    //this.position.x = x;
-    //this.position.y = y;
 
     //console.log("Mouse moved to "+this.targetPosition[0]+","+this.targetPosition[1]);
 
@@ -88,11 +85,7 @@ var TestBed = function() {
     //target = vec2.fromValues(parentCoordsPosition.x, parentCoordsPosition.y);
   };
 
-
   requestAnimFrame(this.update.bind(this));
-
-  //this.x = 10;
-  //this.y = 10;
 
   this.vehicle = {};
   this.vehicle.position = vec2.fromValues(this.bird.position.x, this.bird.position.y);
@@ -100,31 +93,36 @@ var TestBed = function() {
   this.vehicle.maxSpeed = 3;
   this.vehicle.velocity = vec2.create();
 
-  //this.vehicle.positionVector = function() {
-  //return this.position;
-  //};
-
   this.arrive = new Arrive(this.vehicle);
   this.evade = new Evade(this.vehicle);
 };
 
-TestBed.prototype.rotate = function(vector) {
+TestBed.prototype.rotate = function(changeInVelocity) {
+  var currentRotation = this.bird.rotation;
+
   var horiz = this.vehicle.velocity[0];
   var vert = this.vehicle.velocity[1];
 
+  var newRotation = 0;
+
   if (horiz >= 0) {
     if (vert >= 0) {
-      this.bird.rotation = Math.atan(horiz, vert);
+      newRotation = Math.PI - Math.atan(horiz, vert);
     } else {
-      this.bird.rotation = Math.atan(horiz, vert);
+      newRotation = Math.atan(horiz, vert);
     }
   } else {
     if (vert >= 0) {
-      this.bird.rotation = 2 * Math.PI + Math.atan(horiz, vert);
+      newRotation = Math.PI - Math.atan(horiz, vert);
     } else {
-      this.bird.rotation = Math.PI + Math.atan(horiz, vert);
+      newRotation = Math.atan(horiz, vert);
     }
   }
+
+  if(newRotation - currentRotation > Math.PI) {
+    newRotation -= Math.PI
+  }
+  this.bird.rotation = newRotation;
 };
 
 TestBed.prototype.update = function(timeSinceLastFrame) {
@@ -145,21 +143,23 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   var changeInVelocity = add(evadeVector, arriveVector);
   //console.log("Net vector ("+ changeInVelocity[0] +", "+changeInVelocity[1]+")");
 
+  this.rotate(changeInVelocity);
+
   var x = this.bird.position.x;
   var y = this.bird.position.y;
 
   var newX = x;
   var newY = y;
 
-  if (Math.abs(changeInVelocity[0]) > 0.001) {
-    this.vehicle.velocity[0] += changeInVelocity[0];
-    newX = this.vehicle.velocity[0] * timeSinceLastFrame + x;
-  }
+  //if (Math.abs(changeInVelocity[0]) > 0.001) {
+  this.vehicle.velocity[0] += changeInVelocity[0];
+  newX = this.vehicle.velocity[0] * timeSinceLastFrame + x;
+  //}
 
-  if (Math.abs(changeInVelocity[1]) > 0.001) {
-    this.vehicle.velocity[1] += changeInVelocity[1];
-    newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
-  }
+  //if (Math.abs(changeInVelocity[1]) > 0.001) {
+  this.vehicle.velocity[1] += changeInVelocity[1];
+  newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
+  //}
 
   newX = Math.min(780, Math.max(10, newX));
   newY = Math.min(780, Math.max(10, newY));
@@ -170,7 +170,6 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   this.bird.position.x = newX;
   this.bird.position.y = newY;
 
-  this.rotate();
 
   this.renderer.render(this.stage);
   requestAnimFrame(this.update.bind(this));
