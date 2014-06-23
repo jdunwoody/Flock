@@ -143,23 +143,17 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   var changeInVelocity = add(evadeVector, arriveVector);
   //console.log("Net vector ("+ changeInVelocity[0] +", "+changeInVelocity[1]+")");
 
-  this.rotate(changeInVelocity);
-
   var x = this.bird.position.x;
   var y = this.bird.position.y;
 
   var newX = x;
   var newY = y;
 
-  //if (Math.abs(changeInVelocity[0]) > 0.001) {
   this.vehicle.velocity[0] += changeInVelocity[0];
   newX = this.vehicle.velocity[0] * timeSinceLastFrame + x;
-  //}
 
-  //if (Math.abs(changeInVelocity[1]) > 0.001) {
   this.vehicle.velocity[1] += changeInVelocity[1];
   newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
-  //}
 
   newX = Math.min(780, Math.max(10, newX));
   newY = Math.min(780, Math.max(10, newY));
@@ -170,6 +164,7 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   this.bird.position.x = newX;
   this.bird.position.y = newY;
 
+  this.rotate(this.bird.rotation);
 
   this.renderer.render(this.stage);
   requestAnimFrame(this.update.bind(this));
