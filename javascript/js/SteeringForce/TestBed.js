@@ -3,6 +3,8 @@
 //function TestBed() {
 var TestBed = function() {
   this.running = true;
+  this.rotating = true;
+  this.moving = true;
 
   this.stage = new PIXI.Stage(0x3355AA);
 
@@ -102,7 +104,7 @@ var TestBed = function() {
   this.evade = new Evade(this.vehicle);
 };
 
-TestBed.prototype.rotate = function(currentRotation, vector) {
+TestBed.prototype.changeInRotation = function(currentRotation, vector) {
   var horiz = vector[0];
   var vert = vector[1];
 
@@ -141,14 +143,27 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   timeSinceLastFrame = Math.min(10, timeSinceLastFrame);
 
   var newPosition = this.calculatePosition(timeSinceLastFrame);
-  //this.updatePosition(newPosition);
-  this.updateRotation();
-
-  this.forceLine.display(this.bird.position, this.vehicle.velocity);
+  if (this.moving) {
+    this.updatePosition(newPosition);
+  }
+  if (this.rotating) {
+    this.updateRotation();
+  }
+  this.updateText();
+  this.updateForceLine();
 
   this.renderer.render(this.stage);
 
   requestAnimFrame(this.update.bind(this));
+};
+
+TestBed.prototype.updateText = function(message) {
+  console.log(this.bird.rotation);
+  //this.textInfo.setText(this.bird.rotation);
+};
+
+TestBed.prototype.updateForceLine = function() {
+  this.forceLine.display(this.bird.position, this.vehicle.velocity);
 };
 
 TestBed.prototype.calculatePosition = function(timeSinceLastFrame) {
@@ -189,5 +204,7 @@ TestBed.prototype.updatePosition = function(newPosition) {
 
 TestBed.prototype.updateRotation = function() {
   //this.bird.rotation = this.rotate(this.bird.rotation, toRotation(this.vehicle.velocity));
-  this.bird.rotation = this.rotate(this.bird.rotation, this.vehicle.velocity);
+  var changeInRotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
+
+  this.bird.rotation += this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
 };

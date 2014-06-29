@@ -9,6 +9,14 @@
       testBed.running = !testBed.running;
     };
 
+    this.moving = function() {
+      testBed.moving = !testBed.moving;
+    };
+
+    this.rotating = function() {
+      testBed.rotating = !testBed.rotating;
+    };
+
     this.moveTarget = function() {
       testBed.target.position.x = getRandomInt(10, 780)
       testBed.target.position.y = getRandomInt(10, 780)
