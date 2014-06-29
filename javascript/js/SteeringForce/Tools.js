@@ -1,4 +1,11 @@
 
+toDegrees = function(radian) {
+  var deg2rad = Math.PI/180;
+  var rad2deg = 180/Math.PI;
+
+  return radian * 360.0 / (2.0 * Math.PI);
+};
+
 toRotation = function(vector) {
   var horiz = vector[0];
   var vert = vector[1];

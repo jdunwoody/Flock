@@ -4,7 +4,7 @@
 var TestBed = function() {
   this.running = true;
   this.rotating = true;
-  this.moving = true;
+  this.moving = false;
 
   this.stage = new PIXI.Stage(0x3355AA);
 
@@ -44,7 +44,7 @@ var TestBed = function() {
   this.threat.anchor = new PIXI.Point(0.5, 0.5);
   this.threat.rotate = new PIXI.Point(0.5, 0.5);
   this.cautionCircle = new PIXI.Graphics();
-  
+
   this.cautionCircle.borderColor = 0xAA00CC;
   this.cautionCircle.beginFill(0xAA00CC);
   this.cautionCircle.drawCircle(
@@ -103,35 +103,6 @@ var TestBed = function() {
   this.evade = new Evade(this.vehicle);
 };
 
-TestBed.prototype.changeInRotation = function(currentRotation, vector) {
-  var horiz = vector[0];
-  var vert = vector[1];
-
-  var newRotation = 0;
-
-  if (vert >= 0) {
-    if (horiz >=0) {
-      newRotation = -Math.atan(horiz, vert);
-    } else {
-      newRotation = -Math.atan(horiz, vert);
-    }
-  } else {
-    if (horiz >=0) {
-      newRotation = Math.PI + Math.atan(horiz, vert);
-    } else {
-      newRotation = Math.PI + Math.atan(horiz, vert);
-    }
-  }
-
-  //return newRotation;
-
-  var changeInRotation = newRotation - currentRotation;
-
-  changeInRotation = changeInRotation % Math.PI;
-
-  return changeInRotation;
-};
-
 TestBed.prototype.update = function(timeSinceLastFrame) {
   if (!this.running) {
     this.renderer.render(this.stage);
@@ -157,7 +128,7 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
 };
 
 TestBed.prototype.updateText = function(message) {
-  console.log(this.bird.rotation);
+  //console.log(toDegrees(this.bird.rotation));
   //this.textInfo.setText(this.bird.rotation);
 };
 
@@ -201,20 +172,56 @@ TestBed.prototype.updatePosition = function(newPosition) {
   this.bird.position.y = newPosition.y;
 };
 
+TestBed.prototype.changeInRotation = function(currentRotation, vector) {
+  var horiz = vector[0];
+  var vert = vector[1];
+
+  var newRotation = 0;
+
+  if (vert >= 0) {
+    if (horiz >=0) {
+      newRotation = Math.PI * 2.0 - Math.atan2(horiz, vert);
+    } else {
+      newRotation = -Math.atan2(horiz, vert);
+    }
+  } else {
+    if (horiz >=0) {
+      newRotation = Math.PI + Math.atan2(horiz, -vert);
+    } else {
+      newRotation = Math.PI - Math.atan2(-horiz, -vert);
+    }
+  }
+
+  return newRotation;
+  //var changeInRotation = newRotation - currentRotation;
+
+  //changeInRotation = changeInRotation % Math.PI;
+
+  //return changeInRotation;
+};
+
+
 TestBed.prototype.updateRotation = function() {
   //this.bird.rotation = this.rotate(this.bird.rotation, toRotation(this.vehicle.velocity));
   //var changeInRotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
 
-  this.bird.rotation += this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
+  console.log(Math.floor(toDegrees(this.bird.rotation)) + ": (" + this.vehicle.velocity[0] + ", " + this.vehicle.velocity[1] + ")");
+
+  this.bird.rotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
 };
 
 TestBed.prototype.moveThreat = function(newPosition) {
-  this.threat.position.x = newPosition.x;
-  this.threat.position.y = newPosition.y;
+  this.threat.position = newPosition;
+  //this.threat.position.x = newPosition.x;
+  //this.threat.position.y = newPosition.y;
 
-  this.cautionCircle.position.x = newPosition.x;
-  this.cautionCircle.position.y = newPosition.y;
+  this.cautionCircle.position = newPosition;
+  //this.cautionCircle.position.x = newPosition.x;
+  //this.cautionCircle.position.y = newPosition.y;
 
-  this.panicCircle.position.x = newPosition.x;
-  this.panicCircle.position.y = newPosition.y;
+  this.panicCircle.position = newPosition;
+  //this.panicCircle.position.x = newPosition.x;
+  //this.panicCircle.position.y = newPosition.y;
 };
+
+
