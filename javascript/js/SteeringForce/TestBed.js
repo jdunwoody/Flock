@@ -2,6 +2,9 @@
 
 //function TestBed() {
 var TestBed = function() {
+
+  KeyboardJS.on('p', this.toggleRunning, null);
+
   this.running = true;
   this.rotating = true;
   this.moving = false;
@@ -224,4 +227,6 @@ TestBed.prototype.moveThreat = function(newPosition) {
   //this.panicCircle.position.y = newPosition.y;
 };
 
-
+TestBed.prototype.toggleRunning = function() {
+  testBed.running = !testBed.running;
+};

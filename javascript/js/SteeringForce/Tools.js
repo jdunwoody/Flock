@@ -1,7 +1,7 @@
 
 toDegrees = function(radian) {
-  var deg2rad = Math.PI/180;
-  var rad2deg = 180/Math.PI;
+  //var deg2rad = Math.PI/180;
+  //var rad2deg = 180/Math.PI;
 
   return radian * 360.0 / (2.0 * Math.PI);
 };
