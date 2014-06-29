@@ -4,10 +4,18 @@
 var TestBed = function() {
 
   KeyboardJS.on('p', this.toggleRunning, null);
+  KeyboardJS.on('m', this.toggleMovement, null);
+  KeyboardJS.on('r', this.toggleRotating, null);
+  KeyboardJS.on('a', this.toggleTarget, null);
+  KeyboardJS.on('h', this.toggleThreat, null);
+  KeyboardJS.on('E', this.toggleEvade, null);
+  KeyboardJS.on('A', this.toggleArrive, null);
 
   this.running = true;
   this.rotating = true;
   this.moving = false;
+  this.arriveEnabled = true;
+  this.evadeEnabled = true;
 
   this.stage = new PIXI.Stage(0x3355AA);
 
@@ -139,9 +147,23 @@ TestBed.prototype.updateForceLine = function() {
   this.forceLine.display(this.bird.position, this.vehicle.velocity);
 };
 
+TestBed.prototype.calculateArrive = function() {
+  if(!this.arriveEnabled) {
+    return zero();
+  }
+  return this.arrive.calculate(toVector(this.target.position));
+};
+
+TestBed.prototype.calculateEvade = function() {
+  if(!this.evadeEnabled) {
+    return zero();
+  }
+  return this.evade.calculate(toVector(this.threat.position));
+};
+
 TestBed.prototype.calculatePosition = function(timeSinceLastFrame) {
-  var evadeVector = this.evade.calculate(toVector(this.threat.position));
-  var arriveVector = this.arrive.calculate(toVector(this.target.position));
+  var evadeVector = this.calculateEvade();
+  var arriveVector = this.calculateArrive();
 
   //console.log("Evade ("+ evadeVector[0] +", "+evadeVector[1]+")");
   //console.log("Arrive ("+ arriveVector[0] +", "+arriveVector[1]+")");
@@ -208,7 +230,7 @@ TestBed.prototype.updateRotation = function() {
   //this.bird.rotation = this.rotate(this.bird.rotation, toRotation(this.vehicle.velocity));
   //var changeInRotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
 
-  console.log(Math.floor(toDegrees(this.bird.rotation)) + ": (" + this.vehicle.velocity[0] + ", " + this.vehicle.velocity[1] + ")");
+  //console.log(Math.floor(toDegrees(this.bird.rotation)) + ": (" + this.vehicle.velocity[0] + ", " + this.vehicle.velocity[1] + ")");
 
   this.bird.rotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
 };
@@ -227,6 +249,32 @@ TestBed.prototype.moveThreat = function(newPosition) {
   //this.panicCircle.position.y = newPosition.y;
 };
 
+TestBed.prototype.toggleThreat = function() {
+  testBed.moveThreat(new PIXI.Point(getRandomInt(10, 780), getRandomInt(10, 780)));
+};
+
+TestBed.prototype.toggleTarget = function() {
+  testBed.target.position.x = getRandomInt(10, 780);
+  testBed.target.position.y = getRandomInt(10, 780);
+};
+
 TestBed.prototype.toggleRunning = function() {
   testBed.running = !testBed.running;
 };
+
+TestBed.prototype.toggleRotating = function() {
+  testBed.rotating = !testBed.rotating;
+};
+
+TestBed.prototype.toggleMovement = function() {
+  testBed.moving = !testBed.moving;
+};
+
+TestBed.prototype.toggleArrive = function() {
+  testBed.arriveEnabled = !testBed.arriveEnabled;
+};
+
+TestBed.prototype.toggleEvade = function() {
+  testBed.evadeEnabled = !testBed.evadeEnabled;
+};
+
