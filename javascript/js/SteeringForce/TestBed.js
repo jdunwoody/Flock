@@ -43,10 +43,8 @@ var TestBed = function() {
   this.threat = new PIXI.Sprite(greenBirdTexture);
   this.threat.anchor = new PIXI.Point(0.5, 0.5);
   this.threat.rotate = new PIXI.Point(0.5, 0.5);
-  this.threat.position.x = 700;
-  this.threat.position.y = 700;
-
   this.cautionCircle = new PIXI.Graphics();
+  
   this.cautionCircle.borderColor = 0xAA00CC;
   this.cautionCircle.beginFill(0xAA00CC);
   this.cautionCircle.drawCircle(
@@ -62,7 +60,8 @@ var TestBed = function() {
       this.threat.position.x,
       this.threat.position.y,
       100);
-  this.panicCircle.endFill();
+
+  this.moveThreat(new PIXI.Point(700, 700));
 
   this.stage.addChild(this.textInfo);
   this.stage.addChild(this.cautionCircle);
@@ -204,7 +203,18 @@ TestBed.prototype.updatePosition = function(newPosition) {
 
 TestBed.prototype.updateRotation = function() {
   //this.bird.rotation = this.rotate(this.bird.rotation, toRotation(this.vehicle.velocity));
-  var changeInRotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
+  //var changeInRotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
 
   this.bird.rotation += this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
+};
+
+TestBed.prototype.moveThreat = function(newPosition) {
+  this.threat.position.x = newPosition.x;
+  this.threat.position.y = newPosition.y;
+
+  this.cautionCircle.position.x = newPosition.x;
+  this.cautionCircle.position.y = newPosition.y;
+
+  this.panicCircle.position.x = newPosition.x;
+  this.panicCircle.position.y = newPosition.y;
 };

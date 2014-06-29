@@ -9,17 +9,21 @@
       testBed.running = !testBed.running;
     };
 
-    this.moving = function() {
+    this.toggleMovement = function() {
       testBed.moving = !testBed.moving;
     };
 
-    this.rotating = function() {
+    this.toggleRotation = function() {
       testBed.rotating = !testBed.rotating;
     };
 
     this.moveTarget = function() {
       testBed.target.position.x = getRandomInt(10, 780)
       testBed.target.position.y = getRandomInt(10, 780)
+    };
+
+    this.moveThreat = function() {
+      testBed.moveThreat(new PIXI.Point(getRandomInt(10, 780), getRandomInt(10, 780)));
     };
 
     this.arriveSteering = function() {
