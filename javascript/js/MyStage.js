@@ -6,5 +6,6 @@ var MyStage = function() {
 MyStage.prototype = PIXI.Stage.prototype;
 MyStage.prototype.constructor = PIXI.Stage;
 
-//MyStage.prototype.mousedown = function(mouseData) {
-//};
+MyStage.prototype.mousedown = function(mouseData) {
+
+};

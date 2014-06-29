@@ -1,21 +1,21 @@
 "use strict";
 
-function ForceLine(avatar) {
+function ForceLine() {
   PIXI.Graphics.call(this);
-  this.avatar = avatar;
   this.borderColor = 0xBB0000;
 };
 
 ForceLine.constructor = ForceLine;
 ForceLine.prototype = Object.create(PIXI.Graphics.prototype);
 
-ForceLine.prototype.display = function(avatar) {
+ForceLine.prototype.display = function(origin, vector) {
   this.clear();
-  this.lineStyle(1, this.borderColor, 1);
+  this.lineStyle(10, this.borderColor, 1);
 
-  this.moveTo(avatar.position.x, avatar.position.y);
+  this.moveTo(origin.x, origin.y);
+
   this.lineTo(
-      avatar.position.x - avatar.velocity[0] * 10, 
-      avatar.position.y - avatar.velocity[1] * 10
+      origin.x + vector[0] * 100,
+      origin.y + vector[1] * 100
       );
 };

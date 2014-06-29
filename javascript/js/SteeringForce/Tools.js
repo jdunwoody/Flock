@@ -1,4 +1,38 @@
 
+toRotation = function(vector) {
+  var horiz = vector[0];
+  var vert = vector[1];
+
+  var newRotation = 0;
+
+  if (vert >= 0) {
+    newRotation = -Math.atan(horiz, vert);
+  } else {
+    //newRotation = Math.PI + Math.atan(horiz, vert);
+  }
+
+  //if (horiz >= 0) {
+  //if (vert >= 0) {
+  //console.log("Rotation quadrant 1");
+  ////newRotation = Math.PI - Math.atan(horiz, vert);
+  //newRotation = -Math.atan(horiz, vert);
+  //} else {
+  //console.log("Rotation quadrant 4");
+  //newRotation = Math.PI + Math.atan(horiz, vert);
+  //}
+  //} else {
+  //if (vert >= 0) {
+  //console.log("Rotation quadrant 2");
+  //newRotation = Math.atan(horiz, vert);
+  //} else {
+  //console.log("Rotation quadrant 3");
+  //newRotation = Math.PI - Math.atan(horiz, vert);
+  //}
+  //}
+
+  return newRotation;// % (2 *Math.PI);
+};
+
 toVector = function(pixiPosition) {
   return vec2.fromValues(pixiPosition.x, pixiPosition.y);
 };
@@ -61,7 +95,6 @@ truncate = function(vector, scalarLimit) {
 
   return vector;
 };
-
 
 //function SteeringForce() {
 //this.seek = function(maxSpeed, targetPosition, currentPosition, currentVelocity) {
