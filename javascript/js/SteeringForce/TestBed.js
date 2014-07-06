@@ -16,6 +16,7 @@ var TestBed = function() {
   this.moving = false;
   this.arriveEnabled = true;
   this.evadeEnabled = true;
+  this.debuggingEnabled = true;
 
   this.stage = new PIXI.Stage(0x3355AA);
 
@@ -131,7 +132,9 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
     this.updateRotation();
   }
   this.updateText();
-  this.updateForceLine();
+  if (this.toggleDebugging) {
+    this.updateForceLine();
+  }
 
   this.renderer.render(this.stage);
 
@@ -183,8 +186,8 @@ TestBed.prototype.calculatePosition = function(timeSinceLastFrame) {
   this.vehicle.velocity[1] += changeInVelocity[1];
   newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
 
-  newX = Math.min(780, Math.max(10, newX));
-  newY = Math.min(780, Math.max(10, newY));
+  newX = Math.min(1580, Math.max(10, newX));
+  newY = Math.min(1580, Math.max(10, newY));
 
   return new PIXI.Point(newX, newY);
 };
@@ -276,5 +279,9 @@ TestBed.prototype.toggleArrive = function() {
 
 TestBed.prototype.toggleEvade = function() {
   testBed.evadeEnabled = !testBed.evadeEnabled;
+};
+
+TestBed.prototype.toggleDebugging = function() {
+  testBed.debuggingEnabled = !testBed.debuggingEnabled;
 };
 

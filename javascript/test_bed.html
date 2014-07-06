@@ -31,7 +31,7 @@ function init() {
 <div class='container-fluid'>
   <div class="row-fluid">
     <div class="span10">
-      <canvas id="game-canvas" width="800" height="800"></canvas>
+      <canvas id="game-canvas" width="1600" height="800"></canvas>
     </div>
 
     <div class="span2">
@@ -43,6 +43,7 @@ function init() {
         <button class="btn" ng-click='flock.moveThreat()'>Move Threat (h)</button>
         <button class="btn" ng-click='flock.toggleRotation()'>Toggle Rotation (r)</button>
         <button class="btn" ng-click='flock.toggleMovement()'>Toggle Movement (m)</button>
+        <button class="btn" ng-click='flock.toggleDebugging()'>Debugging (d)</button>
       </div>
     </div>
   </div>
