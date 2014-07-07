@@ -285,3 +285,14 @@ TestBed.prototype.toggleDebugging = function() {
   testBed.debuggingEnabled = !testBed.debuggingEnabled;
 };
 
+TestBed.prototype.toggleAlignment = function() {
+  testBed.alignmentEnabled = !testBed.alignmentEnabled;
+};
+
+TestBed.prototype.toggleCohesion = function() {
+  testBed.cohesionEnabled = !testBed.cohesionEnabled;
+};
+
+TestBed.prototype.toggleSeparation = function() {
+  testBed.separationEnabled = !testBed.separationEnabled;
+};
