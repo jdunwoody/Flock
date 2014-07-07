@@ -85,6 +85,12 @@ var TestBed = function() {
 
   this.bird.target = this.target;
 
+  var cohesionWeight = 1;
+  var alignmentWeight = 1;
+  var separationWeight = 1;
+  var evadeWeight = 1;
+  var arriveWeight = 1;
+
   this.bird.mousemove = function(mouseData) {
     // this line will get the mouse coords relative to the sprites..
     //var localCoordsPosition = mouseData.getLocalPosition(graphics);
@@ -165,13 +171,23 @@ TestBed.prototype.calculateEvade = function() {
 };
 
 TestBed.prototype.calculatePosition = function(timeSinceLastFrame) {
-  var evadeVector = this.calculateEvade();
-  var arriveVector = this.calculateArrive();
+  var steeringForce = zero();
+
+  steeringForce = addition(steeringForce, scale(this.calculateCohesion(), cohesionWeight));
+  steeringForce = addition(steeringForce, scale(this.calculateAlignment(), alignmentWeight));
+  steeringForce = addition(steeringForce, scale(this.calculateSeparation(), separationWeight));
+
+  steeringForce = addition(steeringForce, scale(this.calculateEvade(), evadeWeight));
+  steeringForce = addition(steeringForce, scale(this.calculateArrive(), arriveWeight));
+
+  //var evadeVector = this.calculateEvade();
+  //var arriveVector = this.calculateArrive();
 
   //console.log("Evade ("+ evadeVector[0] +", "+evadeVector[1]+")");
   //console.log("Arrive ("+ arriveVector[0] +", "+arriveVector[1]+")");
 
-  var changeInVelocity = add(evadeVector, arriveVector);
+  //var changeInVelocity = add(evadeVector, arriveVector);
+  var changeInVelocity = steeringForce;
   //console.log("Net vector ("+ changeInVelocity[0] +", "+changeInVelocity[1]+")");
 
   var x = this.bird.position.x;
