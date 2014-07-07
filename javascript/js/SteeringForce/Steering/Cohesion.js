@@ -1,9 +1,9 @@
 function Cohesion(vehicle, neighbours) {
   var centreOfMass;
   var steeringForce;
-  int neighbourCount = 0;
+  var neighbourCount = 0;
 
-  for (int i=0; i<neighbours.size(); ++i) {
+  for (var i=0; i<neighbours.length; ++i) {
     if((neighbours[i] != vehicle) && neighbours[i].IsTagged()) {
       centreOfMass += neighbours[i].position;
       ++neighbourCount;

@@ -85,11 +85,11 @@ var TestBed = function() {
 
   this.bird.target = this.target;
 
-  var cohesionWeight = 1;
-  var alignmentWeight = 1;
-  var separationWeight = 1;
-  var evadeWeight = 1;
-  var arriveWeight = 1;
+  this.cohesionWeight = 1;
+  this.alignmentWeight = 1;
+  this.separationWeight = 1;
+  this.evadeWeight = 1;
+  this.arriveWeight = 1;
 
   this.bird.mousemove = function(mouseData) {
     // this line will get the mouse coords relative to the sprites..
@@ -117,8 +117,14 @@ var TestBed = function() {
   this.vehicle.maxSpeed = 3;
   this.vehicle.velocity = vec2.create();
 
+  //this.redVehicle = {};
+  //this.redVehicle.position =
+
+  this.entourage = [];
+
   this.arrive = new Arrive(this.vehicle);
   this.evade = new Evade(this.vehicle);
+  this.cohesion = new Cohesion(this.vehicle, this.entourage);
 };
 
 TestBed.prototype.update = function(timeSinceLastFrame) {
@@ -156,6 +162,27 @@ TestBed.prototype.updateForceLine = function() {
   this.forceLine.display(this.bird.position, this.vehicle.velocity);
 };
 
+TestBed.prototype.calculateCohesion = function() {
+  if(!this.cohesionEnabled) {
+    return zero();
+  }
+  return this.cohesion.calculate(this.vehicle);
+};
+
+TestBed.prototype.calculateAlignment = function() {
+  if(!this.alignmentEnabled) {
+    return zero();
+  }
+  //return this.cohesion.calculate(this.vehicle);
+};
+
+TestBed.prototype.calculateSeparation = function() {
+  if(!this.separationEnabled) {
+    return zero();
+  }
+  //return this.cohesion.calculate(this.vehicle);
+};
+
 TestBed.prototype.calculateArrive = function() {
   if(!this.arriveEnabled) {
     return zero();
@@ -173,12 +200,12 @@ TestBed.prototype.calculateEvade = function() {
 TestBed.prototype.calculatePosition = function(timeSinceLastFrame) {
   var steeringForce = zero();
 
-  steeringForce = addition(steeringForce, scale(this.calculateCohesion(), cohesionWeight));
-  steeringForce = addition(steeringForce, scale(this.calculateAlignment(), alignmentWeight));
-  steeringForce = addition(steeringForce, scale(this.calculateSeparation(), separationWeight));
+  steeringForce = add(steeringForce, scale(this.calculateCohesion(), this.cohesionWeight));
+  steeringForce = add(steeringForce, scale(this.calculateAlignment(), this.alignmentWeight));
+  steeringForce = add(steeringForce, scale(this.calculateSeparation(), this.separationWeight));
 
-  steeringForce = addition(steeringForce, scale(this.calculateEvade(), evadeWeight));
-  steeringForce = addition(steeringForce, scale(this.calculateArrive(), arriveWeight));
+  steeringForce = add(steeringForce, scale(this.calculateEvade(), this.evadeWeight));
+  steeringForce = add(steeringForce, scale(this.calculateArrive(), this.arriveWeight));
 
   //var evadeVector = this.calculateEvade();
   //var arriveVector = this.calculateArrive();
