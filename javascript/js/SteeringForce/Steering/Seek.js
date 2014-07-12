@@ -1,16 +1,16 @@
 
-function Seek(vehicle) {
-  this.vehicle = vehicle;
+function Seek(bird) {
+  this.bird = bird;
 }
 
 Seek.prototype.calculate = function(targetPosition) {
   desiredVelocity = scale(
       normalize(
-        subtract(targetPosition, this.vehicle.positionVector())
+        subtract(targetPosition, this.bird.positionVector)
         ),
-      this.vehicle.maxSpeed);
+      this.bird.maxSpeed);
 
-  var result = subtract(desiredVelocity, this.vehicle.velocity);
+  var result = subtract(desiredVelocity, this.bird.velocity);
   //console.log(result);
   return result;
 };

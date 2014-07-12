@@ -1,17 +1,22 @@
 "use strict";
 
-function Evade(vehicle) {
-  this.vehicle = vehicle;
-  this.flee = new Flee(this.vehicle);
-  this.fleeInRange = new FleeInRange(this.vehicle);
+function Evade(options, bird) {
+  this.bird = bird;
+  this.flee = new Flee(this.bird);
+  this.fleeInRange = new FleeInRange(this.bird);
+  this.options = options;
 }
 
 Evade.prototype.calculate = function(obstacle) {
-  var vectorToPursuer = subtract(obstacle, this.vehicle.position);
+  if(!this.options.evadeEnabled) {
+    return zero();
+  }
+
+  var vectorToPursuer = subtract(obstacle, this.bird.positionVector);
 
   var obstacleSpeed = 0;
 
-  var lookAheadTime = length(vectorToPursuer) / (this.vehicle.maxSpeed + obstacleSpeed);
+  var lookAheadTime = length(vectorToPursuer) / (this.bird.maxSpeed + obstacleSpeed);
 
   var obstacleVelocity = zero();
 

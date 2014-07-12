@@ -1,11 +1,13 @@
 "use strict";
 
-function Flee(vehicle){
-  this.vehicle = vehicle;
+function Flee(bird){
+  this.bird = bird;
 };
 
 Flee.prototype.calculate = function(targetVector) {
-  var desiredVelocity = scale(normalize(subtract(this.vehicle.position, targetVector)), this.vehicle.maxSpeed);
+  var desiredVelocity = scale(
+      normalize(subtract(this.bird.positionVector, targetVector)),
+      this.bird.maxSpeed);
 
-  return subtract(desiredVelocity, this.vehicle.velocity);
+  return subtract(desiredVelocity, this.bird.velocity);
 };

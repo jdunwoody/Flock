@@ -1,6 +1,5 @@
 "use strict";
 
-//function TestBed() {
 var TestBed = function() {
 
   KeyboardJS.on('p', this.toggleRunning, null);
@@ -11,12 +10,13 @@ var TestBed = function() {
   KeyboardJS.on('E', this.toggleEvade, null);
   KeyboardJS.on('A', this.toggleArrive, null);
 
-  this.running = true;
-  this.rotating = true;
-  this.moving = false;
-  this.arriveEnabled = true;
-  this.evadeEnabled = true;
-  this.debuggingEnabled = true;
+  this.options = {};
+  this.options.running = true;
+  this.options.rotating = true;
+  this.options.moving = true;
+  this.options.arriveEnabled = true;
+  this.options.evadeEnabled = true;
+  this.options.debuggingEnabled = true;
 
   this.stage = new PIXI.Stage(0x3355AA);
 
@@ -39,13 +39,6 @@ var TestBed = function() {
   this.forceLine = new ForceLine();
   this.textInfo = new TextInfo("Hello World");
 
-  this.bird = new PIXI.Sprite(texture);
-  this.bird.anchor = new PIXI.Point(0.5, 0.5);
-  this.bird.rotate = new PIXI.Point(0.5, 0.5);
-  this.bird.position.x = 400;
-  this.bird.position.y = 400;
-  this.bird.interactive = true;
-
   this.target = new PIXI.Sprite(bunnyTexture);
   this.target.anchor = new PIXI.Point(0.5, 0.5);
   this.target.rotate = new PIXI.Point(0.5, 0.5);
@@ -55,6 +48,8 @@ var TestBed = function() {
   this.threat = new PIXI.Sprite(greenBirdTexture);
   this.threat.anchor = new PIXI.Point(0.5, 0.5);
   this.threat.rotate = new PIXI.Point(0.5, 0.5);
+  this.threat.position.x = 200;
+  this.threat.position.y = 200;
   this.cautionCircle = new PIXI.Graphics();
 
   this.cautionCircle.borderColor = 0xAA00CC;
@@ -75,6 +70,9 @@ var TestBed = function() {
 
   this.moveThreat(new PIXI.Point(700, 700));
 
+  this.bird = new Bird(this.options, this.target, this.threat);
+  this.bird.updatePosition();
+
   this.stage.addChild(this.textInfo);
   this.stage.addChild(this.cautionCircle);
   this.stage.addChild(this.panicCircle);
@@ -91,44 +89,40 @@ var TestBed = function() {
   this.evadeWeight = 1;
   this.arriveWeight = 1;
 
-  this.bird.mousemove = function(mouseData) {
-    // this line will get the mouse coords relative to the sprites..
-    //var localCoordsPosition = mouseData.getLocalPosition(graphics);
-    // this line will get the mouse coords relative to the sprites parent..
-    var parentCoordsPosition = mouseData.getLocalPosition(this.parent);
+  //this.bird.mousemove = function(mouseData) {
+  //// this line will get the mouse coords relative to the sprites..
+  ////var localCoordsPosition = mouseData.getLocalPosition(graphics);
+  //// this line will get the mouse coords relative to the sprites parent..
+  //var parentCoordsPosition = mouseData.getLocalPosition(this.parent);
 
-    var x = parentCoordsPosition.x;
-    var y = parentCoordsPosition.y;
+  //var x = parentCoordsPosition.x;
+  //var y = parentCoordsPosition.y;
 
-    this.target.position.x = x;
-    this.target.position.y = y;
+  //this.target.position.x = x;
+  //this.target.position.y = y;
 
-    //console.log("Mouse moved to "+this.targetPosition[0]+","+this.targetPosition[1]);
 
-    //timeElapsed = 1;
-    //target = vec2.fromValues(parentCoordsPosition.x, parentCoordsPosition.y);
-  };
+  ////timeElapsed = 1;
+  ////target = vec2.fromValues(parentCoordsPosition.x, parentCoordsPosition.y);
+  //};
 
   requestAnimFrame(this.update.bind(this));
 
-  this.vehicle = {};
-  this.vehicle.position = vec2.fromValues(this.bird.position.x, this.bird.position.y);
-  this.vehicle.deceleration = 20;
-  this.vehicle.maxSpeed = 3;
-  this.vehicle.velocity = vec2.create();
+  //this.bird = {};
+  //this.bird.positionVector = vec2.fromValues(this.bird.position.x, this.bird.position.y);
+  //this.bird.deceleration = 20;
+  //this.bird.maxSpeed = 3;
+  //this.bird.velocity = vec2.create();
 
   //this.redVehicle = {};
   //this.redVehicle.position =
 
   this.entourage = [];
 
-  this.arrive = new Arrive(this.vehicle);
-  this.evade = new Evade(this.vehicle);
-  this.cohesion = new Cohesion(this.vehicle, this.entourage);
 };
 
 TestBed.prototype.update = function(timeSinceLastFrame) {
-  if (!this.running) {
+  if (!this.options.running) {
     this.renderer.render(this.stage);
     requestAnimFrame(this.update.bind(this));
     return;
@@ -136,12 +130,11 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
 
   timeSinceLastFrame = Math.min(10, timeSinceLastFrame);
 
-  var newPosition = this.calculatePosition(timeSinceLastFrame);
-  if (this.moving) {
-    this.updatePosition(newPosition);
+  if (this.options.moving) {
+    this.bird.updatePosition(timeSinceLastFrame);
   }
-  if (this.rotating) {
-    this.updateRotation();
+  if (this.options.rotating) {
+    this.bird.updateRotation();
   }
   this.updateText();
   if (this.toggleDebugging) {
@@ -159,127 +152,43 @@ TestBed.prototype.updateText = function(message) {
 };
 
 TestBed.prototype.updateForceLine = function() {
-  this.forceLine.display(this.bird.position, this.vehicle.velocity);
+  this.forceLine.display(this.bird.positionVector, this.bird.velocity);
 };
 
-TestBed.prototype.calculateCohesion = function() {
-  if(!this.cohesionEnabled) {
-    return zero();
-  }
-  return this.cohesion.calculate(this.vehicle);
-};
+//TestBed.prototype.calculateCohesion = function() {
+//if(!this.cohesionEnabled) {
+//return zero();
+//}
+//return this.cohesion.calculate(this.bird);
+//};
 
 TestBed.prototype.calculateAlignment = function() {
   if(!this.alignmentEnabled) {
     return zero();
   }
-  //return this.cohesion.calculate(this.vehicle);
+  //return this.cohesion.calculate(this.bird);
 };
 
 TestBed.prototype.calculateSeparation = function() {
   if(!this.separationEnabled) {
     return zero();
   }
-  //return this.cohesion.calculate(this.vehicle);
+  //return this.cohesion.calculate(this.bird);
 };
 
-TestBed.prototype.calculateArrive = function() {
-  if(!this.arriveEnabled) {
-    return zero();
-  }
-  return this.arrive.calculate(toVector(this.target.position));
-};
+//TestBed.prototype.calculateArrive = function() {
+//if(!this.arriveEnabled) {
+//return zero();
+//}
+//return this.arrive.calculate(toVector(this.target.position));
+//};
 
-TestBed.prototype.calculateEvade = function() {
-  if(!this.evadeEnabled) {
-    return zero();
-  }
-  return this.evade.calculate(toVector(this.threat.position));
-};
-
-TestBed.prototype.calculatePosition = function(timeSinceLastFrame) {
-  var steeringForce = zero();
-
-  steeringForce = add(steeringForce, scale(this.calculateCohesion(), this.cohesionWeight));
-  steeringForce = add(steeringForce, scale(this.calculateAlignment(), this.alignmentWeight));
-  steeringForce = add(steeringForce, scale(this.calculateSeparation(), this.separationWeight));
-
-  steeringForce = add(steeringForce, scale(this.calculateEvade(), this.evadeWeight));
-  steeringForce = add(steeringForce, scale(this.calculateArrive(), this.arriveWeight));
-
-  //var evadeVector = this.calculateEvade();
-  //var arriveVector = this.calculateArrive();
-
-  //console.log("Evade ("+ evadeVector[0] +", "+evadeVector[1]+")");
-  //console.log("Arrive ("+ arriveVector[0] +", "+arriveVector[1]+")");
-
-  //var changeInVelocity = add(evadeVector, arriveVector);
-  var changeInVelocity = steeringForce;
-  //console.log("Net vector ("+ changeInVelocity[0] +", "+changeInVelocity[1]+")");
-
-  var x = this.bird.position.x;
-  var y = this.bird.position.y;
-
-  var newX = x;
-  var newY = y;
-
-  this.vehicle.velocity[0] += changeInVelocity[0];
-  newX = this.vehicle.velocity[0] * timeSinceLastFrame + x;
-
-  this.vehicle.velocity[1] += changeInVelocity[1];
-  newY = this.vehicle.velocity[1] * timeSinceLastFrame + y;
-
-  newX = Math.min(1580, Math.max(10, newX));
-  newY = Math.min(1580, Math.max(10, newY));
-
-  return new PIXI.Point(newX, newY);
-};
-
-TestBed.prototype.updatePosition = function(newPosition) {
-  this.vehicle.position[0] = newPosition.x;
-  this.vehicle.position[1] = newPosition.y;
-
-  this.bird.position.x = newPosition.x;
-  this.bird.position.y = newPosition.y;
-};
-
-TestBed.prototype.changeInRotation = function(currentRotation, vector) {
-  var horiz = vector[0];
-  var vert = vector[1];
-
-  var newRotation = 0;
-
-  if (vert >= 0) {
-    if (horiz >=0) {
-      newRotation = Math.PI * 2.0 - Math.atan2(horiz, vert);
-    } else {
-      newRotation = -Math.atan2(horiz, vert);
-    }
-  } else {
-    if (horiz >=0) {
-      newRotation = Math.PI + Math.atan2(horiz, -vert);
-    } else {
-      newRotation = Math.PI - Math.atan2(-horiz, -vert);
-    }
-  }
-
-  return newRotation;
-  //var changeInRotation = newRotation - currentRotation;
-
-  //changeInRotation = changeInRotation % Math.PI;
-
-  //return changeInRotation;
-};
-
-
-TestBed.prototype.updateRotation = function() {
-  //this.bird.rotation = this.rotate(this.bird.rotation, toRotation(this.vehicle.velocity));
-  //var changeInRotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
-
-  //console.log(Math.floor(toDegrees(this.bird.rotation)) + ": (" + this.vehicle.velocity[0] + ", " + this.vehicle.velocity[1] + ")");
-
-  this.bird.rotation = this.changeInRotation(this.bird.rotation, this.vehicle.velocity);
-};
+//TestBed.prototype.calculateEvade = function() {
+//if(!this.evadeEnabled) {
+//return zero();
+//}
+//return this.evade.calculate(toVector(this.threat.position));
+//};
 
 TestBed.prototype.moveThreat = function(newPosition) {
   this.threat.position = newPosition;
@@ -305,37 +214,37 @@ TestBed.prototype.toggleTarget = function() {
 };
 
 TestBed.prototype.toggleRunning = function() {
-  testBed.running = !testBed.running;
+  testBed.options.running = !testBed.options.running;
 };
 
 TestBed.prototype.toggleRotating = function() {
-  testBed.rotating = !testBed.rotating;
+  testBed.options.rotating = !testBed.options.rotating;
 };
 
 TestBed.prototype.toggleMovement = function() {
-  testBed.moving = !testBed.moving;
+  testBed.options.moving = !testBed.options.moving;
 };
 
 TestBed.prototype.toggleArrive = function() {
-  testBed.arriveEnabled = !testBed.arriveEnabled;
+  testBed.options.arriveEnabled = !testBed.options.arriveEnabled;
 };
 
 TestBed.prototype.toggleEvade = function() {
-  testBed.evadeEnabled = !testBed.evadeEnabled;
+  testBed.options.evadeEnabled = !testBed.options.evadeEnabled;
 };
 
 TestBed.prototype.toggleDebugging = function() {
-  testBed.debuggingEnabled = !testBed.debuggingEnabled;
+  testBed.options.debuggingEnabled = !testBed.options.debuggingEnabled;
 };
 
 TestBed.prototype.toggleAlignment = function() {
-  testBed.alignmentEnabled = !testBed.alignmentEnabled;
+  testBed.options.alignmentEnabled = !testBed.options.alignmentEnabled;
 };
 
 TestBed.prototype.toggleCohesion = function() {
-  testBed.cohesionEnabled = !testBed.cohesionEnabled;
+  testBed.options.cohesionEnabled = !testBed.options.cohesionEnabled;
 };
 
 TestBed.prototype.toggleSeparation = function() {
-  testBed.separationEnabled = !testBed.separationEnabled;
+  testBed.options.separationEnabled = !testBed.options.separationEnabled;
 };

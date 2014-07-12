@@ -1,23 +1,28 @@
 
-function Arrive(vehicle) {
-  this.vehicle = vehicle;
+function Arrive(options, bird) {
+  this.options = options;
+  this.bird = bird;
   this.decellerationTweeker = 10.0;//0.3;
 }
 
 Arrive.prototype.calculate = function(targetPosition) {
-  var vectorToTarget = subtract(targetPosition, this.vehicle.position);
+  if(!this.options.arriveEnabled) {
+    return zero();
+  }
+
+  var vectorToTarget = subtract(targetPosition, this.bird.positionVector);
 
   var distance = length(vectorToTarget);
   var result;
 
   if (distance > 1) {
-    var speed = distance / (this.vehicle.deceleration * this.decellerationTweeker);
+    var speed = distance / (this.bird.deceleration * this.decellerationTweeker);
 
-    speed = Math.min(speed, this.vehicle.maxSpeed);
+    speed = Math.min(speed, this.bird.maxSpeed);
 
     var desiredVelocity = scale(vectorToTarget, speed/distance);
 
-    result = subtract(desiredVelocity, this.vehicle.velocity);
+    result = subtract(desiredVelocity, this.bird.velocity);
   } else {
     result = zero();
   }

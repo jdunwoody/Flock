@@ -1,13 +1,13 @@
 "use strict";
 
-function FleeInRange(vehicle) {
-  this.vehicle = vehicle;
-  this.flee = new Flee(this.vehicle);
+function FleeInRange(bird) {
+  this.bird = bird;
+  this.flee = new Flee(this.bird);
 };
 
 FleeInRange.prototype.calculate = function(targetVector) {
 
-  var distanceFromTarget = squaredDistance(this.vehicle.position, targetVector);
+  var distanceFromTarget = squaredDistance(this.bird.positionVector, targetVector);
 
   var cautionDistance = 300 * 300;
   var panicDistance = 100 * 100;

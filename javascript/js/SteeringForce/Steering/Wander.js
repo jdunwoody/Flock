@@ -4,7 +4,7 @@ var wanderRadius = 100;
 var wanderDistance = 100;
 var wanderJitter = 10;
 
-function Wander(vehicle) {
+function Wander(bird) {
   wanderTarget += vec2.fromValues(
       getRandomInt(-1, 1) * wanderJitter,
       getRandomInt(-1, 1) * wanderJitter
@@ -16,9 +16,9 @@ function Wander(vehicle) {
   var targetLocal = add(wanderTarget, vec2.fromValues(wanderDistance, 0));
 
   var targetWorld = PointToWorldSpace(targetLocal,
-      vehicle.heading,
-      vehicle->Side(),
-      vehicle.position);
+      bird.heading,
+      bird->Side(),
+      bird.positionVector);
 
-  return subtract(targetWorld, vehicle.position);
+  return subtract(targetWorld, bird.positionVector);
 }
