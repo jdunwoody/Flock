@@ -48,10 +48,10 @@ var TestBed = function() {
   this.threat = new PIXI.Sprite(greenBirdTexture);
   this.threat.anchor = new PIXI.Point(0.5, 0.5);
   this.threat.rotate = new PIXI.Point(0.5, 0.5);
-  this.threat.position.x = 200;
-  this.threat.position.y = 200;
-  this.cautionCircle = new PIXI.Graphics();
+  //this.threat.position.x = 200;
+  //this.threat.position.y = 200;
 
+  this.cautionCircle = new PIXI.Graphics();
   this.cautionCircle.borderColor = 0xAA00CC;
   this.cautionCircle.beginFill(0xAA00CC);
   this.cautionCircle.drawCircle(
@@ -59,6 +59,9 @@ var TestBed = function() {
       this.threat.position.y,
       200);
   this.cautionCircle.endFill();
+  this.cautionCircle.anchor = new PIXI.Point(0.5, 0.5);
+  //this.cautionCircle.position.x = 200;
+  //this.cautionCircle.position.y = 200;
 
   this.panicCircle = new PIXI.Graphics();
   this.panicCircle.borderColor = 0xAABBCC;
@@ -67,8 +70,9 @@ var TestBed = function() {
       this.threat.position.x,
       this.threat.position.y,
       100);
+  this.panicCircle.anchor = new PIXI.Point(0.5, 0.5);
 
-  this.moveThreat(new PIXI.Point(700, 700));
+  this.moveThreat(new PIXI.Point(200, 200));
 
   this.bird = new Bird(this.options, this.target, this.threat);
   this.bird.updatePosition();
@@ -192,16 +196,9 @@ TestBed.prototype.calculateSeparation = function() {
 
 TestBed.prototype.moveThreat = function(newPosition) {
   this.threat.position = newPosition;
-  //this.threat.position.x = newPosition.x;
-  //this.threat.position.y = newPosition.y;
 
   this.cautionCircle.position = newPosition;
-  //this.cautionCircle.position.x = newPosition.x;
-  //this.cautionCircle.position.y = newPosition.y;
-
   this.panicCircle.position = newPosition;
-  //this.panicCircle.position.x = newPosition.x;
-  //this.panicCircle.position.y = newPosition.y;
 };
 
 TestBed.prototype.toggleThreat = function() {
