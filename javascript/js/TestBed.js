@@ -2,96 +2,40 @@
 
 var TestBed = function() {
 
-  KeyboardJS.on('p', this.toggleRunning, null);
-  KeyboardJS.on('m', this.toggleMovement, null);
-  KeyboardJS.on('r', this.toggleRotating, null);
-  KeyboardJS.on('a', this.toggleTarget, null);
-  KeyboardJS.on('h', this.toggleThreat, null);
-  KeyboardJS.on('E', this.toggleEvade, null);
-  KeyboardJS.on('A', this.toggleArrive, null);
+  this.setupKeybindings();
 
-  this.options = {};
-  this.options.running = true;
-  this.options.rotating = true;
-  this.options.moving = true;
-  this.options.arriveEnabled = true;
-  this.options.evadeEnabled = true;
-  this.options.debuggingEnabled = true;
+  this.options = this.buildOptions();
 
-  this.stage = new PIXI.Stage(0x3355AA);
-
-  this.antiAlias = true;
-
-  this.width = document.getElementById("game-canvas").width;
-  this.height = document.getElementById("game-canvas").height;
-
-  this.renderer = new PIXI.autoDetectRenderer(
-      this.width,
-      this.height,
-      document.getElementById("game-canvas"),
-      false,
-      this.antiAlias);
-
-  var texture = PIXI.Texture.fromImage("img/black_bird_down.png");
-  var bunnyTexture = PIXI.Texture.fromImage("img/bunny.png");
-  var greenBirdTexture = PIXI.Texture.fromImage("img/newton.gif");
+  this.buildRenderer();
 
   this.forceLine = new ForceLine();
   this.textInfo = new TextInfo("Hello World");
-
-  this.target = new PIXI.Sprite(bunnyTexture);
-  this.target.anchor = new PIXI.Point(0.5, 0.5);
-  this.target.rotate = new PIXI.Point(0.5, 0.5);
-  this.target.position.x = 100;
-  this.target.position.y = 100;
-
-  this.threat = new PIXI.Sprite(greenBirdTexture);
-  this.threat.anchor = new PIXI.Point(0.5, 0.5);
-  this.threat.rotate = new PIXI.Point(0.5, 0.5);
-  //this.threat.position.x = 200;
-  //this.threat.position.y = 200;
-
-  this.cautionCircle = new PIXI.Graphics();
-  this.cautionCircle.borderColor = 0xAA00CC;
-  this.cautionCircle.beginFill(0xAA00CC);
-  this.cautionCircle.drawCircle(
-      this.threat.position.x,
-      this.threat.position.y,
-      200);
-  this.cautionCircle.endFill();
-  this.cautionCircle.anchor = new PIXI.Point(0.5, 0.5);
-  //this.cautionCircle.position.x = 200;
-  //this.cautionCircle.position.y = 200;
-
-  this.panicCircle = new PIXI.Graphics();
-  this.panicCircle.borderColor = 0xAABBCC;
-  this.panicCircle.beginFill(0x77AA00);
-  this.panicCircle.drawCircle(
-      this.threat.position.x,
-      this.threat.position.y,
-      100);
-  this.panicCircle.anchor = new PIXI.Point(0.5, 0.5);
-
-  this.moveThreat(new PIXI.Point(200, 200));
-
+  this.target = new Target(100, 100);
+  this.threat = new Threat();
   this.bird = new Bird(this.options, this.target, this.threat);
   this.bird.updatePosition();
 
+  this.bird2 = new Bird(this.options, this.target, this.threat);
+  this.bird2.updatePosition();
+
+  this.stage = new MyStage();
+
   this.stage.addChild(this.textInfo);
-  this.stage.addChild(this.cautionCircle);
-  this.stage.addChild(this.panicCircle);
+  this.stage.addChild(this.threat.cautionCircle);
+  this.stage.addChild(this.threat.panicCircle);
+  this.stage.addChild(this.threat);
   this.stage.addChild(this.forceLine);
   this.stage.addChild(this.bird);
-  this.stage.addChild(this.threat);
+  this.stage.addChild(this.bird2);
   this.stage.addChild(this.target);
 
-  this.bird.target = this.target;
+  //this.bird.target = this.target;
 
-  this.cohesionWeight = 1;
-  this.alignmentWeight = 1;
-  this.separationWeight = 1;
-  this.evadeWeight = 1;
-  this.arriveWeight = 1;
+  //this.cohesionWeight = 1;
+  //this.alignmentWeight = 1;
+  //this.separationWeight = 1;
+  //this.evadeWeight = 1;
+  //this.arriveWeight = 1;
 
   //this.bird.mousemove = function(mouseData) {
   //// this line will get the mouse coords relative to the sprites..
@@ -125,6 +69,41 @@ var TestBed = function() {
 
 };
 
+TestBed.prototype.buildRenderer = function() {
+  var antiAlias = true;
+
+  var width = document.getElementById("game-canvas").width;
+  var height = document.getElementById("game-canvas").height;
+
+  this.renderer = new PIXI.autoDetectRenderer(
+      width,
+      height,
+      document.getElementById("game-canvas"),
+      false,
+      antiAlias);
+}
+
+TestBed.prototype.buildOptions = function() {
+  var options = {};
+  options.running = true;
+  options.rotating = true;
+  options.moving = true;
+  options.arriveEnabled = true;
+  options.evadeEnabled = true;
+  options.debuggingEnabled = true;
+  return options;
+}
+
+TestBed.prototype.setupKeybindings = function() {
+  KeyboardJS.on('p', this.toggleRunning, null);
+  KeyboardJS.on('m', this.toggleMovement, null);
+  KeyboardJS.on('r', this.toggleRotating, null);
+  KeyboardJS.on('a', this.toggleTarget, null);
+  KeyboardJS.on('h', this.toggleThreat, null);
+  KeyboardJS.on('E', this.toggleEvade, null);
+  KeyboardJS.on('A', this.toggleArrive, null);
+}
+
 TestBed.prototype.update = function(timeSinceLastFrame) {
   if (!this.options.running) {
     this.renderer.render(this.stage);
@@ -136,9 +115,11 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
 
   if (this.options.moving) {
     this.bird.updatePosition(timeSinceLastFrame);
+    this.bird2.updatePosition(timeSinceLastFrame);
   }
   if (this.options.rotating) {
     this.bird.updateRotation();
+    this.bird2.updateRotation();
   }
   this.updateText();
   if (this.toggleDebugging) {
@@ -151,8 +132,7 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
 };
 
 TestBed.prototype.updateText = function(message) {
-  //console.log(toDegrees(this.bird.rotation));
-  //this.textInfo.setText(this.bird.rotation);
+
 };
 
 TestBed.prototype.updateForceLine = function() {
@@ -166,19 +146,19 @@ TestBed.prototype.updateForceLine = function() {
 //return this.cohesion.calculate(this.bird);
 //};
 
-TestBed.prototype.calculateAlignment = function() {
-  if(!this.alignmentEnabled) {
-    return zero();
-  }
-  //return this.cohesion.calculate(this.bird);
-};
+//TestBed.prototype.calculateAlignment = function() {
+//if(!this.alignmentEnabled) {
+//return zero();
+//}
+////return this.cohesion.calculate(this.bird);
+//};
 
-TestBed.prototype.calculateSeparation = function() {
-  if(!this.separationEnabled) {
-    return zero();
-  }
-  //return this.cohesion.calculate(this.bird);
-};
+//TestBed.prototype.calculateSeparation = function() {
+//if(!this.separationEnabled) {
+//return zero();
+//}
+////return this.cohesion.calculate(this.bird);
+//};
 
 //TestBed.prototype.calculateArrive = function() {
 //if(!this.arriveEnabled) {
@@ -194,15 +174,9 @@ TestBed.prototype.calculateSeparation = function() {
 //return this.evade.calculate(toVector(this.threat.position));
 //};
 
-TestBed.prototype.moveThreat = function(newPosition) {
-  this.threat.position = newPosition;
-
-  this.cautionCircle.position = newPosition;
-  this.panicCircle.position = newPosition;
-};
 
 TestBed.prototype.toggleThreat = function() {
-  testBed.moveThreat(new PIXI.Point(getRandomInt(10, 780), getRandomInt(10, 780)));
+  testBed.threat.move(new PIXI.Point(getRandomInt(10, 780), getRandomInt(10, 780)));
 };
 
 TestBed.prototype.toggleTarget = function() {

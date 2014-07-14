@@ -1,11 +1,12 @@
 
-var MyStage = function() {
-  PIXI.Stage.apply(this, arguments);
+function MyStage() {
+  var colour = 0x3355AA;
+  PIXI.Stage.call(this, colour);
 };
 
-MyStage.prototype = PIXI.Stage.prototype;
-MyStage.prototype.constructor = PIXI.Stage;
+MyStage.constructor = MyStage;
+MyStage.prototype = Object.create(PIXI.Stage.prototype);
 
-MyStage.prototype.mousedown = function(mouseData) {
+//MyStage.prototype.mousedown = function(mouseData) {
 
-};
+//};
