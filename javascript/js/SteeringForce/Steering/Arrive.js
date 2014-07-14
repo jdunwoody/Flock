@@ -1,3 +1,4 @@
+"use strict";
 
 function Arrive(options, bird) {
   this.options = options;

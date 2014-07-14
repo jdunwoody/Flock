@@ -1,18 +1,20 @@
 "use strict";
 
-function Steering(options, target, threat, bird) {
+function Steering(options, target, threat, bird, neighbours) {
   this.target = target;
   this.threat = threat;
 
   this.arrive = new Arrive(options, bird);
   this.evade = new Evade(options, bird);
+  this.separation = new Separation(options, bird, neighbours);
 };
 
 Steering.prototype.calculate = function() {
   var evadeVector = this.evade.calculate(toVector(this.threat.position));
   var arriveVector = this.arrive.calculate(toVector(this.target.position));
+  var separationVector = this.separation.calculate();
 
-  return add(evadeVector, arriveVector);
+  return add(separationVector, add(evadeVector, arriveVector));
 
   //var steeringForce = zero();
   //steeringForce = add(steeringForce, scale(this.calculateCohesion(), this.cohesionWeight));

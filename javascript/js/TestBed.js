@@ -13,15 +13,19 @@ var TestBed = function() {
   this.target = new Target(100, 100);
   this.threat = new Threat();
 
-  this.bird = new Bird(this.options, this.target, this.threat, 100, 100);
-  this.bird.updatePosition(1);
+  this.bird = new Bird(this.options, this.target, 100, 100);
   this.bird.maxSpeed = 4;
   this.bird.deceleration = 20;
 
-  this.bird2 = new Bird(this.options, this.target, this.threat, 200, 200);
-  this.bird2.updatePosition(6);
+  this.bird2 = new Bird(this.options, this.target, 200, 200);
   this.bird2.maxSpeed = 20;
-  this.bird.deceleration = 14;
+  this.bird2.deceleration = 14;
+
+  this.bird.configureSteering(this.threat, [this.bird2]);
+  this.bird2.configureSteering(this.threat, [this.bird]);
+
+  //this.bird.updatePosition(1);
+  //this.bird2.updatePosition(6);
 
   this.stage = new MyStage();
 
@@ -54,12 +58,13 @@ TestBed.prototype.buildRenderer = function() {
 
 TestBed.prototype.buildOptions = function() {
   var options = {};
-  options.running          = true;
-  options.rotating         = true;
-  options.moving           = true;
-  options.arriveEnabled    = true;
-  options.evadeEnabled     = true;
-  options.debuggingEnabled = true;
+  options.running           = true;
+  options.rotating          = true;
+  options.moving            = true;
+  options.arriveEnabled     = false;
+  options.evadeEnabled      = false;
+  options.separationEnabled = false;
+  options.debuggingEnabled  = true;
   return options;
 }
 
@@ -71,6 +76,7 @@ TestBed.prototype.setupKeybindings = function() {
   KeyboardJS.on('h', this.toggleThreat, null);
   KeyboardJS.on('E', this.toggleEvade, null);
   KeyboardJS.on('A', this.toggleArrive, null);
+  KeyboardJS.on('s', this.toggleSeparation, null);
 }
 
 TestBed.prototype.update = function(timeSinceLastFrame) {

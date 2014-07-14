@@ -1,8 +1,10 @@
 "use strict";
 
-function Bird(options, target, threat, x, y) {
+function Bird(options, target, x, y) {
   var texture = PIXI.Texture.fromImage("img/black_bird_down.png");
   PIXI.Sprite.call(this, texture);
+
+  this.options = options;
 
   this.anchor = new PIXI.Point(0.5, 0.5);
   this.rotate = new PIXI.Point(0.5, 0.5);
@@ -17,12 +19,15 @@ function Bird(options, target, threat, x, y) {
   this.position.x = x;
   this.position.y = y;
   this.positionVector = vec2.fromValues(x, y);
-
-  this.steering = new Steering(options, this.target, threat, this);
+  this.isTagged = true;
 };
 
 Bird.constructor = Bird;
 Bird.prototype = Object.create(PIXI.Sprite.prototype);
+
+Bird.prototype.configureSteering = function(threat, neighbours) {
+  this.steering = new Steering(this.options, this.target, threat, this, neighbours);
+};
 
 Bird.prototype.mousemove = function(mouseData) {
   var parentCoordsPosition = mouseData.getLocalPosition(this.parent);
@@ -43,10 +48,10 @@ Bird.prototype.calculatePosition = function(timeSinceLastFrame) {
   var newX = x;
   var newY = y;
 
-  this.velocity[0] += changeInVelocity[0];
+  this.velocity[0] = changeInVelocity[0];
   newX = this.velocity[0] * timeSinceLastFrame + x;
 
-  this.velocity[1] += changeInVelocity[1];
+  this.velocity[1] = changeInVelocity[1];
   newY = this.velocity[1] * timeSinceLastFrame + y;
 
   newX = Math.min(1580, Math.max(10, newX));
