@@ -64,6 +64,7 @@ TestBed.prototype.buildOptions = function() {
   options.arriveEnabled     = false;
   options.evadeEnabled      = false;
   options.separationEnabled = false;
+  options.cohesionEnabled   = true;
   options.debuggingEnabled  = true;
   return options;
 }
@@ -77,6 +78,7 @@ TestBed.prototype.setupKeybindings = function() {
   KeyboardJS.on('E', this.toggleEvade, null);
   KeyboardJS.on('A', this.toggleArrive, null);
   KeyboardJS.on('s', this.toggleSeparation, null);
+  KeyboardJS.on('c', this.toggleCohesion, null);
 }
 
 TestBed.prototype.update = function(timeSinceLastFrame) {

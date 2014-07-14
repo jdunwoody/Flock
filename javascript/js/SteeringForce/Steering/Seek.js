@@ -5,9 +5,7 @@ function Seek(bird) {
 
 Seek.prototype.calculate = function(targetPosition) {
   desiredVelocity = scale(
-      normalize(
-        subtract(targetPosition, this.bird.positionVector)
-        ),
+      normalize(subtract(targetPosition, this.bird.positionVector)),
       this.bird.maxSpeed);
 
   var result = subtract(desiredVelocity, this.bird.velocity);
