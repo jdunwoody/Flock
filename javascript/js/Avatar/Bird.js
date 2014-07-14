@@ -1,6 +1,6 @@
 "use strict";
 
-function Bird(options, target, threat) {
+function Bird(options, target, threat, x, y) {
   var texture = PIXI.Texture.fromImage("img/black_bird_down.png");
   PIXI.Sprite.call(this, texture);
 
@@ -14,9 +14,9 @@ function Bird(options, target, threat) {
   this.maxSpeed = 3;
   this.velocity = vec2.create();
 
-  this.position.x = 0;
-  this.position.y = 0;
-  this.positionVector = zero();
+  this.position.x = x;
+  this.position.y = y;
+  this.positionVector = vec2.fromValues(x, y);
 
   this.steering = new Steering(options, this.target, threat, this);
 };

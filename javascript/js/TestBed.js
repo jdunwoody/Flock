@@ -12,11 +12,16 @@ var TestBed = function() {
   this.textInfo = new TextInfo("Hello World");
   this.target = new Target(100, 100);
   this.threat = new Threat();
-  this.bird = new Bird(this.options, this.target, this.threat);
-  this.bird.updatePosition();
 
-  this.bird2 = new Bird(this.options, this.target, this.threat);
-  this.bird2.updatePosition();
+  this.bird = new Bird(this.options, this.target, this.threat, 100, 100);
+  this.bird.updatePosition(1);
+  this.bird.maxSpeed = 4;
+  this.bird.deceleration = 20;
+
+  this.bird2 = new Bird(this.options, this.target, this.threat, 200, 200);
+  this.bird2.updatePosition(6);
+  this.bird2.maxSpeed = 20;
+  this.bird.deceleration = 14;
 
   this.stage = new MyStage();
 
@@ -29,44 +34,8 @@ var TestBed = function() {
   this.stage.addChild(this.bird2);
   this.stage.addChild(this.target);
 
-  //this.bird.target = this.target;
-
-  //this.cohesionWeight = 1;
-  //this.alignmentWeight = 1;
-  //this.separationWeight = 1;
-  //this.evadeWeight = 1;
-  //this.arriveWeight = 1;
-
-  //this.bird.mousemove = function(mouseData) {
-  //// this line will get the mouse coords relative to the sprites..
-  ////var localCoordsPosition = mouseData.getLocalPosition(graphics);
-  //// this line will get the mouse coords relative to the sprites parent..
-  //var parentCoordsPosition = mouseData.getLocalPosition(this.parent);
-
-  //var x = parentCoordsPosition.x;
-  //var y = parentCoordsPosition.y;
-
-  //this.target.position.x = x;
-  //this.target.position.y = y;
-
-
-  ////timeElapsed = 1;
-  ////target = vec2.fromValues(parentCoordsPosition.x, parentCoordsPosition.y);
-  //};
-
   requestAnimFrame(this.update.bind(this));
-
-  //this.bird = {};
-  //this.bird.positionVector = vec2.fromValues(this.bird.position.x, this.bird.position.y);
-  //this.bird.deceleration = 20;
-  //this.bird.maxSpeed = 3;
-  //this.bird.velocity = vec2.create();
-
-  //this.redVehicle = {};
-  //this.redVehicle.position =
-
   this.entourage = [];
-
 };
 
 TestBed.prototype.buildRenderer = function() {
@@ -85,11 +54,11 @@ TestBed.prototype.buildRenderer = function() {
 
 TestBed.prototype.buildOptions = function() {
   var options = {};
-  options.running = true;
-  options.rotating = true;
-  options.moving = true;
-  options.arriveEnabled = true;
-  options.evadeEnabled = true;
+  options.running          = true;
+  options.rotating         = true;
+  options.moving           = true;
+  options.arriveEnabled    = true;
+  options.evadeEnabled     = true;
   options.debuggingEnabled = true;
   return options;
 }
@@ -136,44 +105,9 @@ TestBed.prototype.updateText = function(message) {
 };
 
 TestBed.prototype.updateForceLine = function() {
-  this.forceLine.display(this.bird.positionVector, this.bird.velocity);
+  //this.forceLine.display(this.bird.positionVector, this.bird.velocity);
+  //this.forceLine.display(this.bird.positionVector, this.bird.velocity);
 };
-
-//TestBed.prototype.calculateCohesion = function() {
-//if(!this.cohesionEnabled) {
-//return zero();
-//}
-//return this.cohesion.calculate(this.bird);
-//};
-
-//TestBed.prototype.calculateAlignment = function() {
-//if(!this.alignmentEnabled) {
-//return zero();
-//}
-////return this.cohesion.calculate(this.bird);
-//};
-
-//TestBed.prototype.calculateSeparation = function() {
-//if(!this.separationEnabled) {
-//return zero();
-//}
-////return this.cohesion.calculate(this.bird);
-//};
-
-//TestBed.prototype.calculateArrive = function() {
-//if(!this.arriveEnabled) {
-//return zero();
-//}
-//return this.arrive.calculate(toVector(this.target.position));
-//};
-
-//TestBed.prototype.calculateEvade = function() {
-//if(!this.evadeEnabled) {
-//return zero();
-//}
-//return this.evade.calculate(toVector(this.threat.position));
-//};
-
 
 TestBed.prototype.toggleThreat = function() {
   testBed.threat.move(new PIXI.Point(getRandomInt(10, 780), getRandomInt(10, 780)));
