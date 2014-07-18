@@ -8,24 +8,23 @@ var TestBed = function() {
 
   this.buildRenderer();
 
-  this.forceLine = new ForceLine();
+  var blackBirdImage = "img/black_bird_down.png";
+  var orangeBirdImage = "img/orange_bird_down.png";
+
   this.textInfo = new TextInfo("Hello World");
   this.target = new Target(100, 100);
   this.threat = new Threat();
 
-  this.bird = new Bird(this.options, this.target, 100, 100);
-  this.bird.maxSpeed = 4;
-  this.bird.deceleration = 20;
+  this.avatar = new Bird(this.options, blackBirdImage, this.target, 100, 100);
+  this.avatar.maxSpeed = 4;
+  this.avatar.deceleration = 20;
 
-  this.bird2 = new Bird(this.options, this.target, 200, 200);
-  this.bird2.maxSpeed = 20;
-  this.bird2.deceleration = 14;
+  this.redBird = new Bird(this.options, orangeBirdImage, this.target, 200, 200);
+  this.redBird.maxSpeed = 20;
+  this.redBird.deceleration = 14;
 
-  this.bird.configureSteering(this.threat, [this.bird2]);
-  this.bird2.configureSteering(this.threat, [this.bird]);
-
-  //this.bird.updatePosition(1);
-  //this.bird2.updatePosition(6);
+  this.avatar.configureSteering(this.threat, [this.redBird]);
+  this.redBird.configureSteering(this.threat, [this.avatar]);
 
   this.stage = new MyStage();
 
@@ -33,9 +32,8 @@ var TestBed = function() {
   this.stage.addChild(this.threat.cautionCircle);
   this.stage.addChild(this.threat.panicCircle);
   this.stage.addChild(this.threat);
-  this.stage.addChild(this.forceLine);
-  this.stage.addChild(this.bird);
-  this.stage.addChild(this.bird2);
+  this.stage.addChild(this.avatar);
+  this.stage.addChild(this.redBird);
   this.stage.addChild(this.target);
 
   requestAnimFrame(this.update.bind(this));
@@ -61,10 +59,10 @@ TestBed.prototype.buildOptions = function() {
   options.running           = true;
   options.rotating          = true;
   options.moving            = true;
-  options.arriveEnabled     = false;
-  options.evadeEnabled      = false;
+  options.arriveEnabled     = true;
+  options.evadeEnabled      = true;
   options.separationEnabled = false;
-  options.cohesionEnabled   = true;
+  options.cohesionEnabled   = false;
   options.debuggingEnabled  = true;
   return options;
 }
@@ -91,17 +89,14 @@ TestBed.prototype.update = function(timeSinceLastFrame) {
   timeSinceLastFrame = Math.min(10, timeSinceLastFrame);
 
   if (this.options.moving) {
-    this.bird.updatePosition(timeSinceLastFrame);
-    this.bird2.updatePosition(timeSinceLastFrame);
+    this.avatar.updatePosition(timeSinceLastFrame);
+    this.redBird.updatePosition(timeSinceLastFrame);
   }
   if (this.options.rotating) {
-    this.bird.updateRotation();
-    this.bird2.updateRotation();
+    this.avatar.updateRotation();
+    this.redBird.updateRotation();
   }
   this.updateText();
-  if (this.toggleDebugging) {
-    this.updateForceLine();
-  }
 
   this.renderer.render(this.stage);
 
@@ -112,10 +107,6 @@ TestBed.prototype.updateText = function(message) {
 
 };
 
-TestBed.prototype.updateForceLine = function() {
-  //this.forceLine.display(this.bird.positionVector, this.bird.velocity);
-  //this.forceLine.display(this.bird.positionVector, this.bird.velocity);
-};
 
 TestBed.prototype.toggleThreat = function() {
   testBed.threat.move(new PIXI.Point(getRandomInt(10, 780), getRandomInt(10, 780)));

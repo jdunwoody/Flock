@@ -18,10 +18,10 @@ Separation.prototype.calculate = function() {
     if((this.neighbours[i] != this.bird) && this.neighbours[i].isTagged) {
       var toAgent = subtract(this.bird.positionVector, this.neighbours[i].positionVector);
       //scale the force inversely proportional to the agent's distance //from its neighbor.
-      if (length(toAgent) < 100) {
-        steeringForce = add(steeringForce, scale(normalize(toAgent), 1/length(toAgent)));
-        steeringForce = scale(steeringForce, 10);
-      }
+      //if (length(toAgent) < 100) {
+      steeringForce = add(steeringForce, scale(normalize(toAgent), 1/length(toAgent)));
+      //steeringForce = scale(steeringForce, 10);
+      //}
     }
   }
 

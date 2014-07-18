@@ -8,7 +8,6 @@ function Cohesion(options, bird, neighbours) {
 };
 
 Cohesion.prototype.calculate = function() {
-  debugger;
   if(!this.options.cohesionEnabled) {
     return zero();
   }

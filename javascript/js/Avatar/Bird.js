@@ -1,7 +1,7 @@
 "use strict";
 
-function Bird(options, target, x, y) {
-  var texture = PIXI.Texture.fromImage("img/black_bird_down.png");
+function Bird(options, image, target, x, y) {
+  var texture = PIXI.Texture.fromImage(image);
   PIXI.Sprite.call(this, texture);
 
   this.options = options;
@@ -40,7 +40,7 @@ Bird.prototype.mousemove = function(mouseData) {
 };
 
 Bird.prototype.calculatePosition = function(timeSinceLastFrame) {
-  var changeInVelocity = this.steering.calculate();
+  var changeInVelocity = this.steering.calculateMovement();
 
   var x = this.position.x;
   var y = this.position.y;
