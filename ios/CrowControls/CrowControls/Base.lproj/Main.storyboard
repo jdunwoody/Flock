@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Game View Controller-->
+        <scene sceneID="tXr-a1-R10">
+            <objects>
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="CrowControls" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="maK-i9-Uhn"/>
+                        <viewControllerLayoutGuide type="bottom" id="khH-OB-KpY"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view opaque="NO" alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OAs-Hm-BN3" userLabel="ControlsView">
+                                <rect key="frame" x="0.0" y="400" width="600" height="200"/>
+                                <color key="backgroundColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="biR-U5-St7"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxJ-Mh-fmS">
+                                <rect key="frame" x="20" y="24" width="45" height="30"/>
+                                <state key="normal" title="Config">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="configPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="cxg-zn-56T"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="OAs-Hm-BN3" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="DgU-8c-1AK"/>
+                            <constraint firstAttribute="bottom" secondItem="OAs-Hm-BN3" secondAttribute="bottom" id="evy-38-9Z9"/>
+                            <constraint firstItem="kxJ-Mh-fmS" firstAttribute="top" secondItem="maK-i9-Uhn" secondAttribute="bottom" constant="4" id="gbN-pe-H5G"/>
+                            <constraint firstAttribute="trailing" secondItem="OAs-Hm-BN3" secondAttribute="trailing" id="l9i-YC-7Nt"/>
+                            <constraint firstItem="kxJ-Mh-fmS" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" constant="4" id="ybg-HX-IUs"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Y5C-el-kWD" appends="YES" id="w27-6q-4GI"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="controlsPanGestureRegogniser" destination="Y5C-el-kWD" id="Lwr-q0-ePo"/>
+                        <outlet property="controlsView" destination="OAs-Hm-BN3" id="7Im-iH-ESc"/>
+                        <segue destination="OTh-rU-wYy" kind="show" identifier="showSettings" id="z5b-It-hDD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="Y5C-el-kWD" userLabel="Controls Pan Gesture Recognizer">
+                    <connections>
+                        <action selector="panned:" destination="BV1-FR-VrT" id="PTp-ca-Wkf"/>
+                        <outlet property="delegate" destination="BV1-FR-VrT" id="exa-f0-f71"/>
+                    </connections>
+                </panGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="161" y="389"/>
+        </scene>
+        <!--Settings Table View Controller-->
+        <scene sceneID="5wR-Ap-v47">
+            <objects>
+                <tableViewController id="OTh-rU-wYy" customClass="SettingsTableViewController" customModule="CrowControls" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4Yq-Lo-yhw">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switchCell" id="ua9-yu-haH" customClass="SwitchTableViewCell" customModule="CrowControls" customModuleProvider="target">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ua9-yu-haH" id="T5x-GL-w2k">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1js-yo-dEg">
+                                            <rect key="frame" x="12" y="11.5" width="42" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FM2-Pu-vBu">
+                                            <rect key="frame" x="539" y="6" width="51" height="31"/>
+                                        </switch>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="1js-yo-dEg" secondAttribute="centerY" id="9vS-eI-Xid"/>
+                                        <constraint firstAttribute="centerY" secondItem="FM2-Pu-vBu" secondAttribute="centerY" id="X7f-cr-vIn"/>
+                                        <constraint firstItem="1js-yo-dEg" firstAttribute="leading" secondItem="T5x-GL-w2k" secondAttribute="leadingMargin" constant="4" id="q2j-Qr-gdI"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="FM2-Pu-vBu" secondAttribute="trailing" constant="4" id="qzM-Jz-vEt"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="nameLabel" destination="T5x-GL-w2k" id="RKb-hK-ygL"/>
+                                    <outlet property="switch" destination="FM2-Pu-vBu" id="sEf-BW-dLB"/>
+                                    <outlet property="switchControl" destination="X7f-cr-vIn" id="rmr-t0-QxQ"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="OTh-rU-wYy" id="BKg-21-fxJ"/>
+                            <outlet property="delegate" destination="OTh-rU-wYy" id="Bim-PB-eBg"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U8b-3E-Eiy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="871" y="389"/>
+        </scene>
+    </scenes>
+</document>
