@@ -11,6 +11,8 @@ import SpriteKit
 
 class Flock {
     
+    let birds: [Bird]
+    let lead: Bird
     var origin: CGPoint {
         get {
             return birds[0].origin
@@ -31,20 +33,30 @@ class Flock {
     
     init() {
         birds = []
+        
         for var i = 0; i < Settings.initialNumberOfBirds; i++ {
             birds.append(Bird())
+        }
+        lead = birds[0]
+    }
+    
+    func update() {
+        for bird in birds {
+            bird.update(self)
         }
     }
     
     func configure(centre : CGPoint, maxYTranslation : CGFloat) {
-        var i = 0
+        lead.configure(origin, maxYTranslation: maxYTranslation)
         
         for bird in birds {
+            if bird == lead {
+                continue
+            }
             let birdOrigin = CGPoint(
-                x: origin.x + 20.0 * CGFloat(i),
-                y: origin.y - 20.0 * CGFloat(i))
+                x: CGFloat(arc4random_uniform(200)),
+                y: CGFloat(arc4random_uniform(200)))
             bird.configure(birdOrigin, maxYTranslation: maxYTranslation)
-            i++
         }
     }
     
@@ -94,14 +106,8 @@ class Flock {
             if bird == birds[0] {
                 continue
             }
-            
-           
         }
     }
-    
-    private
-    
-    let birds : [Bird]
 }
 
 func ==(left: Bird, right: Bird) -> Bool {

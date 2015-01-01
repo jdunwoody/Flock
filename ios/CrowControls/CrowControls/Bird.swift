@@ -14,10 +14,11 @@ class Bird
 {
     var maxYTranslation = 0.0 as CGFloat
     
-    let actions : BirdActions
-    let sprite : BirdSprite
-    let textures : Textures
-    var origin : CGPoint
+    let actions: BirdActions
+    let sprite: BirdSprite
+    let textures: Textures
+    var origin: CGPoint
+    var debugForceLine: DebugForceLine
     
     var position : CGPoint {
         get {
@@ -37,20 +38,20 @@ class Bird
     //        }
     //    }
     
-    init()
-    {
+    init() {
         self.textures = Textures()
         self.actions = BirdActions(textures: textures)
         self.sprite = BirdSprite(actions : self.actions, textures : self.textures)
         self.origin = CGPointZero
-        self.heading = CGPointZero
+        self.heading = CGPoint(x: 0, y: 1.0)
+        self.debugForceLine = DebugForceLine()
     }
     
-    func configure(origin : CGPoint, maxYTranslation : CGFloat)
-    {
+    func configure(origin : CGPoint, maxYTranslation : CGFloat) {
         self.origin = origin
-        sprite.position = origin
         self.maxYTranslation = maxYTranslation
+        sprite.position = origin
+        sprite.addChild(self.debugForceLine.sprite)
     }
     
     //    func fly()
@@ -58,8 +59,7 @@ class Bird
     //        self.sprite.runAction(actions.flappingBird(textures), withKey: "flapping")
     //    }
     
-    func cruise()
-    {
+    func cruise() {
         sprite.removeActionForKey("flying")
         sprite.runAction(actions.fly(0.5), withKey: "flying")
         sprite.runAction(SKAction.moveTo(origin, duration: 0.2))
@@ -67,14 +67,12 @@ class Bird
         //        sprite.removeActionForKey("decelerating")
     }
     
-    func accelerate(percentage : CGFloat)
-    {
+    func accelerate(percentage : CGFloat) {
         sprite.removeActionForKey("flying")
         let amount = origin.y - percentage * maxYTranslation
         
         sprite.runAction(actions.fly(percentage), withKey: "flying")
         sprite.position.y = amount
-        
         
         //        normalSpeed()
         //
@@ -83,8 +81,7 @@ class Bird
         //        sprite.runAction(advancing, withKey: "advancing")
     }
     
-    func deccelerate(percentage : CGFloat)
-    {
+    func deccelerate(percentage : CGFloat) {
         sprite.removeActionForKey("flying")
         let amount = origin.y + percentage * maxYTranslation
         
@@ -100,8 +97,7 @@ class Bird
         //        sprite.runAction(decelerating, withKey: "decelerating")
     }
     
-    func straighten()
-    {
+    func straighten() {
         //        self.sprite.zRotation = 0.0
         
         //        sprite.removeActionForKey("turningLeft")
@@ -109,8 +105,7 @@ class Bird
         sprite.runAction(SKAction.rotateToAngle(0.0, duration: 0.2))
     }
     
-    func turningRight(percentage : CGFloat)
-    {
+    func turningRight(percentage : CGFloat) {
         self.sprite.zRotation = -percentage * CGFloat(M_PI)
         
         //        straighten()
@@ -119,8 +114,7 @@ class Bird
         //        self.sprite.runAction(turningRight, withKey: "turningRight")
     }
     
-    func turningLeft(percentage : CGFloat)
-    {
+    func turningLeft(percentage : CGFloat) {
         self.sprite.zRotation = CGFloat(percentage * CGFloat(M_PI))
         
         //        straighten()
@@ -129,13 +123,13 @@ class Bird
         //        sprite.runAction(turningLeft, withKey: "turningLeft")
     }
     
-    func update() {
-        steering.separationOn = true
-        steering.alignmentOn = true
-        steering.cohesionOn = true
-        steering.obstacleAvoidanceOn = true
-        steering.wanderOn = true
-        //        steering.evadeOn(Dog)
+    func update(flock: Flock) {
+        let force = steering.calculate(self, neighbours: flock.birds)
+        self.debugForceLine.update(force)
+        
+        let angle = atan2(force.y, force.x)
+        
+        //        self.sprite.zRotation = angle
     }
     
     //    func normalFlappingAnimation() -> SKAction {
@@ -173,10 +167,10 @@ func /(left: CGPoint, right: CGFloat) -> CGPoint {
 }
 
 func +=(left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x + right.x, y: left.y + right.y)
+    return left + right
 }
 
-func + (left: CGPoint, right: CGPoint) -> CGPoint {
+func +(left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
 }
 
@@ -188,11 +182,15 @@ func -=(left: CGPoint, right: CGPoint) -> CGPoint {
     return CGPoint(x: left.x - right.x, y: left.y - right.y)
 }
 
+//func *(point: CGPoint, float: CGFloat) -> CGPoint {
+//    return CGPoint(x: point.x * float, y: point.y * float)
+//}
+
 func *(point: CGPoint, factor: CGFloat) -> CGPoint {
     return CGPoint(x: point.x * factor, y:point.y * factor)
 }
 
-func != (left: Bird, right: Bird) -> Bool {
+func !=(left: Bird, right: Bird) -> Bool {
     return left.sprite != right.sprite
 }
 
@@ -215,7 +213,10 @@ extension CGPoint {
     var length: CGFloat { return sqrt(self.x * self.x + self.y * self.y) }
     
     var normalized: CGPoint {
-        return CGPoint(x: self.x / self.length, y: self.y / self.length)
+        let x = self.x / self.length
+        let y = self.y / self.length
+        
+        return CGPoint(x: x, y: y)
     }
     
     //    func minus(other: CGPoint) -> CGPoint {

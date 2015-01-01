@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E0EF2071A54C4A100E30F0C /* DebugForceLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0EF2061A54C4A100E30F0C /* DebugForceLine.swift */; };
 		9E21C6E91A38681500FBF804 /* SampleBesierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E21C6E81A38681500FBF804 /* SampleBesierView.swift */; };
 		9E2542921A3AF7FD006F1480 /* Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2542911A3AF7FC006F1480 /* Textures.swift */; };
 		9E2542941A3AFD20006F1480 /* BirdActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2542931A3AFD20006F1480 /* BirdActions.swift */; };
@@ -15,6 +16,7 @@
 		9E77C1D41A5217AE0037035A /* Steering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E77C1D31A5217AE0037035A /* Steering.swift */; };
 		9E81F0171A40475C00485A61 /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E81F0161A40475C00485A61 /* Controls.swift */; };
 		9E81F0191A40518100485A61 /* Bird.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E81F0181A40518100485A61 /* Bird.swift */; };
+		9E9951411A55683E005E036A /* Vector2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9951401A55683E005E036A /* Vector2D.swift */; };
 		9EA524A41A39B4C600C0C739 /* Birds.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 9EA524A31A39B4C600C0C739 /* Birds.atlas */; };
 		9EA524A61A39BBC600C0C739 /* BirdSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA524A51A39BBC600C0C739 /* BirdSprite.swift */; };
 		9EBD55651A4E040500D3B12F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9EBD55641A4E040500D3B12F /* Settings.bundle */; };
@@ -40,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E0EF2061A54C4A100E30F0C /* DebugForceLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugForceLine.swift; sourceTree = "<group>"; };
 		9E21C6E81A38681500FBF804 /* SampleBesierView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleBesierView.swift; sourceTree = "<group>"; };
 		9E2542911A3AF7FC006F1480 /* Textures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Textures.swift; sourceTree = "<group>"; };
 		9E2542931A3AFD20006F1480 /* BirdActions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BirdActions.swift; sourceTree = "<group>"; };
@@ -48,6 +51,7 @@
 		9E77C1D31A5217AE0037035A /* Steering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Steering.swift; sourceTree = "<group>"; };
 		9E81F0161A40475C00485A61 /* Controls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		9E81F0181A40518100485A61 /* Bird.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bird.swift; sourceTree = "<group>"; };
+		9E9951401A55683E005E036A /* Vector2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2D.swift; sourceTree = "<group>"; };
 		9EA524A31A39B4C600C0C739 /* Birds.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Birds.atlas; sourceTree = "<group>"; };
 		9EA524A51A39BBC600C0C739 /* BirdSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BirdSprite.swift; sourceTree = "<group>"; };
 		9EBD55641A4E040500D3B12F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				9E77C1D31A5217AE0037035A /* Steering.swift */,
 				9ED8982D1A346A77004EB99D /* Supporting Files */,
 				9E2542911A3AF7FC006F1480 /* Textures.swift */,
+				9E0EF2061A54C4A100E30F0C /* DebugForceLine.swift */,
+				9E9951401A55683E005E036A /* Vector2D.swift */,
 			);
 			path = CrowControls;
 			sourceTree = "<group>";
@@ -259,8 +265,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E77C1D41A5217AE0037035A /* Steering.swift in Sources */,
+				9E0EF2071A54C4A100E30F0C /* DebugForceLine.swift in Sources */,
 				9EA524A61A39BBC600C0C739 /* BirdSprite.swift in Sources */,
 				9E2542961A3B04E2006F1480 /* DebugControls.swift in Sources */,
+				9E9951411A55683E005E036A /* Vector2D.swift in Sources */,
 				9E21C6E91A38681500FBF804 /* SampleBesierView.swift in Sources */,
 				9E64B4231A4AE35400DD5152 /* Flock.swift in Sources */,
 				9ED898341A346A77004EB99D /* GameScene.swift in Sources */,
