@@ -21,7 +21,7 @@ class GameScene: SKScene {
     
     func configure(origin : CGPoint, maxYTranslation : CGFloat)
     {
-        self.flock.origin = origin
+        self.flock.origin = Vector2D(point: origin)
         self.maxYTranslation = maxYTranslation
     }
     
@@ -68,7 +68,7 @@ class GameScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
-        flock.configure(view.center, maxYTranslation : maxYTranslation)
+        flock.configure(Vector2D(point: view.center), maxYTranslation : maxYTranslation)
         
         for sprite in flock.sprites {
             addChild(sprite)
@@ -79,7 +79,6 @@ class GameScene: SKScene {
                 flock.cruise()
             }
         }
-        
         debugControls.position = CGPoint(x: view.center.x, y: 0.0)
         addChild(debugControls)
     }
@@ -89,7 +88,7 @@ class GameScene: SKScene {
     //
     //        for touch: AnyObject in touches {
     //            let location = touch.locationInNode(self)
-    //            NSLog("Touched at %@", NSStringFromCGPoint(location))
+    //            NSLog("Touched at %@", NSStringFromVector2D(location))
     //
     //            //            let sprite = SKSpriteNode(imageNamed:"Spaceship")
     //            //

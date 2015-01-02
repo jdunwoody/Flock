@@ -13,7 +13,7 @@ class Flock {
     
     let birds: [Bird]
     let lead: Bird
-    var origin: CGPoint {
+    var origin: Vector2D {
         get {
             return birds[0].origin
         }
@@ -46,14 +46,14 @@ class Flock {
         }
     }
     
-    func configure(centre : CGPoint, maxYTranslation : CGFloat) {
+    func configure(centre : Vector2D, maxYTranslation : CGFloat) {
         lead.configure(origin, maxYTranslation: maxYTranslation)
         
         for bird in birds {
             if bird == lead {
                 continue
             }
-            let birdOrigin = CGPoint(
+            let birdOrigin = Vector2D(
                 x: CGFloat(arc4random_uniform(200)),
                 y: CGFloat(arc4random_uniform(200)))
             bird.configure(birdOrigin, maxYTranslation: maxYTranslation)
@@ -61,39 +61,45 @@ class Flock {
     }
     
     func turningRight(percentage : CGFloat) {
-        for bird in birds {
-            bird.turningRight(percentage)
-        }
+        lead.turningRight(percentage)
+//        for bird in birds {
+//            bird.turningRight(percentage)
+//        }
     }
     
     func turningLeft(percentage : CGFloat) {
-        for bird in birds {
-            bird.turningLeft(percentage)
-        }
+        lead.turningLeft(percentage)
+//        for bird in birds {
+//            bird.turningLeft(percentage)
+//        }
     }
     
     func straighten() {
-        for bird in birds {
-            bird.straighten()
-        }
+        lead.straighten()
+//        for bird in birds {
+//            bird.straighten()
+//        }
     }
     
     func cruise() {
-        for bird in birds {
-            bird.cruise()
-        }
+        lead.cruise()
+//        for bird in birds {
+//            bird.cruise()
+//        }
     }
     
     func accelerate(percentage : CGFloat) {
-        for bird in birds {
-            bird.accelerate(percentage)
-        }
+        lead.accelerate(percentage)
+//        for bird in birds {
+//            bird.accelerate(percentage)
+//        }
     }
     
     func decelerate(percentage : CGFloat) {
-        for bird in birds {
-            bird.deccelerate(percentage)
-        }
+        lead.deccelerate(percentage)
+//        for bird in birds {
+//            bird.deccelerate(percentage)
+//        }
     }
     
     func steeringForce() {

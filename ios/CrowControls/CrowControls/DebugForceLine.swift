@@ -14,14 +14,11 @@ class DebugForceLine
     let sprite: SKShapeNode
     
     init() {
-        let pathToDraw = CGPathCreateMutable()
-        CGPathMoveToPoint(pathToDraw, nil, 100.0, 100.0)
-        CGPathAddLineToPoint(pathToDraw, nil, 50.0, 50.0)
         //        pathToDraw.addLineToPoint(50.0, 50.0)
-        sprite = SKShapeNode(path: pathToDraw)
+        sprite = SKShapeNode()
         //        sprite.path = pathToDraw
         sprite.strokeColor = SKColor.redColor()
-        
+        linePath(0.0, y: 0.0)
         //        SKShapeNode *yourline = [SKShapeNode node];
         //        CGMutablePathRef pathToDraw = CGPathCreateMutable();
         //        CGPathMoveToPoint(pathToDraw, NULL, 100.0, 100.0);
@@ -42,7 +39,17 @@ class DebugForceLine
         //        sprite = SKShapeNode(path: path)
     }
     
-    func update(force: CGPoint) {
-        
+    func update(force: Vector2D) {
+        sprite.path = linePath(force.x * 1000.0, y: force.y * 1000.0)
+    }
+    
+    private
+    
+    func linePath(x: CGFloat, y: CGFloat) -> CGPathRef {
+        let pathToDraw = CGPathCreateMutable()
+        CGPathMoveToPoint(pathToDraw, nil, 0.0, 0.0)
+        CGPathAddLineToPoint(pathToDraw, nil, x, y)
+     
+        return pathToDraw
     }
 }

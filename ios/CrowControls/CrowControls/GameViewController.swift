@@ -33,7 +33,7 @@ class GameViewController: UIViewController {
     var sceneRef : GameScene?
     var debugControls : DebugControls? = nil
     var bezierPath = UIBezierPath()
-    var controlPoint2 = CGPointZero
+    var controlPoint2 = Vector2D()
     //    var bird : Bird
     @IBOutlet weak var controlsView: UIView!
     
@@ -56,7 +56,7 @@ class GameViewController: UIViewController {
         
         self.sceneRef = GameScene.unarchiveFromFile("GameScene") as GameScene!
         
-        self.debugControls?.updateControls(CGPoint(x: 0.0, y: 200.0 ))
+        self.debugControls?.updateControls(Vector2D(x: 0.0, y: 200.0 ))
         
         if let scene = sceneRef {
             scene.configure(view.center, maxYTranslation : self.controlsView.frame.height)
@@ -82,12 +82,12 @@ class GameViewController: UIViewController {
         let translation = controlsPanGestureRegogniser.translationInView(self.controlsView)
         
         if let scene = sceneRef {
-            //            NSLog("Velocity %@", NSStringFromCGPoint(velocity))
-            NSLog("Translation %@", NSStringFromCGPoint(translation))
-            NSLog("Total / 2 %@", view.frame.size.width / 2.0)
+            //            NSLog("Velocity %@", NSStringFromVector2D(velocity))
+            //            NSLog("Translation %@", NSStringFromCGPoint(translation))
+            //            NSLog("Total / 2 %@", view.frame.size.width / 2.0)
             
             if controlsPanGestureRegogniser.state == UIGestureRecognizerState.Ended {
-                debugControls?.updateControls(CGPoint(x: 0.0, y: 200.0 ))
+                debugControls?.updateControls(Vector2D(x: 0.0, y: 200.0 ))
                 if translation.x != 0 {
                     scene.stoppedHorizontalPanning()
                 }
@@ -96,7 +96,7 @@ class GameViewController: UIViewController {
                 }
                 
             } else {
-                debugControls?.updateControls(CGPoint(x: translation.x, y: translation.y))
+                debugControls?.updateControls(Vector2D(x: translation.x, y: translation.y))
                 
                 if translation.x > 0 {
                     scene.pannedRight(CGFloat(abs(translation.x)) / (CGFloat(controlsView.frame.size.width / 2.0)))
@@ -150,9 +150,9 @@ class GameViewController: UIViewController {
     //        let cgPath = CGPathCreateMutable();
     //
     //
-    //        self.controlPoint2 = CGPoint(x: 100.0, y: 100.0)
-    //        self.bezierPath.moveToPoint(CGPoint(x: 0.0, y: 0.0))
-    //        self.bezierPath.addCurveToPoint(CGPoint(x: 100.0,y: 220.0), controlPoint1: CGPoint(x: 0.0, y: 220.0), controlPoint2: self.controlPoint2)
+    //        self.controlPoint2 = Vector2D(x: 100.0, y: 100.0)
+    //        self.bezierPath.moveToPoint(Vector2D(x: 0.0, y: 0.0))
+    //        self.bezierPath.addCurveToPoint(Vector2D(x: 100.0,y: 220.0), controlPoint1: Vector2D(x: 0.0, y: 220.0), controlPoint2: self.controlPoint2)
     //        self.path = bezierPath.CGPath
     //
     //    }

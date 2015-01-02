@@ -17,19 +17,19 @@ class Bird
     let actions: BirdActions
     let sprite: BirdSprite
     let textures: Textures
-    var origin: CGPoint
+    var origin: Vector2D
     var debugForceLine: DebugForceLine
     
-    var position : CGPoint {
+    var position : Vector2D {
         get {
-            return sprite.position
+            return Vector2D(point: sprite.position)
         }
         set {
-            sprite.position = newValue
+            sprite.position = newValue.point
         }
     }
     
-    //    var origin : CGPoint {
+    //    var origin : Vector2D {
     ////        get {
     ////            return sprite.position
     ////        }
@@ -42,15 +42,15 @@ class Bird
         self.textures = Textures()
         self.actions = BirdActions(textures: textures)
         self.sprite = BirdSprite(actions : self.actions, textures : self.textures)
-        self.origin = CGPointZero
-        self.heading = CGPoint(x: 0, y: 1.0)
+        self.origin = Vector2D()
+        self.heading = Vector2D(x: 0, y: 1.0)
         self.debugForceLine = DebugForceLine()
     }
     
-    func configure(origin : CGPoint, maxYTranslation : CGFloat) {
+    func configure(origin : Vector2D, maxYTranslation : CGFloat) {
         self.origin = origin
         self.maxYTranslation = maxYTranslation
-        sprite.position = origin
+        sprite.position = origin.point
         sprite.addChild(self.debugForceLine.sprite)
     }
     
@@ -62,7 +62,7 @@ class Bird
     func cruise() {
         sprite.removeActionForKey("flying")
         sprite.runAction(actions.fly(0.5), withKey: "flying")
-        sprite.runAction(SKAction.moveTo(origin, duration: 0.2))
+        sprite.runAction(SKAction.moveTo(origin.point, duration: 0.2))
         //        sprite.removeActionForKey("advancing")
         //        sprite.removeActionForKey("decelerating")
     }
@@ -129,6 +129,10 @@ class Bird
         
         let angle = atan2(force.y, force.x)
         
+//        let p:CGPoint = self.sprite.position
+//        let f:CGPoint = force.point
+//        self.sprite.position = p + f
+        self.sprite.position = self.sprite.position + force
         //        self.sprite.zRotation = angle
     }
     
@@ -150,52 +154,52 @@ class Bird
     //        return SKAction.animateWithTextures(self.textures, timePerFrame: 0.1, resize: false, restore: true)
     //    }
     
-    var heading: CGPoint
+    var heading: Vector2D
     
     private
     
     let steering = Steering()
 }
 
-func += (inout left: CGPoint, right: CGFloat) {
+func += (inout left: Vector2D, right: CGFloat) {
     left.x = left.x + right
     left.y = left.y + right
 }
 
-func /(left: CGPoint, right: CGFloat) -> CGPoint {
-    return CGPoint(x: left.x / right, y: left.y / right)
-}
-
-func +=(left: CGPoint, right: CGPoint) -> CGPoint {
-    return left + right
-}
-
-func +(left: CGPoint, right: CGPoint) -> CGPoint {
+func +(left: CGPoint, right: Vector2D) -> CGPoint {
     return CGPoint(x: left.x + right.x, y: left.y + right.y)
 }
 
-func -(left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x - right.x, y: left.y - right.y)
+func /(left: Vector2D, right: CGFloat) -> Vector2D {
+    return Vector2D(x: left.x / right, y: left.y / right)
 }
 
-func -=(left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x - right.x, y: left.y - right.y)
+func +=(left: Vector2D, right: Vector2D) -> Vector2D {
+    return left + right
 }
 
-//func *(point: CGPoint, float: CGFloat) -> CGPoint {
-//    return CGPoint(x: point.x * float, y: point.y * float)
+func -(left: Vector2D, right: Vector2D) -> Vector2D {
+    return Vector2D(x: left.x - right.x, y: left.y - right.y)
+}
+
+func -=(left: Vector2D, right: Vector2D) -> Vector2D {
+    return Vector2D(x: left.x - right.x, y: left.y - right.y)
+}
+
+//func *(point: Vector2D, float: CGFloat) -> Vector2D {
+//    return Vector2D(x: point.x * float, y: point.y * float)
 //}
 
-func *(point: CGPoint, factor: CGFloat) -> CGPoint {
-    return CGPoint(x: point.x * factor, y:point.y * factor)
+func *(point: Vector2D, factor: CGFloat) -> Vector2D {
+    return Vector2D(x: point.x * factor, y:point.y * factor)
 }
 
 func !=(left: Bird, right: Bird) -> Bool {
     return left.sprite != right.sprite
 }
 
-func /=(left: CGPoint, right: Int) -> CGPoint {
-    return CGPoint(x: left.x / CGFloat(right), y: left.y / CGFloat(right))
+func /=(left: Vector2D, right: Int) -> Vector2D {
+    return Vector2D(x: left.x / CGFloat(right), y: left.y / CGFloat(right))
 }
 
 //
@@ -208,38 +212,38 @@ func /=(left: CGPoint, right: Int) -> CGPoint {
 //    return sum
 //}
 
-extension CGPoint {
+extension Vector2D {
     // Get the length (a.k.a. magnitude) of the vector
     var length: CGFloat { return sqrt(self.x * self.x + self.y * self.y) }
     
-    var normalized: CGPoint {
+    var normalized: Vector2D {
         let x = self.x / self.length
         let y = self.y / self.length
         
-        return CGPoint(x: x, y: y)
+        return Vector2D(x: x, y: y)
     }
     
-    //    func minus(other: CGPoint) -> CGPoint {
-    //        return CGPoint(x: self.x - other.x, y: self.y - other.y)
+    //    func minus(other: Vector2D) -> Vector2D {
+    //        return Vector2D(x: self.x - other.x, y: self.y - other.y)
     //    }
     
     
-    //    var minus: CGPoint { (other: CGPoint): CGPoint {
+    //    var minus: Vector2D { (other: Vector2D): Vector2D {
     //
     //    }
-    //    CGPoint NDCGPointMinusPoint(CGPoint p1, CGPoint p2)
+    //    Vector2D NDVector2DMinusPoint(Vector2D p1, Vector2D p2)
     //    {
-    //    return (CGPoint){p1.x-p2.x, p1.y-p2.y};
+    //    return (Vector2D){p1.x-p2.x, p1.y-p2.y};
     //    }
     
     
-    //    func normalise(vector : CGPoint) -> CGPoint {
+    //    func normalise(vector : Vector2D) -> Vector2D {
     //
     //        // Get the length (a.k.a. magnitude) of the vector
     //        var length: CGFloat { return sqrt(self.x * self.x + self.y * self.y) }
     //
     //        // Normalize the vector (preserve its direction, but change its magnitude to 1)
-    //        var normalized: CGPoint { return CGPoint(x: self.x / self.length, y: self.y / self.length) }
+    //        var normalized: Vector2D { return Vector2D(x: self.x / self.length, y: self.y / self.length) }
     //
     //        return vector
     //    }

@@ -11,26 +11,26 @@ import SpriteKit
 class DebugControls : SKShapeNode
 {
     let bezierPath = UIBezierPath()
-    var controlPoint1 :CGPoint
-    var controlPoint2 :CGPoint
-    var point1 :CGPoint
-    var point2 :CGPoint
+    var controlPoint1 :Vector2D
+    var controlPoint2 :Vector2D
+    var point1 :Vector2D
+    var point2 :Vector2D
     
     override init()
     {
-        controlPoint1 = CGPoint(x: 0.0, y: 100.0)
-        controlPoint2 = CGPoint(x: 0.0, y: 200.0)
-        point1 = CGPointZero
-        point2 = CGPoint(x: 0.0, y: 200.0)
+        controlPoint1 = Vector2D(x: 0.0, y: 100.0)
+        controlPoint2 = Vector2D(x: 0.0, y: 200.0)
+        point1 = Vector2D()
+        point2 = Vector2D(x: 0.0, y: 200.0)
         
         super.init()
         
-        updatePoint2(CGPointZero)
+        updatePoint2(Vector2D())
         
         self.updatePath()
     }
     
-    func updateControls(velocity : CGPoint)
+    func updateControls(velocity : Vector2D)
     {
         updatePoint2(velocity)
         self.updatePath()
@@ -42,15 +42,15 @@ class DebugControls : SKShapeNode
     
     private
     
-    func updatePoint2(change :CGPoint)
+    func updatePoint2(change :Vector2D)
     {
-        self.point2 = CGPoint(x: point1.x + change.x, y: point1.y + 200.0 + change.y)
+        self.point2 = Vector2D(x: point1.x + change.x, y: point1.y + 200.0 + change.y)
     }
     
     func updatePath()
     {
-        bezierPath.moveToPoint(point1)
-        bezierPath.addCurveToPoint(point2, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+        bezierPath.moveToPoint(point1.point)
+        bezierPath.addCurveToPoint(point2.point, controlPoint1: controlPoint1.point, controlPoint2: controlPoint2.point)
         self.path = bezierPath.CGPath
         bezierPath.removeAllPoints()
     }

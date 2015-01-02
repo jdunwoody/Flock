@@ -7,12 +7,38 @@
 //
 
 import Foundation
+import SpriteKit
 
-struct Vector2D {
-    var x = 0.0
-    var y = 0.0
+class Vector2D {
+    var x:CGFloat = 0.0
+    var y:CGFloat = 0.0
+
+    convenience init(point: CGPoint) {
+        self.init(x: point.x, y: point.y)
+    }
+    
+    convenience init() {
+        self.init(x: 0, y: 0)
+    }
+    
+    init(x: CGFloat, y: CGFloat) {
+        self.x = x
+        self.y = y
+    }
+    
+    var point:CGPoint {
+        return CGPoint(x: x, y: y)
+    }
+    
+    var string:NSString {
+        return "(\(x), \(y))"
+    }
 }
 
-func + (left: Vector2D, right: Vector2D) -> Vector2D {
-    return Vector2D(x: left.x + right.x, y: left.y + right.y)
+func +(left: Vector2D, right: Vector2D) -> Vector2D {
+    left.x = left.x + right.x
+    
+    left.y =  left.y + right.y
+    
+    return left
 }

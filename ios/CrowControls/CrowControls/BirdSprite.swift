@@ -11,13 +11,13 @@ import SpriteKit
 class BirdSprite: SKSpriteNode {
     
     var textures : Textures
-    var origin = CGPointZero
+    var origin = Vector2D()
     var actions : BirdActions
     
     init(actions : BirdActions, textures : Textures) {
         self.actions = actions
         self.textures = textures
-        //self.origin = CGPointZero
+        //self.origin = Vector2D()
       
         super.init(texture: self.textures.initial, color: UIColor.clearColor(), size: self.textures.initial.size())
     }

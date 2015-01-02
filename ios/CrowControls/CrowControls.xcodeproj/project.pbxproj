@@ -116,6 +116,7 @@
 				9EA524A51A39BBC600C0C739 /* BirdSprite.swift */,
 				9E81F0161A40475C00485A61 /* Controls.swift */,
 				9E2542951A3B04E2006F1480 /* DebugControls.swift */,
+				9E0EF2061A54C4A100E30F0C /* DebugForceLine.swift */,
 				9E64B4221A4AE35400DD5152 /* Flock.swift */,
 				9ED898311A346A77004EB99D /* GameScene.sks */,
 				9ED898331A346A77004EB99D /* GameScene.swift */,
@@ -129,7 +130,6 @@
 				9E77C1D31A5217AE0037035A /* Steering.swift */,
 				9ED8982D1A346A77004EB99D /* Supporting Files */,
 				9E2542911A3AF7FC006F1480 /* Textures.swift */,
-				9E0EF2061A54C4A100E30F0C /* DebugForceLine.swift */,
 				9E9951401A55683E005E036A /* Vector2D.swift */,
 			);
 			path = CrowControls;
