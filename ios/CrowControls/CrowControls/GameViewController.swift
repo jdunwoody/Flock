@@ -41,6 +41,8 @@ class GameViewController: UIViewController {
         //        self.bird = Bird()
         self.debugControls = DebugControls()
         super.init(coder: coder)
+        
+        debugControls?.updateControls(Vector2D(x: 0.0, y: 200.0 ))
     }
     
     @IBAction func configPressed(sender: AnyObject) {

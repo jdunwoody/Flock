@@ -14,17 +14,34 @@ class Bird
 {
     var maxYTranslation = 0.0 as CGFloat
     
+    let velocity: Vector2D
+    let heading: Vector2D
+    let side: Vector2D
+    let mass: CGFloat
+    let maxSpeed: CGFloat
+    let maxForce: CGFloat
+    let maxTurnRate: CGFloat
+    
+    let steering: Steering
     let actions: BirdActions
     let sprite: BirdSprite
     let textures: Textures
     var origin: Vector2D
     var debugForceLine: DebugForceLine
+    let world: World
     
     var position : Vector2D {
         get {
             return Vector2D(point: sprite.position)
         }
+        
         set {
+            newValue.x = newValue.x > world.size.maxX - sprite.size.width ? world.size.maxX - sprite.size.width : newValue.x
+            newValue.y = newValue.y > world.size.maxY - sprite.size.height ? world.size.maxY - sprite.size.height : newValue.y
+            
+            newValue.x = newValue.x < world.size.minX + sprite.size.width ? world.size.minX + sprite.size.width : newValue.x
+            newValue.y = newValue.y < world.size.minY + sprite.size.height ? world.size.minY + sprite.size.height : newValue.y
+            
             sprite.position = newValue.point
         }
     }
@@ -38,19 +55,27 @@ class Bird
     //        }
     //    }
     
-    init() {
+    init(world: World) {
+        self.world = world
+        self.steering = Steering(world: world)
         self.textures = Textures()
         self.actions = BirdActions(textures: textures)
         self.sprite = BirdSprite(actions : self.actions, textures : self.textures)
         self.origin = Vector2D()
         self.heading = Vector2D(x: 0, y: 1.0)
         self.debugForceLine = DebugForceLine()
+        self.velocity = Vector2D()
+        self.side = Vector2D().rotate(90.0)
+        self.mass = 1000.0
+        self.maxSpeed = 10.0
+        self.maxForce = 10.0
+        self.maxTurnRate = 10.0
     }
     
     func configure(origin : Vector2D, maxYTranslation : CGFloat) {
         self.origin = origin
         self.maxYTranslation = maxYTranslation
-        sprite.position = origin.point
+        position = Vector2D(point: origin.point)
         sprite.addChild(self.debugForceLine.sprite)
     }
     
@@ -72,7 +97,7 @@ class Bird
         let amount = origin.y - percentage * maxYTranslation
         
         sprite.runAction(actions.fly(percentage), withKey: "flying")
-        sprite.position.y = amount
+        position.y = amount
         
         //        normalSpeed()
         //
@@ -87,7 +112,7 @@ class Bird
         
         sprite.runAction(actions.fly(percentage), withKey: "flying")
         
-        sprite.position.y = amount
+        position.y = amount
         
         //          sprite.position.y = min_y_transation
         //        normalSpeed()
@@ -123,18 +148,37 @@ class Bird
         //        sprite.runAction(turningLeft, withKey: "turningLeft")
     }
     
-    func update(flock: Flock) {
-        let force = steering.calculate(self, neighbours: flock.birds)
+    func nearTo(bird: Bird) -> Bool {
+//        if bird.position == 
+        return true
+    }
+    
+    func update(timeElapsed: CGFloat, flock: Flock) {
+        
+        let force = steering.calculate(self, neighbours: flock.neighbours(self), flock: flock)
+        
         self.debugForceLine.update(force)
         
-        let angle = atan2(force.y, force.x)
-        
-//        let p:CGPoint = self.sprite.position
-//        let f:CGPoint = force.point
-//        self.sprite.position = p + f
-        self.sprite.position = self.sprite.position + force
+        //        let angle = atan2(force.y, force.x)
+        //        let p:CGPoint = self.sprite.position
+        //        let f:CGPoint = force.point
+        //        self.sprite.position = p + f
+        //        self.sprite.position = self.sprite.position + force
+        //        self.heading += force
         //        self.sprite.zRotation = angle
+        
+        let acceleration = force / mass
+        velocity += acceleration * timeElapsed
+        velocity.truncate(maxSpeed)
+        
+        self.position = self.position + velocity * timeElapsed / 1000.0
+        
+        if velocity.lengthSquared > 0.00000001 {
+            heading.update(velocity.normalized)
+            side.update(heading.perpendicular)
+        }
     }
+    
     
     //    func normalFlappingAnimation() -> SKAction {
     //        return flappingAnimation(0.5)
@@ -154,97 +198,4 @@ class Bird
     //        return SKAction.animateWithTextures(self.textures, timePerFrame: 0.1, resize: false, restore: true)
     //    }
     
-    var heading: Vector2D
-    
-    private
-    
-    let steering = Steering()
-}
-
-func += (inout left: Vector2D, right: CGFloat) {
-    left.x = left.x + right
-    left.y = left.y + right
-}
-
-func +(left: CGPoint, right: Vector2D) -> CGPoint {
-    return CGPoint(x: left.x + right.x, y: left.y + right.y)
-}
-
-func /(left: Vector2D, right: CGFloat) -> Vector2D {
-    return Vector2D(x: left.x / right, y: left.y / right)
-}
-
-func +=(left: Vector2D, right: Vector2D) -> Vector2D {
-    return left + right
-}
-
-func -(left: Vector2D, right: Vector2D) -> Vector2D {
-    return Vector2D(x: left.x - right.x, y: left.y - right.y)
-}
-
-func -=(left: Vector2D, right: Vector2D) -> Vector2D {
-    return Vector2D(x: left.x - right.x, y: left.y - right.y)
-}
-
-//func *(point: Vector2D, float: CGFloat) -> Vector2D {
-//    return Vector2D(x: point.x * float, y: point.y * float)
-//}
-
-func *(point: Vector2D, factor: CGFloat) -> Vector2D {
-    return Vector2D(x: point.x * factor, y:point.y * factor)
-}
-
-func !=(left: Bird, right: Bird) -> Bool {
-    return left.sprite != right.sprite
-}
-
-func /=(left: Vector2D, right: Int) -> Vector2D {
-    return Vector2D(x: left.x / CGFloat(right), y: left.y / CGFloat(right))
-}
-
-//
-//func +(left: [Int], right: [Int]) -> [Int] { // 1
-//    var sum = [Int]() // 2
-//    assert(left.count == right.count, "vector of same length only")  // 3
-//    for (key, v) in enumerate(left) {
-//        sum.append(left[key] + right[key]) // 4
-//    }
-//    return sum
-//}
-
-extension Vector2D {
-    // Get the length (a.k.a. magnitude) of the vector
-    var length: CGFloat { return sqrt(self.x * self.x + self.y * self.y) }
-    
-    var normalized: Vector2D {
-        let x = self.x / self.length
-        let y = self.y / self.length
-        
-        return Vector2D(x: x, y: y)
-    }
-    
-    //    func minus(other: Vector2D) -> Vector2D {
-    //        return Vector2D(x: self.x - other.x, y: self.y - other.y)
-    //    }
-    
-    
-    //    var minus: Vector2D { (other: Vector2D): Vector2D {
-    //
-    //    }
-    //    Vector2D NDVector2DMinusPoint(Vector2D p1, Vector2D p2)
-    //    {
-    //    return (Vector2D){p1.x-p2.x, p1.y-p2.y};
-    //    }
-    
-    
-    //    func normalise(vector : Vector2D) -> Vector2D {
-    //
-    //        // Get the length (a.k.a. magnitude) of the vector
-    //        var length: CGFloat { return sqrt(self.x * self.x + self.y * self.y) }
-    //
-    //        // Normalize the vector (preserve its direction, but change its magnitude to 1)
-    //        var normalized: Vector2D { return Vector2D(x: self.x / self.length, y: self.y / self.length) }
-    //
-    //        return vector
-    //    }
 }

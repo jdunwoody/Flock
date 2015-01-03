@@ -11,7 +11,7 @@ import SpriteKit
 
 class Flock {
     
-    let birds: [Bird]
+    var birds: [Bird]
     let lead: Bird
     var origin: Vector2D {
         get {
@@ -31,75 +31,97 @@ class Flock {
         }
     }
     
-    init() {
+    init(world: World) {
         birds = []
         
         for var i = 0; i < Settings.initialNumberOfBirds; i++ {
-            birds.append(Bird())
+            birds.append(Bird(world: world))
         }
         lead = birds[0]
     }
     
-    func update() {
+    func update(timeElapsed: CGFloat) {
         for bird in birds {
-            bird.update(self)
+            if lead == bird {
+                continue
+            }
+            bird.update(timeElapsed, flock: self)
         }
     }
     
+    func neighbours(subject: Bird) -> [Bird] {
+        var neighbours:[Bird] = []
+        
+        for bird in birds {
+            if bird == subject {
+                continue
+            }
+            
+            if bird.nearTo(subject) {
+                neighbours.append(bird)
+            }
+        }
+        
+        return neighbours
+    }
+    
     func configure(centre : Vector2D, maxYTranslation : CGFloat) {
-        lead.configure(origin, maxYTranslation: maxYTranslation)
+        lead.configure(centre, maxYTranslation: maxYTranslation)
         
         for bird in birds {
             if bird == lead {
                 continue
             }
+            //            x: CGFloat(arc4random_uniform(200)),
+            //            y: CGFloat(arc4random_uniform(200)))
+            
             let birdOrigin = Vector2D(
-                x: CGFloat(arc4random_uniform(200)),
-                y: CGFloat(arc4random_uniform(200)))
+                x: CGFloat(200 ),
+                y: CGFloat(200 ))
             bird.configure(birdOrigin, maxYTranslation: maxYTranslation)
         }
     }
     
     func turningRight(percentage : CGFloat) {
         lead.turningRight(percentage)
-//        for bird in birds {
-//            bird.turningRight(percentage)
-//        }
+        //        for bird in birds {
+        //            bird.turningRight(percentage)
+        //        }
     }
     
     func turningLeft(percentage : CGFloat) {
         lead.turningLeft(percentage)
-//        for bird in birds {
-//            bird.turningLeft(percentage)
-//        }
+        //        for bird in birds {
+        //            bird.turningLeft(percentage)
+        //        }
     }
     
     func straighten() {
         lead.straighten()
-//        for bird in birds {
-//            bird.straighten()
-//        }
+        //        for bird in birds {
+        //            bird.straighten()
+        //        }
     }
     
     func cruise() {
         lead.cruise()
-//        for bird in birds {
-//            bird.cruise()
-//        }
+        //        for bird in birds {
+        //            bird.cruise()
+        //        }
     }
     
     func accelerate(percentage : CGFloat) {
         lead.accelerate(percentage)
-//        for bird in birds {
-//            bird.accelerate(percentage)
-//        }
+        //        for bird in birds {
+        //            bird.accelerate(percentage)
+        //        }
     }
     
     func decelerate(percentage : CGFloat) {
         lead.deccelerate(percentage)
-//        for bird in birds {
-//            bird.deccelerate(percentage)
-//        }
+        //        for bird in birds {
+        //            bird.deccelerate(percentage)
+        //        }
     }
     
     func steeringForce() {

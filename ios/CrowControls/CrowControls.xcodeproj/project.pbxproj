@@ -16,7 +16,10 @@
 		9E77C1D41A5217AE0037035A /* Steering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E77C1D31A5217AE0037035A /* Steering.swift */; };
 		9E81F0171A40475C00485A61 /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E81F0161A40475C00485A61 /* Controls.swift */; };
 		9E81F0191A40518100485A61 /* Bird.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E81F0181A40518100485A61 /* Bird.swift */; };
+		9E90F8601A565A0400B343ED /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E90F85F1A565A0400B343ED /* Point.swift */; };
+		9E90F8621A56C5D100B343ED /* DebugSteering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E90F8611A56C5D100B343ED /* DebugSteering.swift */; };
 		9E9951411A55683E005E036A /* Vector2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9951401A55683E005E036A /* Vector2D.swift */; };
+		9E9951431A564F2A005E036A /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9951421A564F2A005E036A /* World.swift */; };
 		9EA524A41A39B4C600C0C739 /* Birds.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 9EA524A31A39B4C600C0C739 /* Birds.atlas */; };
 		9EA524A61A39BBC600C0C739 /* BirdSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA524A51A39BBC600C0C739 /* BirdSprite.swift */; };
 		9EBD55651A4E040500D3B12F /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9EBD55641A4E040500D3B12F /* Settings.bundle */; };
@@ -51,7 +54,10 @@
 		9E77C1D31A5217AE0037035A /* Steering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Steering.swift; sourceTree = "<group>"; };
 		9E81F0161A40475C00485A61 /* Controls.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		9E81F0181A40518100485A61 /* Bird.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bird.swift; sourceTree = "<group>"; };
+		9E90F85F1A565A0400B343ED /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		9E90F8611A56C5D100B343ED /* DebugSteering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugSteering.swift; sourceTree = "<group>"; };
 		9E9951401A55683E005E036A /* Vector2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2D.swift; sourceTree = "<group>"; };
+		9E9951421A564F2A005E036A /* World.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		9EA524A31A39B4C600C0C739 /* Birds.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Birds.atlas; sourceTree = "<group>"; };
 		9EA524A51A39BBC600C0C739 /* BirdSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BirdSprite.swift; sourceTree = "<group>"; };
 		9EBD55641A4E040500D3B12F /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -117,6 +123,7 @@
 				9E81F0161A40475C00485A61 /* Controls.swift */,
 				9E2542951A3B04E2006F1480 /* DebugControls.swift */,
 				9E0EF2061A54C4A100E30F0C /* DebugForceLine.swift */,
+				9E90F8611A56C5D100B343ED /* DebugSteering.swift */,
 				9E64B4221A4AE35400DD5152 /* Flock.swift */,
 				9ED898311A346A77004EB99D /* GameScene.sks */,
 				9ED898331A346A77004EB99D /* GameScene.swift */,
@@ -124,6 +131,7 @@
 				9ED8983A1A346A77004EB99D /* Images.xcassets */,
 				9ED8983C1A346A77004EB99D /* LaunchScreen.xib */,
 				9ED898371A346A77004EB99D /* Main.storyboard */,
+				9E90F85F1A565A0400B343ED /* Point.swift */,
 				9E21C6E81A38681500FBF804 /* SampleBesierView.swift */,
 				9EBD55641A4E040500D3B12F /* Settings.bundle */,
 				9EBD55681A4E083200D3B12F /* Settings.swift */,
@@ -131,6 +139,7 @@
 				9ED8982D1A346A77004EB99D /* Supporting Files */,
 				9E2542911A3AF7FC006F1480 /* Textures.swift */,
 				9E9951401A55683E005E036A /* Vector2D.swift */,
+				9E9951421A564F2A005E036A /* World.swift */,
 			);
 			path = CrowControls;
 			sourceTree = "<group>";
@@ -268,9 +277,11 @@
 				9E0EF2071A54C4A100E30F0C /* DebugForceLine.swift in Sources */,
 				9EA524A61A39BBC600C0C739 /* BirdSprite.swift in Sources */,
 				9E2542961A3B04E2006F1480 /* DebugControls.swift in Sources */,
+				9E90F8621A56C5D100B343ED /* DebugSteering.swift in Sources */,
 				9E9951411A55683E005E036A /* Vector2D.swift in Sources */,
 				9E21C6E91A38681500FBF804 /* SampleBesierView.swift in Sources */,
 				9E64B4231A4AE35400DD5152 /* Flock.swift in Sources */,
+				9E90F8601A565A0400B343ED /* Point.swift in Sources */,
 				9ED898341A346A77004EB99D /* GameScene.swift in Sources */,
 				9E81F0171A40475C00485A61 /* Controls.swift in Sources */,
 				9EBD55691A4E083200D3B12F /* Settings.swift in Sources */,
@@ -278,6 +289,7 @@
 				9E81F0191A40518100485A61 /* Bird.swift in Sources */,
 				9ED898301A346A77004EB99D /* AppDelegate.swift in Sources */,
 				9E2542921A3AF7FD006F1480 /* Textures.swift in Sources */,
+				9E9951431A564F2A005E036A /* World.swift in Sources */,
 				9E2542941A3AFD20006F1480 /* BirdActions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

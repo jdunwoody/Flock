@@ -12,35 +12,55 @@ import Accelerate
 
 class Steering
 {
-    var separation = true
+    var separationOn = false
     var alignmentOn = false
     var cohesionOn = false
-    var obstacleAvoidance = false
+    var obstacleAvoidanceOn = false
     var wanderOn = false
-    var wallAvoidance = false
+    var wallAvoidanceOn = false
+    var seekOn = true
     
     var wallAvoidanceMultiplier:CGFloat = 1.0
     var obstacleAvoidanceMultiplier:CGFloat = 1.0
     var separationMultiplier:CGFloat = 1.0
+    var world: World
     
-    func calculate(subject: Bird, neighbours: [Bird]) -> Vector2D {
+    init(world: World) {
+        self.world = world
+    }
+    
+    func calculate(subject: Bird, neighbours: [Bird], flock: Flock) -> Vector2D {
         var force = Vector2D()
         var steeringForce = Vector2D()
         
-        if wallAvoidance {
+        if wallAvoidanceOn {
             //            force = calculateWallAvoidance(world.walls) * wallAvoidanceMultiplier
             //            if (!accumulateForce(, force))
             //            return m_vSteeringForce;
         }
         
-        if obstacleAvoidance {
+        if obstacleAvoidanceOn {
             //                force = calculateObstaceAvoidance(world.obstacles) * wallAvoidanceMultiplier
             //                if !accumulateForce(m_vSteeringForce, force) {
             //                return m_vSteeringForce;
         }
         
-        if separation {
-            force = calculateSeparation(subject, neighbours: neighbours) * separationMultiplier
+        if separationOn {
+            force = separation(subject, neighbours: neighbours) * separationMultiplier
+            if !accumulateForce(&steeringForce, forceToAdd: force) {
+                return steeringForce
+            }
+        }
+        
+        if seekOn {
+            force = seek(subject, target: flock.lead.position)
+            if !accumulateForce(&steeringForce, forceToAdd: force) {
+                return steeringForce
+            }
+        }
+        
+        if cohesionOn {
+            force = cohesion(subject, neighbours: neighbours) * separationMultiplier
             if !accumulateForce(&steeringForce, forceToAdd: force) {
                 return steeringForce
             }
@@ -49,9 +69,6 @@ class Steering
         return steeringForce
     }
     
-    //    func calculateObstacleAvoidance(obstacles: Bird, neighbours : [Bird]) {
-    //    }
-    //
     func calculateWallAvoidance(bird: Bird, neighbours : [Bird]) -> Vector2D {
         return Vector2D()
     }
@@ -79,8 +96,8 @@ class Steering
         return true
     }
     
-    func calculateSeparation(bird: Bird, neighbours: [Bird]) -> Vector2D {
-        if !separation {
+    func separation(bird: Bird, neighbours: [Bird]) -> Vector2D {
+        if !separationOn {
             return Vector2D()
         }
         
@@ -96,12 +113,26 @@ class Steering
             let toAgent = bird.position - neighbour.position
             
             //scale the force inversely proportional to the agent's distance from its neighbor.
-            let newForce = bird.heading.normalized / toAgent.length
+            let newForce = toAgent.normalized / toAgent.length
             var newSteeringForce = steeringForce + newForce
             //            newSteeringForce += steeringForce + newForce
             steeringForce = steeringForce + newSteeringForce //bird.heading.normalized / toAgent.length
         }
         return steeringForce
+    }
+    
+    func cohesion(bird: Bird, neighbours: [Bird]) -> Vector2D {
+        if !cohesionOn {
+            return Vector2D()
+        }
+        
+        return seek(bird, target: world.centreOfMass())
+    }
+    
+    func seek(bird: Bird, target: Vector2D) -> Vector2D {
+        let desiredVelocity = target - bird.position
+        
+        return desiredVelocity - bird.velocity
     }
     
     func alignment(bird: Bird, neighbours: [Bird]) {
@@ -110,7 +141,6 @@ class Steering
         }
         
         //used to record the average heading of the neighbors
-        
         var averageHeading = Vector2D()
         
         //used to count the number of vehicles in the neighborhood
