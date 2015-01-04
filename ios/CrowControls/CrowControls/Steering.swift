@@ -12,17 +12,18 @@ import Accelerate
 
 class Steering
 {
-    var separationOn = false
+    var separationOn = true
+    var cohesionOn = true
+    var seekOn = false
+    
     var alignmentOn = false
-    var cohesionOn = false
     var obstacleAvoidanceOn = false
     var wanderOn = false
     var wallAvoidanceOn = false
-    var seekOn = true
     
     var wallAvoidanceMultiplier:CGFloat = 1.0
     var obstacleAvoidanceMultiplier:CGFloat = 1.0
-    var separationMultiplier:CGFloat = 1.0
+    var separationMultiplier:CGFloat = 10.0
     var world: World
     
     init(world: World) {
