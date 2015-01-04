@@ -27,7 +27,7 @@ class Bird
     let sprite: BirdSprite
     let textures: Textures
     var origin: Vector2D
-    var debugForceLine: DebugForceLine
+    var debugForceLine: DebugForceLine?
     let world: World
     
     var position : Vector2D {
@@ -76,7 +76,9 @@ class Bird
         self.origin = origin
         self.maxYTranslation = maxYTranslation
         position = Vector2D(point: origin.point)
-        sprite.addChild(self.debugForceLine.sprite)
+        if let forceLine = debugForceLine {
+            sprite.addChild(forceLine.sprite)
+        }
     }
     
     //    func fly()
@@ -149,7 +151,7 @@ class Bird
     }
     
     func nearTo(bird: Bird) -> Bool {
-//        if bird.position == 
+        //        if bird.position ==
         return true
     }
     
@@ -157,7 +159,9 @@ class Bird
         
         let force = steering.calculate(self, neighbours: flock.neighbours(self), flock: flock)
         
-        self.debugForceLine.update(force)
+        if let forceLine = debugForceLine {
+            forceLine.update(force)
+        }
         
         //        let angle = atan2(force.y, force.x)
         //        let p:CGPoint = self.sprite.position

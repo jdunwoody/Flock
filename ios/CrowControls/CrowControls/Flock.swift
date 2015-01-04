@@ -67,18 +67,23 @@ class Flock {
     
     func configure(centre : Vector2D, maxYTranslation : CGFloat) {
         lead.configure(centre, maxYTranslation: maxYTranslation)
+        lead.steering.seekOn = false
         
         for bird in birds {
             if bird == lead {
                 continue
             }
-            //            x: CGFloat(arc4random_uniform(200)),
-            //            y: CGFloat(arc4random_uniform(200)))
+            let x = CGFloat(arc4random_uniform(200))
+            let y = CGFloat(arc4random_uniform(200))
+            
+            //            let x = CGFloat(200)
+            //            let y = CGFloat(200)
             
             let birdOrigin = Vector2D(
-                x: CGFloat(200 ),
-                y: CGFloat(200 ))
+                x: x,
+                y: y)
             bird.configure(birdOrigin, maxYTranslation: maxYTranslation)
+            bird.steering.seekOn = true
         }
     }
     

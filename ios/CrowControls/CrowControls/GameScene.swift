@@ -45,7 +45,9 @@ class GameScene: SKScene {
     }
     
     override func update(newTime: CFTimeInterval) {
-        world.update(CGFloat(newTime - oldTime))
+        let elapsedTime:CGFloat = 100.0 //CGFloat(newTime - oldTime)
+        
+        world.update(elapsedTime)
         
         oldTime = newTime
     }

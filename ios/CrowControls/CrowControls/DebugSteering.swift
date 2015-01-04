@@ -25,11 +25,12 @@ class DebugSteering {
     let sprite: SKShapeNode
     
     init() {
-        sprite = SKShapeNode(circleOfRadius: 45.0)
+        sprite = SKShapeNode(circleOfRadius: 10.0)
         
         sprite.lineWidth = 1.0
         sprite.fillColor = SKColor.blueColor()
         sprite.strokeColor = SKColor.whiteColor()
         sprite.glowWidth = 0.5
+        sprite.alpha = 0.3
     }
 }
