@@ -12,26 +12,48 @@ import SpriteKit
 import UIKit
 
 class Vector2D { //: DebugPrintable, Printable {
-    var x:CGFloat = 0.0
-    var y:CGFloat = 0.0
-    
-    convenience init(point: CGPoint) {
-        self.init(x: point.x, y: point.y)
+    var x:CGFloat {
+        get {
+            return point.x
+        }
+        set {
+            point.x = newValue
+        }
     }
     
-    init() {
-        self.x = 0
-        self.y = 0
+    var y:CGFloat {
+        get {
+            return point.y
+        }
+        set {
+            point.y = newValue
+        }
     }
     
-    init(x: CGFloat, y: CGFloat) {
-        self.x = x
-        self.y = y
+     var point: CGPoint
+    
+     init(point: CGPoint) {
+        self.point = point
+//        self.init(x: point.x, y: point.y)
     }
     
-    var point:CGPoint {
-        return CGPoint(x: x, y: y)
+    convenience init() {
+        self.init(point: CGPointZero)
+        //        self.x = 0
+        //        self.y = 0
     }
+    
+    convenience init(x: CGFloat, y: CGFloat) {
+        self.init(point: CGPoint(x: x, y: y))
+//        point = CGPoint(x: x, y: y)
+        
+        //        self.x = x
+        //        self.y = y
+    }
+    
+    //    var point:CGPoint {
+    //        return CGPoint(x: x, y: y)
+    //    }
     
     var string:NSString {
         return "(\(x), \(y))"

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "CrowControls.Steering.accumulateForce (CrowControls.Steering)(inout CrowControls.Vector2D, forceToAdd : CrowControls.Vector2D) -&gt; Swift.Bool:Steering.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CrowControls.DebugForceLine.update (CrowControls.DebugForceLine)(CrowControls.Vector2D) -&gt; ():DebugForceLine.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

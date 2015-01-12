@@ -13,16 +13,16 @@ class Flock {
     
     var birds: [Bird]
     let lead: Bird
-    var origin: Vector2D {
-        get {
-            return birds[0].origin
-        }
-        
-        set {
-            birds[0].origin = newValue
-        }
-    }
-    
+//    var origin: Vector2D {
+//        get {
+//            return birds[0].origin
+//        }
+//        
+//        set {
+//            birds[0].origin = newValue
+//        }
+//    }
+//    
     var sprites : [SKSpriteNode] {
         get {
             return birds.map {

@@ -12,7 +12,7 @@ class GameScene: SKScene {
     var debugControls = DebugControls()
     var flock: Flock
     var world: World
-    var maxYTranslation = 0.0 as CGFloat
+    var maxYTranslation = 200.0 as CGFloat
     var userControlEnabled = true
     var flyingAnimationEnabled = true
     var oldTime: CFTimeInterval
@@ -25,6 +25,26 @@ class GameScene: SKScene {
         
         super.init(coder: coder)
         
+        addChildren()
+    }
+    
+    override init(size: CGSize) {
+        world = World()
+        flock = Flock(world: world)
+        world.flock = flock
+        oldTime = CFTimeInterval()
+        
+        super.init(size: size)
+     
+        world.size = CGRect(origin: CGPointZero, size: size)
+        
+        addChildren()
+        
+        flock.configure(Vector2D(point: CGPoint(x: world.size.width / 2.0, y: world.size.height / 2.0)), maxYTranslation : maxYTranslation)
+        debugControls.position = CGPoint(x: world.size.width / 2.0, y: 0.0)
+    }
+    
+    func addChildren() {
         for sprite in flock.sprites {
             addChild(sprite)
         }
@@ -40,7 +60,7 @@ class GameScene: SKScene {
     }
     
     func configure(origin : CGPoint, maxYTranslation : CGFloat) {
-        self.flock.origin = Vector2D(point: origin)
+//        self.flock.origin = Vector2D(point: origin)
         self.maxYTranslation = maxYTranslation
     }
     
@@ -89,11 +109,11 @@ class GameScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
-        self.world.size = view.frame
-        
-        flock.configure(Vector2D(point: view.center), maxYTranslation : maxYTranslation)
-        debugControls.position = CGPoint(x: view.center.x, y: 0.0)
-        
+//        self.world.size =CGRect(origin: CGPointZero, size: <#CGSize#>) view.frame
+//        
+//        flock.configure(Vector2D(point: view.center), maxYTranslation : maxYTranslation)
+//        debugControls.position = CGPoint(x: view.center.x, y: 0.0)
+//        
         //
         //        for sprite in flock.sprites {
         //            addChild(sprite)

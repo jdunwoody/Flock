@@ -14,6 +14,8 @@ class World
     let debugSteering = DebugSteering()
     
     var size = CGRect(x: 0.0, y: 0.0, width: 200.0, height: 200.0)
+    var centre = CGPoint(x: 200.0, y: 200.0)
+    
     var flock: Flock?
 
     init() {

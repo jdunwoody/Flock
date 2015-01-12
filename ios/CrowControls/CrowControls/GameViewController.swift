@@ -56,7 +56,9 @@ class GameViewController: UIViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        self.sceneRef = GameScene.unarchiveFromFile("GameScene") as GameScene!
+        self.sceneRef = GameScene(size: self.view.frame.size)
+        
+//        self.sceneRef = GameScene.unarchiveFromFile("GameScene") as GameScene!
         
         self.debugControls?.updateControls(Vector2D(x: 0.0, y: 200.0 ))
         
@@ -112,11 +114,11 @@ class GameViewController: UIViewController {
                 if translation.y > 0 {
                     let percentMoved = CGFloat(abs(translation.y)) / (CGFloat(controlsView.frame.size.height))
                     
-                    scene.pannedForward(percentMoved)
+                    scene.pannedBackward(percentMoved)
                 } else if translation.y < 0 {
                     let percentMoved = CGFloat(abs(translation.y)) / (CGFloat(controlsView.frame.size.height))
                     
-                    scene.pannedBackward(percentMoved)
+                    scene.pannedForward(percentMoved)
                 } else {
                     
                 }

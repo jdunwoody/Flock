@@ -26,13 +26,13 @@ class Bird
     let actions: BirdActions
     let sprite: BirdSprite
     let textures: Textures
-    var origin: Vector2D
+    //    var origin: Vector2D
     var debugForceLine: DebugForceLine?
     let world: World
     
-    var position : Vector2D {
+    var position: Vector2D  {
         get {
-            return Vector2D(point: sprite.position)
+            return Vector2D(point: self.sprite.position)
         }
         
         set {
@@ -42,18 +42,9 @@ class Bird
             newValue.x = newValue.x < world.size.minX + sprite.size.width ? world.size.minX + sprite.size.width : newValue.x
             newValue.y = newValue.y < world.size.minY + sprite.size.height ? world.size.minY + sprite.size.height : newValue.y
             
-            sprite.position = newValue.point
+            self.sprite.position = newValue.point
         }
     }
-    
-    //    var origin : Vector2D {
-    ////        get {
-    ////            return sprite.position
-    ////        }
-    //        set {
-    //            sprite.position = origin
-    //        }
-    //    }
     
     init(world: World) {
         self.world = world
@@ -61,7 +52,7 @@ class Bird
         self.textures = Textures()
         self.actions = BirdActions(textures: textures)
         self.sprite = BirdSprite(actions : self.actions, textures : self.textures)
-        self.origin = Vector2D()
+        //        self.origin = Vector2D()
         self.heading = Vector2D(x: 0, y: 1.0)
         self.debugForceLine = DebugForceLine()
         self.velocity = Vector2D()
@@ -73,9 +64,9 @@ class Bird
     }
     
     func configure(origin : Vector2D, maxYTranslation : CGFloat) {
-        self.origin = origin
+        //        self.origin = origin
         self.maxYTranslation = maxYTranslation
-        position = Vector2D(point: origin.point)
+        self.position = Vector2D(point: origin.point)
         if let forceLine = debugForceLine {
             sprite.addChild(forceLine.sprite)
         }
@@ -89,39 +80,25 @@ class Bird
     func cruise() {
         sprite.removeActionForKey("flying")
         sprite.runAction(actions.fly(0.5), withKey: "flying")
-        sprite.runAction(SKAction.moveTo(origin.point, duration: 0.2))
+        sprite.runAction(SKAction.moveTo(world.centre, duration: 0.2))
         //        sprite.removeActionForKey("advancing")
         //        sprite.removeActionForKey("decelerating")
     }
     
     func accelerate(percentage : CGFloat) {
         sprite.removeActionForKey("flying")
-        let amount = origin.y - percentage * maxYTranslation
+        let amount = world.centre.y - percentage * maxYTranslation
+        self.position.y = amount
         
         sprite.runAction(actions.fly(percentage), withKey: "flying")
-        position.y = amount
-        
-        //        normalSpeed()
-        //
-        //        let advancing = actions.advancing()
-        //
-        //        sprite.runAction(advancing, withKey: "advancing")
     }
     
     func deccelerate(percentage : CGFloat) {
         sprite.removeActionForKey("flying")
-        let amount = origin.y + percentage * maxYTranslation
+        let amount = world.centre.y + percentage * maxYTranslation
+        self.position.y = amount
         
         sprite.runAction(actions.fly(percentage), withKey: "flying")
-        
-        position.y = amount
-        
-        //          sprite.position.y = min_y_transation
-        //        normalSpeed()
-        //
-        //        let decelerating = actions.decelerating()
-        //
-        //        sprite.runAction(decelerating, withKey: "decelerating")
     }
     
     func straighten() {
